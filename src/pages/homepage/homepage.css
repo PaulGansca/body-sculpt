@@ -33,6 +33,11 @@
     margin: 15vh 0;
 }
 
+.homepage-container .branding .logo {
+    height: 45px;
+    width: 45px;
+}
+
 .homepage-container .branding * {
     color: white;
 }

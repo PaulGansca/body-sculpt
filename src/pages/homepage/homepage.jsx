@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from 'antd';
 
 import CustomButton from '../../components/custom-button/custom-button';
-import { ReactComponent as Logo } from '../../assets/crown.svg';
+import { ReactComponent as Logo } from '../../assets/dumbbell.svg';
 import './homepage.css';
 
 const HomePage = ({history, ...props}) => (
