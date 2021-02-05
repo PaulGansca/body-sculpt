@@ -1,7 +1,8 @@
 import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
-import UserPage from './pages/user-page/user';
+import UserPage from './pages/user-page/user-page';
+import LoginPage from './pages/login-page/login-page';
 import HomePageContainer from './pages/homepage/homepage.container';
 
 import "antd/dist/antd.css";
@@ -12,7 +13,7 @@ const App = () => {
     <div className="App">
       <Switch>
         <Route exact={true} path="/" component={HomePageContainer} />
-        <Route exact={true} path="/login" component={() => <h1>Login Page</h1>} />
+        <Route exact={true} path="/login" component={LoginPage} />
         <Route exact={true} path="/signup" component={() => <h1>SignUp Page</h1>} />
         <Route path="/user" component={UserPage} />
       </Switch>
