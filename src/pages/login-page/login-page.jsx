@@ -1,22 +1,29 @@
 import React from 'react';
 import { Divider } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
 import CustomButton from '../../components/custom-button/custom-button';
 import CustomInput from '../../components/custom-inputs/custom-input';
 import CustomForm from '../../components/custom-form/custom-form';
+import AnimatedBackground from '../../components/animated-background/animated-background';
 import { ReactComponent as Logo } from '../../assets/dumbbell.svg';
 
 import './login.css';
 
 const LoginPage = () => {
     const formInputItems = [{
-            input: <CustomInput bordered={false} placeholder="Username" type="text"
-                prefix={<UserOutlined style={{marginRight: 10}} className="site-form-item-icon" />} />,
-            name:"username",
-            rules: [{required: true,
-                message: 'Please input your username!'}]
+            input: <CustomInput bordered={false} placeholder="email" type="text"
+                prefix={<MailOutlined style={{marginRight: 10}} className="site-form-item-icon" />} />,
+            name:"email",
+            rules: [{
+                    required: true,
+                    message: 'Please input your email!'
+                    }, {
+                    type: 'email',
+                    message: 'Not a valid email'
+                    }
+            ]
         }, {
             input: <CustomInput bordered={false} placeholder="Password" type="password" 
                 prefix={<LockOutlined style={{marginRight: 10}} className="site-form-item-icon" />} />,
@@ -32,7 +39,7 @@ const LoginPage = () => {
         }
     ]
     return (
-    <div className="login-page background">
+    <AnimatedBackground pageName="login-page">
         <div className="login-page-container">
             <div className="branding">
                 <h1 style={{color: 'white'}}>Hello, Sign in!</h1>
@@ -49,7 +56,7 @@ const LoginPage = () => {
                 </p>
             </div>
         </div>
-    </div>
+    </AnimatedBackground>
 )};
 
 export default LoginPage;

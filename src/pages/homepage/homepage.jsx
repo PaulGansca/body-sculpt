@@ -2,12 +2,13 @@ import React from 'react';
 
 import CustomButton from '../../components/custom-button/custom-button';
 import { ReactComponent as Logo } from '../../assets/dumbbell.svg';
+import AnimatedBackground from '../../components/animated-background/animated-background';
 //import { ReactComponent as Wave } from '../../assets/wave.svg';
 
 import './homepage.css';
 
 const HomePage = ({history, ...props}) => (
-    <div className="homepage background">
+    <AnimatedBackground pageName="homepage">
         <div className="homepage-container">
             <div className="branding">
                 <h1>Welcome Back</h1>
@@ -29,7 +30,7 @@ const HomePage = ({history, ...props}) => (
                 SIGN UP
             </CustomButton>
         </div>
-    </div>
+    </AnimatedBackground>
 )
 
 export default HomePage;
