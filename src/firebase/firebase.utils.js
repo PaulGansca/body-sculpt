@@ -12,6 +12,10 @@ const config = {
     measurementId: "G-JN2LX5QRQT"
 }
 
+firebase.initializeApp(config);
+
+// search for user in DB
+// if user doesn't exist create new record
 export const createUserProfileDocument = async(userAuth, additionalData) => {
     if (!userAuth) return;
 
@@ -37,8 +41,6 @@ export const createUserProfileDocument = async(userAuth, additionalData) => {
 
     return userRef;
 }
-
-firebase.initializeApp(config);
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();

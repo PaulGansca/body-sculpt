@@ -10,13 +10,11 @@ import reportWebVitals from './reportWebVitals';
 import { store } from './redux/store';
 
 ReactDOM.render(
-  <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </Provider>
-  </React.StrictMode>,
+    </Provider>,
   document.getElementById('root')
 );
 
