@@ -17,7 +17,7 @@ const regexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@
 const formInputItems = [{
     input: <CustomInput bordered={false} placeholder="Name" type="text" 
         prefix={<UserOutlined style={{marginRight: 10}} className="site-form-item-icon" />} />,
-    name:"name",
+    name:"displayName",
     rules: [{required: true,
         message: 'Please input your name!'}]
     }, {
@@ -82,13 +82,13 @@ const formTailItems = [{
 ]
 
 const handleSubmit = async (values) => {
-    const { name, email, password } = values;
+    const { displayName, email, password } = values;
 
     try {
         const { user } = await auth.createUserWithEmailAndPassword(email, password);
-        await createUserProfileDocument(user, {name});
+        await createUserProfileDocument(user, {displayName});
     } catch (e) {
-        console.log(e)
+        alert(e)
     }
 }
 

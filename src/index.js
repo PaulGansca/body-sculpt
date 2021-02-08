@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 import './index.css';
-import App from './App';
+import AppContainer from './AppContainer';
 import reportWebVitals from './reportWebVitals';
 
 import { store } from './redux/store';
@@ -12,7 +12,7 @@ import { store } from './redux/store';
 ReactDOM.render(
     <Provider store={store}>
       <BrowserRouter>
-        <App />
+        <AppContainer />
       </BrowserRouter>
     </Provider>,
   document.getElementById('root')

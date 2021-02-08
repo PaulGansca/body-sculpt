@@ -9,13 +9,13 @@ import HomePageContainer from './pages/homepage/homepage.container';
 import "antd/dist/antd.css";
 import './App.css';
 
-const App = () => {
+const App = ({ currentUser }) => {
   return (
     <div className="App">
       <Switch>
-        <Route exact={true} path="/" component={HomePageContainer} />
-        <Route exact={true} path="/login" component={LoginPage} />
-        <Route exact={true} path="/signup" component={SignUpPage} />
+        <Route exact={true} path="/" render={() => currentUser ? <Redirect to='/user/profile' /> : <HomePageContainer />} />
+        <Route exact={true} path="/login" render={() => currentUser ? <Redirect to='/user/profile' /> : <LoginPage />} />
+        <Route exact={true} path="/signup" render={() => currentUser ? <Redirect to='/user/profile' /> : <SignUpPage />} />
         <Route path="/user" component={UserPage} />
       </Switch>
     </div>
