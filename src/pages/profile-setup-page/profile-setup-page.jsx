@@ -17,7 +17,7 @@ const ProfileSetupPage = (props) => {
     const formRef = useRef(null);
     const [formQuestionsList, setFormQuestionsList] = useState(questionsList.filter(q => q.name !== "musclePriority"));
     const [formProgress, setFormProgress] = useState(0);
-
+    console.log(props);
     const {currentUser, setUserGoals, history} = props;
 
     const handleValuesChange = (changedValues, allValues) => {

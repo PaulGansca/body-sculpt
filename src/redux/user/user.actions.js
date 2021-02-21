@@ -6,7 +6,7 @@ export const setCurrentUser = user => ({
     payload: user
 });
 
-export const setUserGoals = (userId, goalsData) => dispatch => {
+export const setUserGoals = (userId, goalsData, history) => dispatch => {
     dispatch({
         type: UserActionTypes.SET_USER_GOALS_START,
     });
@@ -17,6 +17,7 @@ export const setUserGoals = (userId, goalsData) => dispatch => {
             type: UserActionTypes.SET_USER_GOALS_SUCCESS,
             payload: goalsData
         });
+        history.push('/user/workout/new');
     })
     .catch((err) => {
         // The document probably doesn't exist.

@@ -13,7 +13,7 @@ const mapStateToProps = createStructuredSelector({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    setUserGoals: (userId, goalsData) => dispatch(setUserGoals(userId, goalsData))
+    setUserGoals: (userId, goalsData, history) => dispatch(setUserGoals(userId, goalsData, history))
 })
 
 const ProfileSetupPageContainer = compose(
