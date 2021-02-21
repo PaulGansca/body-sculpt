@@ -14,34 +14,6 @@ const config = {
 
 firebase.initializeApp(config);
 
-// search for user in DB
-// if user doesn't exist create new record
-export const createUserProfileDocument = async(userAuth, additionalData) => {
-    if (!userAuth) return;
-
-    const userRef = firestore.doc(`users/${userAuth.uid}`)
-
-    const user = await userRef.get();
-
-    if(!user.exists) {
-        const {displayName, email} = userAuth;
-        const createdAt = new Date();
-        
-        try {
-            await userRef.set({
-                displayName,
-                email,
-                createdAt,
-                ...additionalData
-            });
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
-    return userRef;
-}
-
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
