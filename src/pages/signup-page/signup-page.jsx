@@ -2,14 +2,14 @@ import React from 'react';
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
-import CustomButton from '../../components/custom-button/custom-button';
-import CustomInput from '../../components/custom-inputs/custom-input';
-import CustomForm from '../../components/custom-form/custom-form';
+import CustomButton from '../../components/antd/custom-button/custom-button';
+import CustomInput from '../../components/antd/custom-inputs/custom-input';
+import CustomForm from '../../components/antd/custom-form/custom-form';
 import AnimatedBackground from '../../components/animated-background/animated-background';
 import { ReactComponent as Logo } from '../../assets/dumbbell.svg';
 
-import { auth, createUserProfileDocument } from '../../firebase/firebase.utils';
-import { checkEmailExists } from '../../firebase/crud-user';
+import { auth } from '../../firebase/firebase.utils';
+import { checkEmailExists, createUserProfileDocument } from '../../firebase/crud-user';
 
 import './signup.css';
 const regexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
