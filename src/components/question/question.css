@@ -1,0 +1,36 @@
+.question-container .ant-typography {
+    color: #fff;
+    margin-top: 30px;
+}
+
+/* create container for multi choice option */
+.question-container .multi-choice-input label.ant-radio-wrapper,
+.question-container .multi-choice-input label.ant-checkbox-wrapper {
+    padding: 20px;
+    background: rgb(228, 220, 220);
+    border-radius: 20px;
+    margin: 20px;
+    max-width: 70vw;
+    min-width: 70vw;
+    white-space: unset;
+    color: #333;
+    display: flex;
+}
+
+/* aligns checkboxes/radios with text when split into 2 columns with display flex */
+.question-container .multi-choice-input label.ant-radio-wrapper span:nth-child(1),
+.question-container .multi-choice-input label.ant-checkbox-wrapper span:nth-child(1) {
+    top: 3px;
+    height: 16px;
+}
+
+.question-container .multi-choice-input label.ant-radio-wrapper span:nth-child(2),
+.question-container .multi-choice-input label.ant-checkbox-wrapper span:nth-child(2) {
+    text-align: initial;
+}
+
+/* targets error message div */
+.profile-setup-input .ant-form-item-explain-error div  {
+    margin-bottom: 20px;
+    font-weight: bold;
+}
