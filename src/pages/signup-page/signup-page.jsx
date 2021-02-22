@@ -1,4 +1,5 @@
 import React from 'react';
+import { Form } from 'antd';
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
@@ -102,7 +103,10 @@ const SignUpPage = () => {
                 <Logo className="logo"/>
             </div>
             <div className="signup-panel">
-                <CustomForm formInputItems={formInputItems} formTailItems={formTailItems} handleSubmit={handleSubmit} />
+                <CustomForm name="signUpForm" onFinish={handleSubmit}>
+                    {formInputItems.map(({input, ...inputProps}, idx) => <Form.Item key={idx} {...inputProps}>{input}</Form.Item>)}
+                    {formTailItems.map(({elem, ...tailProps}, idx) => <Form.Item key={idx} {...tailProps}>{elem}</Form.Item>)}
+                </CustomForm>
                 <p style={{marginTop: 16, marginBottom: 10}}>Already have an account?
                     {<CustomButton type="link">
                         {<Link to='/login'>Login</Link>}

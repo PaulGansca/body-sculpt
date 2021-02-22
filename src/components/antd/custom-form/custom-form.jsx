@@ -1,26 +1,15 @@
+import React from 'react';
 import { Form } from 'antd';
 
-const CustomForm = ({formInputItems, formTailItems, handleSubmit }) => {
-  const onFinish = (values) => {
-    console.log('Success:', values);
-    handleSubmit(values);
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
+const CustomForm = React.forwardRef(({children, ...otherProps }, ref) => {
   return (
     <Form
-      name="customForm"
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
+      ref={ref}
+      {...otherProps}
     >
-      {formInputItems.map(({input, ...inputProps}, idx) => <Form.Item key={idx} {...inputProps}>{input}</Form.Item>)}
-
-      {formTailItems.map(({elem, ...tailProps}, idx) => <Form.Item key={idx} {...tailProps}>{elem}</Form.Item>)}
-
+      {children}
     </Form>
   );
-};
+});
 
 export default CustomForm;

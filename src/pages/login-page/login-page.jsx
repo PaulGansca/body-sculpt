@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider } from 'antd';
+import { Divider, Form } from 'antd';
 import { MailOutlined, LockOutlined, GoogleOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
@@ -58,7 +58,10 @@ const LoginPage = () => {
                 <Logo className="logo"/>
             </div>
             <div className="login-panel">
-                <CustomForm formInputItems={formInputItems} formTailItems={formTailItems} handleSubmit={handleSubmit} />
+                <CustomForm name="loginForm" onFinish={handleSubmit}>
+                    {formInputItems.map(({input, ...inputProps}, idx) => <Form.Item key={idx} {...inputProps}>{input}</Form.Item>)}
+                    {formTailItems.map(({elem, ...tailProps}, idx) => <Form.Item key={idx} {...tailProps}>{elem}</Form.Item>)}
+                </CustomForm>
                 <Divider dashed={true}>Or</Divider>
                 <CustomButton icon={<GoogleOutlined />} onClick={signInWithGoogle} shape="round">Sign in with google</CustomButton>
                 <p style={{marginTop: 16, marginBottom: 10}}>Don't have an account?

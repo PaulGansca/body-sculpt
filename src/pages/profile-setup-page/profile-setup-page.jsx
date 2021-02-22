@@ -1,5 +1,4 @@
 import React, { useRef, useState } from 'react';
-import { Form } from 'antd';
 import { CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
 
 import CustomProgress from '../../components/antd/custom-progress-bar/custom-progress-bar';
@@ -8,6 +7,7 @@ import { questionsList, fieldNames } from '../../components/question/questions-l
 import CustomCarousel from '../../components/antd/custom-carousel/custom-carousel';
 import CustomButton from '../../components/antd/custom-button/custom-button';
 import CustomSpace from '../../components/antd/custom-space/custom-space';
+import CustomForm from '../../components/antd/custom-form/custom-form';
 
 
 import './profile-setup.css';
@@ -17,7 +17,6 @@ const ProfileSetupPage = (props) => {
     const formRef = useRef(null);
     const [formQuestionsList, setFormQuestionsList] = useState(questionsList.filter(q => q.name !== "musclePriority"));
     const [formProgress, setFormProgress] = useState(0);
-    console.log(props);
     const {currentUser, setUserGoals, history} = props;
 
     const handleValuesChange = (changedValues, allValues) => {
@@ -65,7 +64,7 @@ const ProfileSetupPage = (props) => {
         <CustomProgress className="setup-progress" style={{marginTop: '5vh'}}
             percent={formProgress} steps={fieldNames.length} size="large" strokeColor="#52c41a"
             format={(percent) => 'Profile Setup'} />
-        <Form name="profileSetup" onFinish={onFinish} onFinishFailed={onFinishFailed}
+        <CustomForm name="profileSetup" onFinish={onFinish} onFinishFailed={onFinishFailed}
             onValuesChange={handleValuesChange} ref={formRef}
             initialValues={{weight: 70, height: 180}}>
             <CustomCarousel effect={"fade"} customRef={carouselQuestion} dots={false}>
@@ -80,7 +79,7 @@ const ProfileSetupPage = (props) => {
                 <CustomButton shape="round"
                     onClick={() => carouselQuestion.current.next()}>{<CaretRightOutlined />}</CustomButton>
             </CustomSpace>
-        </Form>
+        </CustomForm>
       </div>
     );
 };
