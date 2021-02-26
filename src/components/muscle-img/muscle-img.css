@@ -1,0 +1,56 @@
+.muscle-group-container {
+    width: 150px;
+    height: 110px;
+    border-radius: 45px;
+    border: 1px solid #ccc;
+    overflow: hidden;
+    margin-right: 10px;
+    display: inline-block;
+}
+
+/* position upper body and muscle rules */
+
+.upper-body {
+    width: 100%;
+    position: relative;
+    top: -40px;
+}
+
+.muscle-group-upper-body {
+    width: 100%;
+    position: relative;
+    top: -43px;
+    left: -148px;
+}
+
+/* ends here */
+
+/* position lower body and muscle rules */
+/* above knee */
+.lower-body-upper {
+    width: 100%;
+    position: relative;
+    top: -120px;
+}
+
+.muscle-group-lower-body-upper {
+    width: 100%;
+    position: relative;
+    top: -122px;
+    left: -148px;
+}
+
+/* below knee */
+.lower-body-lower {
+    width: 100%;
+    position: relative;
+    top: -170px;
+}
+
+.muscle-group-lower-body-lower {
+    width: 100%;
+    position: relative;
+    top: -445px;
+}
+
+/* ends here */
