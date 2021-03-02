@@ -19,8 +19,7 @@
 .muscle-group-upper-body {
     width: 100%;
     position: relative;
-    top: -43px;
-    left: -148px;
+    top: -314px
 }
 
 /* ends here */
@@ -36,8 +35,7 @@
 .muscle-group-lower-body-upper {
     width: 100%;
     position: relative;
-    top: -122px;
-    left: -148px;
+    top: -393px;
 }
 
 /* below knee */
@@ -51,6 +49,43 @@
     width: 100%;
     position: relative;
     top: -445px;
+}
+
+/* ends here */
+
+
+/* position upper body and muscle rules INSIDE workout header */
+
+.workout-header-images .upper-body {
+    top: -40px;
+}
+
+.workout-header-images .muscle-group-upper-body {
+    top: -43px;
+    left: -148px;
+}
+
+/* ends here */
+
+/* position lower body and muscle rules */
+/* above knee */
+.workout-header-images .lower-body-upper {
+    top: -120px;
+}
+
+.workout-header-images .muscle-group-lower-body-upper {
+    top: -122px;
+    left: -148px;
+}
+
+/* below knee */
+.workout-header-images .lower-body-lower {
+    top: -170px;
+}
+
+.workout-header-images .muscle-group-lower-body-lower {
+    top: -170px;
+    left: -148px;
 }
 
 /* ends here */

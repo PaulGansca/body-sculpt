@@ -1,0 +1,7 @@
+.exercises-list {
+    overflow-y: auto;
+    max-height: 65vh;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}

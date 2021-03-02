@@ -19,7 +19,8 @@ const workoutEffects = (WrappedComponent) => ({setCurrentUser, ...otherProps}) =
             fetch("https://wger.de/api/v2/exerciseinfo/113/"),
             fetch("https://wger.de/api/v2/exerciseinfo/181/"),
             fetch("https://wger.de/api/v2/exerciseinfo/100/"),
-            fetch("https://wger.de/api/v2/exerciseinfo/123/")]);
+            fetch("https://wger.de/api/v2/exerciseinfo/123/"),
+            fetch("https://wger.de/api/v2/exerciseinfo/792/")]);
         
         exerciseFetch.then(resultArray => {
             const temp = []
@@ -34,7 +35,6 @@ const workoutEffects = (WrappedComponent) => ({setCurrentUser, ...otherProps}) =
             console.log('UNMOUNT');
         };
     }, []);
-    console.log("RENREDERE")
     return <WrappedComponent muscles={muscles} exercises={exercises} {...otherProps} />
 }
 
