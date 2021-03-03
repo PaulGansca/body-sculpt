@@ -8,7 +8,7 @@ import { selectWorkoutExercises } from '../../redux/workout/workout.selectors';
 import { selectCurrentUserId, selectCurrentWorkout } from '../../redux/user/user.selectors';
 import WorkoutPage from './workout-page';
 
-const workoutEffects = (WrappedComponent) => ({createWorkout, currentUserId,
+const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUserId,
     setCurrentWorkout, currentWorkout, ...otherProps}) => {
     const [muscles, setMusclesArr] = useState([]);
     useEffect(() => {
@@ -16,13 +16,14 @@ const workoutEffects = (WrappedComponent) => ({createWorkout, currentUserId,
         fetch("https://wger.de/api/v2/muscle/").then(muscles => muscles.json()
             .then(muscles => setMusclesArr(muscles.results)));
         if(currentUserId) {
-            if(currentWorkout.exercises && currentWorkout.exercises.length) setCurrentWorkout(currentWorkout)
+            if(currentWorkout.id && currentWorkout.exercises.length) setCurrentWorkout(currentWorkout)
             else createCurrentWorkout(currentUserId)
         }
         return () => {
             console.log('UNMOUNT');
         };
-    }, [createCurrentWorkout, currentUserId]);
+        // eslint-disable-next-line
+    }, [currentUserId]);
     return <WrappedComponent muscles={muscles} {...otherProps} />
 }
 
