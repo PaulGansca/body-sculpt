@@ -3,51 +3,42 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
+import { createCurrentWorkout, setCurrentWorkout } from '../../redux/workout/workout.actions';
+import { selectWorkoutExercises } from '../../redux/workout/workout.selectors';
+import { selectCurrentUserId, selectCurrentWorkout } from '../../redux/user/user.selectors';
 import WorkoutPage from './workout-page';
 
-const workoutEffects = (WrappedComponent) => ({setCurrentUser, ...otherProps}) => {
-    const [exercises, setExercisesArr] = useState([]);
+const workoutEffects = (WrappedComponent) => ({createWorkout, currentUserId,
+    setCurrentWorkout, currentWorkout, ...otherProps}) => {
     const [muscles, setMusclesArr] = useState([]);
     useEffect(() => {
         //fetch muscles targeted images
         fetch("https://wger.de/api/v2/muscle/").then(muscles => muscles.json()
-            .then(muscles => setMusclesArr(muscles.results)))
-
-        //fetch exercises
-        const exerciseFetch = Promise.all([
-            fetch("https://wger.de/api/v2/exerciseinfo/192/"),
-            fetch("https://wger.de/api/v2/exerciseinfo/113/"),
-            fetch("https://wger.de/api/v2/exerciseinfo/181/"),
-            fetch("https://wger.de/api/v2/exerciseinfo/100/"),
-            fetch("https://wger.de/api/v2/exerciseinfo/123/"),
-            fetch("https://wger.de/api/v2/exerciseinfo/792/")]);
-        
-        exerciseFetch.then(resultArray => {
-            const temp = []
-            resultArray.forEach((exercise, idx) => exercise.json().then(data => {
-                temp.push(data);
-                if(idx === resultArray.length-1) setExercisesArr(temp)
-            }));
-        });
-
-
+            .then(muscles => setMusclesArr(muscles.results)));
+        if(currentUserId) {
+            if(currentWorkout.exercises && currentWorkout.exercises.length) setCurrentWorkout(currentWorkout)
+            else createCurrentWorkout(currentUserId)
+        }
         return () => {
             console.log('UNMOUNT');
         };
-    }, []);
-    return <WrappedComponent muscles={muscles} exercises={exercises} {...otherProps} />
+    }, [createCurrentWorkout, currentUserId]);
+    return <WrappedComponent muscles={muscles} {...otherProps} />
 }
 
-// const mapStateToProps = createStructuredSelector({
-//     currentUser: selectCurrentUser
-// })
+const mapStateToProps = createStructuredSelector({
+    exercises: selectWorkoutExercises,
+    currentUserId: selectCurrentUserId,
+    currentWorkout: selectCurrentWorkout
+})
 
-// const mapDispatchToProps = dispatch => ({
-//     setCurrentUser: user => dispatch(setCurrentUser(user))
-// })
+const mapDispatchToProps = dispatch => ({
+    createCurrentWorkout: userId => dispatch(createCurrentWorkout(userId, dispatch)),
+    setCurrentWorkout: currentWorkout => dispatch(setCurrentWorkout(currentWorkout, dispatch))
+})
 
 const WorkoutPageContainer = compose(
-    //connect(mapStateToProps, mapDispatchToProps),
+    connect(mapStateToProps, mapDispatchToProps),
     workoutEffects
 )(WorkoutPage);
 

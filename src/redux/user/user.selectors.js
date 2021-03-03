@@ -16,3 +16,13 @@ export const selectError = createSelector(
     [selectUser],
     (user) => user.error
 )
+
+export const selectCurrentWorkout = createSelector(
+    [selectCurrentUser],
+    (currentUser) => currentUser.currentWorkout
+);
+
+export const selectCurrentUserId = createSelector(
+    [selectCurrentUser],
+    (currentUser) => currentUser.id
+);

@@ -30,6 +30,8 @@ export const createUserProfileDocument = async(userAuth, additionalData) => {
                 email,
                 createdAt,
                 goalSet: false,
+                workouts: [],
+                currentWorkout: {},
                 ...additionalData
             });
         } catch (err) {
@@ -50,5 +52,16 @@ export const setUserGoals = async(userId, userData) => {
     return userRef.update({
         goalSet: true,
         ...userData
+    });
+}
+
+//update current workout
+export const updateCurrentWorkout = async(userId, currentWorkout) => {
+    if (!userId) return;
+
+    const userRef = firestore.doc(`users/${userId}`)
+
+    return userRef.update({
+        currentWorkout
     });
 }
