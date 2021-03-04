@@ -1,15 +1,19 @@
 import React from 'react';
+
 import ExerciseListItem from '../exercises-list-item/exercise-list-item';
+import ExerciseWorkload from '../exercises-list-item/exercise-workload';
+import SwapDeleteIcons from '../exercises-list-item/swap-delete-icons';
 
 import { exerciseCategory }  from '../../static/exercise-category';
 
 import './exercises-list.css';
 
 const ExercisesList = (props) => {
-    const { exercises, muscles } = props;
+    const { exercises, muscles, AddExercise } = props;
 
     return (
         <div className="exercises-list">
+                {AddExercise}
                 {exercises.map(exercise => {
                     const muscleImage = { imgUrls: [] };
                     exercise.muscles.forEach(m => {
@@ -20,7 +24,7 @@ const ExercisesList = (props) => {
                             muscleImage.id = m.id;
                         }
                     });
-                    return <ExerciseListItem exercise={exercise} muscleImage={muscleImage} key={exercise.id} />
+                    return <ExerciseListItem ExerciseWorkload={ExerciseWorkload} SwapDeleteIcons={SwapDeleteIcons} exercise={exercise} muscleImage={muscleImage} key={exercise.id} />
                 })}
         </div>
     )

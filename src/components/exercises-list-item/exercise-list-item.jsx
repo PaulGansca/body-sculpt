@@ -2,15 +2,15 @@ import React from 'react';
 
 import MuscleImg from '../muscle-img/muscle-img';
 
+import './exercise-list-item.css';
+
 const ExerciseListItem = (props) => {
-    const { exercise, muscleImage } = props;
+    const { exercise, muscleImage, SwapDeleteIcons, ExerciseWorkload } = props;
     return (
-        <div style={{display: 'flex', width: 360}}>
-            <MuscleImg key={muscleImage.id} muscleImage={muscleImage} transform={"scale(0.6)"} />
-            <div style={{display: 'flex', flexFlow: 'column', alignItems: 'baseline', alignSelf: 'center'}}>
-                <span>{exercise.name}</span>
-                <span>3 sets | 10 reps | 40kg</span>
-            </div>
+        <div className="exercise-list-item">
+            <SwapDeleteIcons />
+            <MuscleImg style={{transform: "scale(0.6)", marginRight: 0, minWidth: 150}} key={muscleImage.id} muscleImage={muscleImage} />
+            <ExerciseWorkload exercise={exercise} />
         </div>
     )
 };

@@ -2,7 +2,7 @@ import React from 'react';
 
 import './muscle-img.css'
 
-const MuscleImg = ({muscleImage, transform}) => {
+const MuscleImg = ({muscleImage, style}) => {
     let bodyClass = "";
     let muscleGroupClass = "";
     if(muscleImage.id === 10 || muscleImage.id === 8 || muscleImage.id === 11) {
@@ -16,7 +16,7 @@ const MuscleImg = ({muscleImage, transform}) => {
         muscleGroupClass = "muscle-group-upper-body";
     }
     return (
-        <div style={{transform}} className="muscle-group-container">
+        <div style={style} className="muscle-group-container">
             <img alt="" className={bodyClass} src={`https://wger.de/static/images/muscles/muscular_system_${muscleImage.isFront ? "front" : "back"}.svg`} />
             {muscleImage.imgUrls && muscleImage.imgUrls.map((imgUrl, idx) => <img key={idx} alt="" className={muscleGroupClass} src={imgUrl} />)}
         </div>
