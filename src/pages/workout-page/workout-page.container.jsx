@@ -10,7 +10,11 @@ import WorkoutPage from './workout-page';
 
 const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUserId,
     setCurrentWorkout, currentWorkout, ...otherProps}) => {
+    const { exercises } = otherProps;
     const [muscles, setMusclesArr] = useState([]);
+    const [primaryMuscles, setPrimaryMuscles] = useState({});
+    const [musclesImages, setMusclesImages] = useState([]);
+
     useEffect(() => {
         //fetch muscles targeted images
         fetch("https://wger.de/api/v2/muscle/").then(muscles => muscles.json()
@@ -24,7 +28,26 @@ const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUser
         };
         // eslint-disable-next-line
     }, [currentUserId]);
-    return <WrappedComponent muscles={muscles} {...otherProps} />
+
+    useEffect(() => {
+        const primaryMuscles = {}
+        exercises.forEach(e => e.muscles.forEach(m => primaryMuscles[m.id]= m.name));
+        setPrimaryMuscles(primaryMuscles)
+    }, [exercises]);
+
+    useEffect(() => {
+        const musclesImages = []
+        Object.keys(primaryMuscles).forEach(id => {
+            const muscle = muscles.find(muscle => muscle.id === parseInt(id))
+            const imgUrls = [`https://wger.de/${muscle.image_url_main}`];
+            const isFront = muscle.is_front;
+            musclesImages.push({imgUrls, isFront, id: parseInt(id)})
+        })
+        setMusclesImages(musclesImages)
+    }, [primaryMuscles, muscles]);
+
+
+    return <WrappedComponent primaryMuscles={primaryMuscles} musclesImages={musclesImages} muscles={muscles} {...otherProps} />
 }
 
 const mapStateToProps = createStructuredSelector({
