@@ -12,3 +12,9 @@ export const searchExercises = (term) => {
         return res.data;
     });
 };
+
+export const getExerciseInfo = (id) => {
+    return fetcher.get(`/exerciseinfo/${id}`).then(res => {
+        return res.data;
+    });
+};
