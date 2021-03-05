@@ -13,7 +13,7 @@ const ExercisesList = (props) => {
 
     return (
         <div className="exercises-list">
-                {AddExercise}
+                {AddExercise ? <AddExercise /> : <></>}
                 {exercises.map(exercise => {
                     const muscleImage = { imgUrls: [] };
                     exercise.muscles.forEach(m => {
