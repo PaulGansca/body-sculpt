@@ -42,4 +42,26 @@ export const addExercise = (id, workout, userId) => async dispatch => {
             payload: err
         });
     }
-  };
+};
+
+export const deleteExercise = (idx, workout, userId) => async dispatch => {
+    dispatch({
+        type: WorkoutActionTypes.DELETE_EXERCISE_START,
+    });
+
+    try {
+        //delete element at idx
+        const newWorkout = {...workout, exercises: workout.exercises.filter((e, index) => index !== idx)}
+        await updateCurrentWorkout(userId, newWorkout)
+        dispatch({
+            type: WorkoutActionTypes.DELETE_EXERCISE_SUCCESS,
+            payload: newWorkout.exercises
+        });
+    } catch (err) {
+        alert("Error updating document: ", err);
+        dispatch({
+            type: WorkoutActionTypes.DELETE_EXERCISE_FAIL,
+            payload: err
+        });
+    }
+};

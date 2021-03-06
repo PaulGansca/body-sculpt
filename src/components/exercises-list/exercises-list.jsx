@@ -14,7 +14,7 @@ const ExercisesList = (props) => {
     return (
         <div className="exercises-list">
                 {AddExercise ? <AddExercise /> : <></>}
-                {exercises.map(exercise => {
+                {exercises.map((exercise, idx) => {
                     const muscleImage = { imgUrls: [] };
                     exercise.muscles.forEach(m => {
                         const muscle = muscles.find(muscle => muscle.id === m.id);
@@ -24,7 +24,7 @@ const ExercisesList = (props) => {
                             muscleImage.id = m.id;
                         }
                     });
-                    return <ExerciseListItem ExerciseWorkload={ExerciseWorkload} SwapDeleteIcons={SwapDeleteIcons} exercise={exercise} muscleImage={muscleImage} key={exercise.id} />
+                    return <ExerciseListItem idx={idx} ExerciseWorkload={ExerciseWorkload} SwapDeleteIcons={SwapDeleteIcons} exercise={exercise} muscleImage={muscleImage} key={exercise.id} />
                 })}
         </div>
     )
