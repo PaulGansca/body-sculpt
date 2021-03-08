@@ -18,7 +18,7 @@ const ExercisesList = (props) => {
                     const muscleImage = { imgUrls: [] };
                     exercise.muscles.forEach(m => {
                         const muscle = muscles.find(muscle => muscle.id === m.id);
-                        if(exerciseCategory[exercise.category.name].includes(muscle.id)) {
+                        if(exerciseCategory[exercise.category.name].muscleIds.includes(muscle.id)) {
                             muscleImage.imgUrls.push(`https://wger.de/${muscle.image_url_main}`);
                             muscleImage.isFront = muscle.is_front;
                             muscleImage.id = m.id;

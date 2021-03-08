@@ -8,7 +8,7 @@ import { searchExercises } from '../../api/wger';
 import './search-exercises.css';
 
 
-const SearchExercises = ({setSelectedExerciseId, isModalVisible}) => {
+const SearchExercises = ({ setSelectedExerciseId  }) => {
     const [options, setOptions] = useState([]);
 
     const renderTitle = (title, count) => (

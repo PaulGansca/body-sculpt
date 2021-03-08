@@ -65,3 +65,30 @@ export const deleteExercise = (idx, workout, userId) => async dispatch => {
         });
     }
 };
+
+export const swapExercise = (exerciseIdx, exerciseId, workout, userId) => async dispatch => {
+    dispatch({
+        type: WorkoutActionTypes.SWAP_EXERCISE_START,
+    });
+
+    try {
+        const exercise = await getExerciseInfo(exerciseId);
+        // TO DO GENERATE WORKLOAD EX
+        exercise.sets = 4
+        exercise.reps = 10
+        exercise.weight = 50
+        workout.exercises[exerciseIdx] = exercise;
+        const newWorkout = { ...workout };
+        await updateCurrentWorkout(userId, newWorkout)
+        dispatch({
+            type: WorkoutActionTypes.SWAP_EXERCISE_SUCCESS,
+            payload: newWorkout.exercises
+        });
+    } catch (err) {
+        alert("Error updating document: ", err);
+        dispatch({
+            type: WorkoutActionTypes.SWAP_EXERCISE_FAIL,
+            payload: err
+        });
+    }
+};

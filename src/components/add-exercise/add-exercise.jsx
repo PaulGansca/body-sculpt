@@ -6,7 +6,7 @@ import { PlusOutlined } from '@ant-design/icons';
 
 import CustomModal from '../antd/custom-modal/custom-modal';
 import CustomButton from '../antd/custom-button/custom-button';
-import SearchExercises from './search-exercises';
+import SearchExercises from '../search-exercises.jsx/search-exercises';
 
 import { addExercise } from '../../redux/workout/workout.actions';
 import { selectIsLoading, selectWorkout } from '../../redux/workout/workout.selectors';

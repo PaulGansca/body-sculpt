@@ -13,6 +13,12 @@ export const searchExercises = (term) => {
     });
 };
 
+export const getExercisesInCategory = (categoryId, filters) => {
+    return fetcher.get(`/exercise/?category=${categoryId}${filters}`).then(res => {
+        return res.data;
+    });
+};
+
 export const getExerciseInfo = (id) => {
     return fetcher.get(`/exerciseinfo/${id}`).then(res => {
         return res.data;
