@@ -38,7 +38,7 @@ const ExercisesList = (props) => {
         </div>
     ));
     return (
-        <SortableList exercises={exercises} onSortEnd={({oldIndex, newIndex}) => moveExercise(oldIndex, newIndex, workout, userId)} />
+        <SortableList pressDelay={200} exercises={exercises} onSortEnd={({oldIndex, newIndex}) => moveExercise(oldIndex, newIndex, workout, userId)} />
     )
 };
 
