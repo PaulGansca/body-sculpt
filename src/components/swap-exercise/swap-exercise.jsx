@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Input, Pagination } from 'antd';
+import { Input } from 'antd';
 import { SwapOutlined } from '@ant-design/icons';
 
 import CustomModal from '../antd/custom-modal/custom-modal';
@@ -56,6 +56,7 @@ const SwapExercise = ({swapExercise, isLoading, workout, userId, exerciseIdx, ex
                     rowKey={exercise => exercise.id}
                     rowSelection={{...rowSelection, type: 'radio'}}
                     dataSource={filteredExercises}
+                    showHeader={false}
                     expandable={{
                         expandedRowRender: record => <p style={{ margin: 0 }}>{record.description.replace(/<\/?[^>]+(>|$)/g, "")}</p>,
                         rowExpandable: record => record.description.replace(/<\/?[^>]+(>|$)/g, "").length,

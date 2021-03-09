@@ -1,3 +1,5 @@
+import arrayMove from "array-move";
+
 import { WorkoutActionTypes } from './workout.types';
 
 import { generateWorkout } from '../../workout-creation/create-workout';
@@ -88,6 +90,24 @@ export const swapExercise = (exerciseIdx, exerciseId, workout, userId) => async 
         alert("Error updating document: ", err);
         dispatch({
             type: WorkoutActionTypes.SWAP_EXERCISE_FAIL,
+            payload: err
+        });
+    }
+};
+
+export const moveExercise = (oldIndex, newIndex, workout, userId) => async dispatch => {
+    workout.exercises = arrayMove(workout.exercises, oldIndex, newIndex)
+    const newWorkout = { ...workout };
+    dispatch({
+        type: WorkoutActionTypes.MOVE_EXERCISE_SUCCESS,
+        payload: newWorkout.exercises
+    });
+    try {
+        await updateCurrentWorkout(userId, newWorkout)
+    } catch (err) {
+        alert("Error updating document: ", err);
+        dispatch({
+            type: WorkoutActionTypes.MOVE_EXERCISE_FAIL,
             payload: err
         });
     }
