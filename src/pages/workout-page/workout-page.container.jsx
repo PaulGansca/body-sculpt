@@ -5,10 +5,11 @@ import { createStructuredSelector } from 'reselect';
 import { Route, Switch } from 'react-router-dom';
 
 import { createCurrentWorkout, setCurrentWorkout } from '../../redux/workout/workout.actions';
-import { selectWorkoutExercises } from '../../redux/workout/workout.selectors';
-import { selectCurrentUserId, selectCurrentWorkout } from '../../redux/user/user.selectors';
+import { selectWorkoutExercises, selectIsLoading as selectIsWorkoutLoading } from '../../redux/workout/workout.selectors';
+import { selectCurrentUserId, selectCurrentWorkout, selectIsLoading } from '../../redux/user/user.selectors';
 import WorkoutPage from './workout-page';
 import ExercisePageContainer from '../exercise-page/exercise-page-container';
+import CustomSpin from '../../components/antd/custom-spin/custom-spin';
 
 const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUserId,
     setCurrentWorkout, currentWorkout, match, ...otherProps}) => {
@@ -45,20 +46,23 @@ const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUser
         setMusclesImages(musclesImages)
     }, [primaryMuscles, muscles]);
 
-
     return (
-        <Switch>
-            <Route exact={true} path={`${match.path}`} render={() => 
-            <WrappedComponent primaryMuscles={primaryMuscles} musclesImages={musclesImages} muscles={muscles} {...otherProps} />} />
-            <Route exact={true} path={`${match.path}/exercise/:exerciseId`} component={ExercisePageContainer} />
-        </Switch>
+        otherProps.isUserLoading || otherProps.isWorkoutLoading  ? 
+            <CustomSpin size={"large"} />  :
+            <Switch>
+                <Route exact={true} path={`${match.path}`} render={() => 
+                <WrappedComponent primaryMuscles={primaryMuscles} musclesImages={musclesImages} muscles={muscles} {...otherProps} />} />
+                <Route exact={true} path={`${match.path}/exercise/:exerciseId`} component={ExercisePageContainer} />
+            </Switch>
     )
 }
 
 const mapStateToProps = createStructuredSelector({
     exercises: selectWorkoutExercises,
     currentUserId: selectCurrentUserId,
-    currentWorkout: selectCurrentWorkout
+    currentWorkout: selectCurrentWorkout,
+    isUserLoading: selectIsLoading,
+    isWorkoutLoading: selectIsWorkoutLoading
 })
 
 const mapDispatchToProps = dispatch => ({

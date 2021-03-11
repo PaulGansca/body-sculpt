@@ -2,7 +2,7 @@ import { UserActionTypes } from './user.types';
 
 const INITIAL_STATE = {
     currentUser: "",
-    isLoading: false,
+    isLoading: true,
     error: ""
 }
 
@@ -11,6 +11,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
         case UserActionTypes.SET_CURRENT_USER:
             return {
                 ...state,
+                isLoading: false,
                 currentUser: action.payload
         }
         case UserActionTypes.SET_USER_GOALS_START:

@@ -4,7 +4,7 @@ const INITIAL_STATE = {
     id: "",
     exercises: [],
     date: Date.now(),
-    isLoading: false,
+    isLoading: true,
     err: ""
 }
 
@@ -90,6 +90,16 @@ const workoutReducer = (state = INITIAL_STATE, action) => {
                 exercises: action.payload
         }
         case WorkoutActionTypes.MOVE_EXERCISE_FAIL:
+            return {
+                ...state,
+                err: action.payload
+        }
+        case WorkoutActionTypes.UPDATE_EXERCISE_SUCCESS:
+            return {
+                ...state,
+                exercises: action.payload
+        }
+        case WorkoutActionTypes.UPDATE_EXERCISE_FAIL:
             return {
                 ...state,
                 err: action.payload
