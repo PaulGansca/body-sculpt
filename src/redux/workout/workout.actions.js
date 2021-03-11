@@ -30,12 +30,11 @@ export const addExercise = (id, workout, userId) => async dispatch => {
     try {
         const exercise = await getExerciseInfo(id);
         // TO DO GENERATE WORKLOAD EX
-        exercise.sets = 4
-        exercise.reps = 10
-        exercise.weight = 50
+        exercise.sets = [{reps: 10, weight: 50, id: newId()},
+             {reps: 10, weight: 50, id: newId()}, {reps: 10, weight: 50, id: newId()}]
         exercise.db_id = newId()
         const newWorkout = {...workout, exercises: [...workout.exercises, exercise]}
-        await updateCurrentWorkout(userId, newWorkout)
+        updateCurrentWorkout(userId, newWorkout)
         dispatch({
             type: WorkoutActionTypes.ADD_EXERCISE_SUCCESS,
             payload: newWorkout.exercises
@@ -57,7 +56,7 @@ export const deleteExercise = (idx, workout, userId) => async dispatch => {
     try {
         //delete element at idx
         const newWorkout = {...workout, exercises: workout.exercises.filter((e, index) => index !== idx)}
-        await updateCurrentWorkout(userId, newWorkout)
+        updateCurrentWorkout(userId, newWorkout)
         dispatch({
             type: WorkoutActionTypes.DELETE_EXERCISE_SUCCESS,
             payload: newWorkout.exercises
@@ -79,13 +78,12 @@ export const swapExercise = (exerciseIdx, exerciseId, workout, userId) => async 
     try {
         const exercise = await getExerciseInfo(exerciseId);
         // TO DO GENERATE WORKLOAD EX
-        exercise.sets = 4
-        exercise.reps = 10
-        exercise.weight = 50
+        exercise.sets = [{reps: 10, weight: 50, id: newId()},
+            {reps: 10, weight: 50, id: newId()}, {reps: 10, weight: 50, id: newId()}]
         exercise.db_id = newId()
         workout.exercises[exerciseIdx] = exercise;
         const newWorkout = { ...workout };
-        await updateCurrentWorkout(userId, newWorkout)
+        updateCurrentWorkout(userId, newWorkout)
         dispatch({
             type: WorkoutActionTypes.SWAP_EXERCISE_SUCCESS,
             payload: newWorkout.exercises
@@ -107,11 +105,27 @@ export const moveExercise = (oldIndex, newIndex, workout, userId) => async dispa
         payload: newWorkout.exercises
     });
     try {
-        await updateCurrentWorkout(userId, newWorkout)
+        updateCurrentWorkout(userId, newWorkout)
     } catch (err) {
         alert("Error updating document: ", err);
         dispatch({
             type: WorkoutActionTypes.MOVE_EXERCISE_FAIL,
+            payload: err
+        });
+    }
+};
+
+export const updateExerciseWorkload = (workout, userId) => async dispatch => {
+    dispatch({
+        type: WorkoutActionTypes.UPDATE_EXERCISE_SUCCESS,
+        payload: workout.exercises
+    });
+    try {
+        updateCurrentWorkout(userId, workout)
+    } catch (err) {
+        alert("Error updating document: ", err);
+        dispatch({
+            type: WorkoutActionTypes.UPDATE_EXERCISE_FAIL,
             payload: err
         });
     }

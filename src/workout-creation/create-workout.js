@@ -14,9 +14,8 @@ export const generateWorkout = (userId, updateCurrentWorkout, dispatch) => {
     
     return exerciseFetch.then(resultArray => {
         resultArray.forEach((exercise, idx) => exercise.json().then(data => {
-            data.sets = 4
-            data.reps = 10
-            data.weight = 50
+            data.sets = [{reps: 10, weight: 50, id: newId()},
+                {reps: 10, weight: 50, id: newId()}, {reps: 10, weight: 50, id: newId()}]
             data.db_id = newId();
             exercises.push(data);
             if(idx === resultArray.length-1) {
