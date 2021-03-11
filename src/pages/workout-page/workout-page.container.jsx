@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { Route, Switch } from 'react-router-dom';
 
 import { createCurrentWorkout, setCurrentWorkout } from '../../redux/workout/workout.actions';
 import { selectWorkoutExercises } from '../../redux/workout/workout.selectors';
 import { selectCurrentUserId, selectCurrentWorkout } from '../../redux/user/user.selectors';
 import WorkoutPage from './workout-page';
+import ExercisePageContainer from '../exercise-page/exercise-page-container';
 
 const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUserId,
-    setCurrentWorkout, currentWorkout, ...otherProps}) => {
+    setCurrentWorkout, currentWorkout, match, ...otherProps}) => {
     const { exercises } = otherProps;
     const [muscles, setMusclesArr] = useState([]);
     const [primaryMuscles, setPrimaryMuscles] = useState({});
@@ -23,9 +25,6 @@ const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUser
             if(currentWorkout.id && currentWorkout.exercises.length) setCurrentWorkout(currentWorkout)
             else createCurrentWorkout(currentUserId)
         }
-        return () => {
-            console.log('UNMOUNT');
-        };
         // eslint-disable-next-line
     }, [currentUserId]);
 
@@ -47,7 +46,13 @@ const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUser
     }, [primaryMuscles, muscles]);
 
 
-    return <WrappedComponent primaryMuscles={primaryMuscles} musclesImages={musclesImages} muscles={muscles} {...otherProps} />
+    return (
+        <Switch>
+            <Route exact={true} path={`${match.path}`} render={() => 
+            <WrappedComponent primaryMuscles={primaryMuscles} musclesImages={musclesImages} muscles={muscles} {...otherProps} />} />
+            <Route exact={true} path={`${match.path}/exercise/:exerciseId`} component={ExercisePageContainer} />
+        </Switch>
+    )
 }
 
 const mapStateToProps = createStructuredSelector({
