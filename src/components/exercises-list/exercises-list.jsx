@@ -1,6 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
 
 import ExerciseListItem from '../exercises-list-item/exercise-list-item';
@@ -8,18 +6,15 @@ import ExerciseWorkload from '../exercises-list-item/exercise-workload';
 import SwapDeleteIcons from '../exercises-list-item/swap-delete-icons';
 
 import { exerciseCategory }  from '../../static/exercise-category';
-import { selectWorkout } from '../../redux/workout/workout.selectors';
-import { selectCurrentUserId } from '../../redux/user/user.selectors';
-import { moveExercise } from '../../redux/workout/workout.actions';
 
 import './exercises-list.css';
 
 const ExercisesList = (props) => {
-    const { exercises, muscles, AddExercise, moveExercise, workout, userId } = props;
+    const { exercises, muscles, AddExercise, moveExercise, workout, userId, history } = props;
     const SortableExercise = SortableElement(({exercise, idx, muscleImage, ...otherProps}) => 
         <ExerciseListItem {...otherProps} idx={idx} ExerciseWorkload={ExerciseWorkload}
-            SwapDeleteIcons={SwapDeleteIcons} exercise={exercise}
-            muscleImage={muscleImage} key={exercise.id} />);
+            SwapDeleteIcons={SwapDeleteIcons} exercise={exercise} history={history}
+            muscleImage={muscleImage} key={exercise.db_id} />);
     const SortableList = SortableContainer(({ exercises }) => (
       <div className="exercises-list">
                 {AddExercise ? <AddExercise /> : <></>}
@@ -33,7 +28,7 @@ const ExercisesList = (props) => {
                             muscleImage.id = m.id;
                         }
                     });
-                    return <SortableExercise key={idx} index={idx} exercise={exercise} idx={idx} muscleImage={muscleImage} />
+                    return <SortableExercise key={exercise.db_id} index={idx} exercise={exercise} idx={idx} muscleImage={muscleImage} />
                 })}
         </div>
     ));
@@ -42,13 +37,4 @@ const ExercisesList = (props) => {
     )
 };
 
-const mapStateToProps = createStructuredSelector({
-    workout: selectWorkout,
-    userId: selectCurrentUserId
-})
-
-const mapDispatchToProps = dispatch => ({
-    moveExercise: (oldIndex, newIndex, workout, userId) => dispatch(moveExercise(oldIndex, newIndex, workout, userId, dispatch)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(ExercisesList);
+export default ExercisesList;

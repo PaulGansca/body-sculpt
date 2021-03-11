@@ -9,7 +9,7 @@ const User = ({match}) => {
     return (
         <Switch>
           <Route exact={true} path={`${match.path}/profile-setup`} component={ProfileSetupPageContainer} />
-          <Route exact={true} path={`${match.path}/workout/:id`} component={WorkoutPageContainer} />
+          <Route path={`${match.path}/workout/:workoutId`} component={WorkoutPageContainer} />
           <Route exact={true} path={`${match.path}/workouts-logged/`} component={() => <h1>Workout Logs Page</h1>} />
           <Route exact={true} path={`${match.path}/profile`} component={() => <h1>Profile Page</h1>} />
         </Switch>

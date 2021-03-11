@@ -17,6 +17,7 @@ export const generateWorkout = (userId, updateCurrentWorkout, dispatch) => {
             data.sets = 4
             data.reps = 10
             data.weight = 50
+            data.db_id = newId();
             exercises.push(data);
             if(idx === resultArray.length-1) {
                 const currentWorkout = {exercises, date: new Date(), id: newId()}

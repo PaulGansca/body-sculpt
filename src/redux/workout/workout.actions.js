@@ -6,6 +6,8 @@ import { generateWorkout } from '../../workout-creation/create-workout';
 import { updateCurrentWorkout } from '../../firebase/crud-user';
 import { getExerciseInfo } from '../../api/wger';
 
+import newId from '../../utils/id-generator';
+
 export const setCurrentWorkout = (currentWorkout) => dispatch => {
     dispatch({
         type: WorkoutActionTypes.SET_CURRENT_WORKOUT,
@@ -31,6 +33,7 @@ export const addExercise = (id, workout, userId) => async dispatch => {
         exercise.sets = 4
         exercise.reps = 10
         exercise.weight = 50
+        exercise.db_id = newId()
         const newWorkout = {...workout, exercises: [...workout.exercises, exercise]}
         await updateCurrentWorkout(userId, newWorkout)
         dispatch({
@@ -79,6 +82,7 @@ export const swapExercise = (exerciseIdx, exerciseId, workout, userId) => async 
         exercise.sets = 4
         exercise.reps = 10
         exercise.weight = 50
+        exercise.db_id = newId()
         workout.exercises[exerciseIdx] = exercise;
         const newWorkout = { ...workout };
         await updateCurrentWorkout(userId, newWorkout)
