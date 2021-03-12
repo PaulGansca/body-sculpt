@@ -8,9 +8,10 @@ import CustomButton from '../antd/custom-button/custom-button';
 
 import newId from '../../utils/id-generator';
 
+import './exercise-workload.css'
+
 const ExerciseWorkload = ({updateExerciseWorkload, exercise, workout, currentUserId}) => {
     const { sets } = exercise;
-    console.log(sets)
     const getExerciseIdx = workout.exercises.findIndex(e => e.db_id === exercise.db_id);
     const handleChange = (value, setId, field) => {
         const set = exercise.sets.find(s => s.id === setId)
