@@ -51,7 +51,8 @@ const ExerciseWorkload = ({updateExerciseWorkload, exercise, workout,
                     </div>)}
                 <CustomButton style={{margin: 15}} shape={"round"} icon={<PlusOutlined />}
                     onClick={() => addSet()}>Add Working Set</CustomButton>
-                <ExertionRating />
+                <ExertionRating rpe={exercise.rpe} updateExercise={updateExerciseWorkload}
+                 workout={workout} currentUserId={currentUserId} exerciseIdx={getExerciseIdx} />
                 <Divider><SettingOutlined /></Divider>
                 <SwapExercise userId={currentUserId} workout={workout} btnText={"Replace Exercise"}
                  isLoading={isLoading} exercise={exercise} exerciseIdx={getExerciseIdx} />

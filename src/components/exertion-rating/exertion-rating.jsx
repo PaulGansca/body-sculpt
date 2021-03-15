@@ -5,11 +5,12 @@ import ExertionSlider from './exertion-slider';
 import CustomCollapse from '../antd/custom-collapse/custom-collapse';
 import { marks } from './marks';
 
-const ExertionRating = ({rpe}) => {
+const ExertionRating = ({updateExercise, workout, currentUserId, rpe, exerciseIdx}) => {
     const [exertionLevel, setExertionLevel] = useState(rpe ? marks[rpe] : marks[3]);
 
     const handleChange = (value, label) => {
-        console.log(value);
+        workout.exercises[exerciseIdx].rpe = value; 
+        updateExercise(workout, currentUserId);
         setExertionLevel(label);
     }
     const panels = [{
@@ -17,7 +18,7 @@ const ExertionRating = ({rpe}) => {
                 <span>How difficult were those sets and reps?</span>
                 <h4 style={{...exertionLevel.style, marginTop: 5}}>{exertionLevel.label}</h4>
                 {exertionLevel.info}
-                <ExertionSlider handleChange={handleChange} /></>, 
+                <ExertionSlider rpe={rpe ? rpe : 3} handleChange={handleChange} /></>, 
         props: {header: <ExertionLabel />, key: "1"}
     }];
 
