@@ -24,7 +24,7 @@ const AddExercise = ({addExercise, isLoading, workout, userId}) => {
                 onCancel={() => setIsModalVisible(false)} confirmLoading={isLoading}>
                 <p>Add an exercise to your workout.</p>
                 <p>BodySculpt will automatically determine workload.</p>
-                <SearchExercises isModalVisible={isModalVisible} setSelectedExerciseId={setSelectedExerciseId} />
+                <SearchExercises setSelectedExerciseId={setSelectedExerciseId} />
             </CustomModal>
         </>
     )

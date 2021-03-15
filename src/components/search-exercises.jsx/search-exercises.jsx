@@ -1,41 +1,35 @@
 import React, { useState } from 'react';
 import { Input } from 'antd';
 
-import CustomAutoComplete from '../antd/custom-inputs/custom-autocomplete';
+import CustomTable from '../antd/custom-table/custom-table';
 
-import { searchExercises } from '../../api/wger';
+import { searchExercises, getExerciseInfo } from '../../api/wger';
 
 import './search-exercises.css';
 
+const columns = [
+    {
+      title: 'Exercise',
+      dataIndex: 'name',
+      render: (text) => <em style={{fontWeight: 'bold'}}>{text}</em>,
+    },
+];
 
 const SearchExercises = ({ setSelectedExerciseId  }) => {
-    const [options, setOptions] = useState([]);
+    const [searchResults, setSearchResults] = useState([]);
+    //const [exercisesByCategory, setExercisesByCategory] = useState([]);
+    const [expandedKeys, setExpandedKeys] = useState([]);
 
-    const renderTitle = (title, count) => (
-        <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-            }}
-        >
-            {title}
-            <span>
-                matches: {count}
-            </span>
-        </div>
-    );
-      
-    const renderItem = (title, id) => ({
-        value: title,
-        key: id,
-        label: (
-            <span
-            >
-            {title}
-            </span>
-        ),
-    });
+    const rowSelection = {
+        onChange: (selectedRowKeys, selectedRows) => setSelectedExerciseId(selectedRowKeys),
+        getCheckboxProps: (record) => ({
+          name: record.name,
+          record
+        }),
+      };
 
     const handleSearch = async (term) => {
+        setExpandedKeys([])
         if(term.length) {
             const searchResults = (await searchExercises(term)).suggestions;
             const exercisesByCategory = searchResults.reduce((exercisesByCategory, exercise) => {
@@ -46,26 +40,36 @@ const SearchExercises = ({ setSelectedExerciseId  }) => {
                 exercisesByCategory[key].push(exercise.data)
                 return exercisesByCategory
             }, {});
-            const options = Object.keys(exercisesByCategory).map(category => {
-                return {
-                    label: renderTitle(category, exercisesByCategory[category].length),
-                    options: exercisesByCategory[category].map(e => renderItem(e.name, e.id))
-                }
-            });
-            setOptions(options)
+            //setExercisesByCategory(exercisesByCategory)
+            setSearchResults(searchResults.map(s => s.data))
         }
     }
     
     return (
-        <CustomAutoComplete dropdownClassName="certain-category-search-dropdown"
-            dropdownMatchSelectWidth={315}
-            style={{width: 250}}
-            onSearch={handleSearch}
-            notFoundContent={"No exercise found"}
-            onSelect={(value, option) => setSelectedExerciseId(option.key)}
-            options={options}>
-                    <Input.Search size="large" placeholder="Search Exercises" />
-        </CustomAutoComplete>
+        <>
+            <Input.Search placeholder="Search Exercises" onChange={e => handleSearch(e.target.value)} />
+            <CustomTable
+                columns={columns}
+                rowKey={exercise => exercise.id}
+                rowSelection={{...rowSelection, type: 'radio'}}
+                dataSource={searchResults}
+                showHeader={false}
+                expandable={{
+                    onExpand: async (expanded, record) => {
+                        if(expanded) {
+                            const exercise = await getExerciseInfo(record.id);
+                            setSearchResults(prevResults => prevResults.map(r => (r.id === exercise.id ? Object.assign({...r, ...exercise}) : r)));
+                            setExpandedKeys(prevResults => [...prevResults, record.id]);
+                        } 
+                        else setExpandedKeys(prevResults => prevResults.filter(id => record.id !== id))
+                    },
+                    expandedRowKeys: expandedKeys,
+                    expandedRowRender: record => <p style={{ margin: 0 }}>{record.description ? 
+                        record.description.replace(/<\/?[^>]+(>|$)/g, "") : "No description available."}</p>,
+                }}
+                pagination={{defaultPageSize: 5}}
+            />
+        </>
     )
 };
 
