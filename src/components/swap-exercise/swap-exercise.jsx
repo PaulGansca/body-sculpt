@@ -20,7 +20,7 @@ const columns = [
 ];
 
 
-const SwapExercise = ({swapExercise, isLoading, workout, userId, exerciseIdx, exercise}) => {
+const SwapExercise = ({swapExercise, isLoading, workout, userId, exerciseIdx, exercise, btnText}) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedExerciseId, setSelectedExerciseId] = useState(0);
     const [allExercises, setAllExercises] = useState([]);
@@ -42,7 +42,8 @@ const SwapExercise = ({swapExercise, isLoading, workout, userId, exerciseIdx, ex
         <>
             <CustomTooltip title={"Replace with another exercise in the same category"}>
                     <CustomButton onClick={() => setIsModalVisible(true)}
-                     style={{marginBottom: 5}} size={"small"} shape={"round"} icon={<SwapOutlined />} />
+                     style={{marginBottom: 5}} size={"small"} shape={"round"} icon={<SwapOutlined />}>
+                    {btnText}</CustomButton>
             </CustomTooltip>
             <CustomModal visible={isModalVisible} onOk={() => {
                     swapExercise(exerciseIdx, selectedExerciseId, workout, userId); setIsModalVisible(false)

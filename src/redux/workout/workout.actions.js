@@ -80,7 +80,7 @@ export const swapExercise = (exerciseIdx, exerciseId, workout, userId) => async 
         // TO DO GENERATE WORKLOAD EX
         exercise.sets = [{reps: 10, weight: 50, id: newId()},
             {reps: 10, weight: 50, id: newId()}, {reps: 10, weight: 50, id: newId()}]
-        exercise.db_id = newId()
+        exercise.db_id = workout.exercises[exerciseIdx].db_id;
         workout.exercises[exerciseIdx] = exercise;
         const newWorkout = { ...workout };
         updateCurrentWorkout(userId, newWorkout)
