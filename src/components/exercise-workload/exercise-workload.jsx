@@ -37,7 +37,7 @@ const ExerciseWorkload = ({updateExerciseWorkload, exercise, workout,
     return (
         <>
         <Row className="exercise-workload">
-            <Col xs={{span: 20, offset: 2}} lg={{span: 18, offset: 3}}>
+            <Col xs={{span: 22, offset: 1}} md={{span: 20, offset: 2}} lg={{span: 18, offset: 3}}>
                 <Divider style={{marginTop: 0}}>{sets.length} WORKING SETS</Divider>
                 {sets.map((s) => 
                     <div key={s.id}>
@@ -49,10 +49,10 @@ const ExerciseWorkload = ({updateExerciseWorkload, exercise, workout,
                         <CustomButton style={{marginLeft: 10}} onClick={() => deleteSet(s.id)}
                             size={"small"} danger shape={"round"} icon={<DeleteOutlined />} />
                     </div>)}
-                <CustomButton style={{marginTop: 15}} shape={"round"} icon={<PlusOutlined />}
+                <CustomButton style={{margin: 15}} shape={"round"} icon={<PlusOutlined />}
                     onClick={() => addSet()}>Add Working Set</CustomButton>
-                <Divider><SettingOutlined /></Divider>
                 <ExertionRating />
+                <Divider><SettingOutlined /></Divider>
                 <SwapExercise userId={currentUserId} workout={workout} btnText={"Replace Exercise"}
                  isLoading={isLoading} exercise={exercise} exerciseIdx={getExerciseIdx} />
             </Col>
