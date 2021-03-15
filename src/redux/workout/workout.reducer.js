@@ -42,7 +42,7 @@ const workoutReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 isLoading: false,
-                exercises: action.payload
+                exercises: [...action.payload]
         }
         case WorkoutActionTypes.ADD_EXERCISE_FAIL:
             return {
@@ -59,7 +59,7 @@ const workoutReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 isLoading: false,
-                exercises: action.payload
+                exercises: [...action.payload]
         }
         case WorkoutActionTypes.DELETE_EXERCISE_FAIL:
             return {
@@ -76,7 +76,7 @@ const workoutReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 isLoading: false,
-                exercises: action.payload
+                exercises: [...action.payload]
         }
         case WorkoutActionTypes.SWAP_EXERCISE_FAIL:
             return {
@@ -87,7 +87,7 @@ const workoutReducer = (state = INITIAL_STATE, action) => {
         case WorkoutActionTypes.MOVE_EXERCISE_SUCCESS:
             return {
                 ...state,
-                exercises: action.payload
+                exercises: [...action.payload]
         }
         case WorkoutActionTypes.MOVE_EXERCISE_FAIL:
             return {
@@ -97,7 +97,7 @@ const workoutReducer = (state = INITIAL_STATE, action) => {
         case WorkoutActionTypes.UPDATE_EXERCISE_SUCCESS:
             return {
                 ...state,
-                exercises: action.payload
+                exercises: [...action.payload]
         }
         case WorkoutActionTypes.UPDATE_EXERCISE_FAIL:
             return {
