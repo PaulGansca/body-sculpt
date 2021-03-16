@@ -10,11 +10,22 @@ const INITIAL_STATE = {
 
 const workoutReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case WorkoutActionTypes.SET_CURRENT_WORKOUT:
+        case WorkoutActionTypes.SET_WORKOUT_START:
+            return {
+                ...state,
+                isLoading: true,
+        }
+        case WorkoutActionTypes.SET_WORKOUT_SUCCESS:
+            return {
+                ...state,
+                ...action.payload,
+                isLoading: false,
+        }
+        case WorkoutActionTypes.SET_WORKOUT_FAIL:
             return {
                 ...state,
                 isLoading: false,
-                ...action.payload
+                err: action.payload
         }
         case WorkoutActionTypes.CREATE_CURRENT_WORKOUT_START:
             return {

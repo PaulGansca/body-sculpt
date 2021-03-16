@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { Route, Switch } from 'react-router-dom';
 
-import { createCurrentWorkout, setCurrentWorkout } from '../../redux/workout/workout.actions';
+import { createCurrentWorkout, setWorkout } from '../../redux/workout/workout.actions';
 import { selectWorkoutExercises, selectIsLoading as selectIsWorkoutLoading } from '../../redux/workout/workout.selectors';
 import { selectCurrentUserId, selectCurrentWorkout, selectIsLoading } from '../../redux/user/user.selectors';
 import WorkoutPage from './workout-page';
@@ -12,7 +12,7 @@ import ExercisePageContainer from '../exercise-page/exercise-page-container';
 import CustomSpin from '../../components/antd/custom-spin/custom-spin';
 
 const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUserId,
-    setCurrentWorkout, currentWorkout, match, ...otherProps}) => {
+    setWorkout, currentWorkout, match, ...otherProps}) => {
     const { exercises } = otherProps;
     const [muscles, setMusclesArr] = useState([]);
     const [primaryMuscles, setPrimaryMuscles] = useState({});
@@ -23,7 +23,9 @@ const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUser
         fetch("https://wger.de/api/v2/muscle/").then(muscles => muscles.json()
             .then(muscles => setMusclesArr(muscles.results)));
         if(currentUserId) {
-            if(currentWorkout.id && currentWorkout.exercises.length) setCurrentWorkout(currentWorkout)
+            //TO DO use match to get workout id and set either current workout or workout from array
+            //console.log(match)
+            if(currentWorkout.id && currentWorkout.exercises.length) setWorkout(currentWorkout)
             else createCurrentWorkout(currentUserId)
         }
         // eslint-disable-next-line
@@ -67,7 +69,7 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = dispatch => ({
     createCurrentWorkout: userId => dispatch(createCurrentWorkout(userId, dispatch)),
-    setCurrentWorkout: currentWorkout => dispatch(setCurrentWorkout(currentWorkout, dispatch))
+    setWorkout: workout => dispatch(setWorkout(workout, dispatch))
 })
 
 const WorkoutPageContainer = compose(

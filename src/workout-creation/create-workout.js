@@ -1,5 +1,6 @@
 import { WorkoutActionTypes } from '../redux/workout/workout.types';
 import newId from '../utils/id-generator';
+import { createDbWorkout } from '../static/exercise-fields-stored';
 
 export const generateWorkout = (userId, updateCurrentWorkout, dispatch) => {
     const exercises = []
@@ -17,6 +18,7 @@ export const generateWorkout = (userId, updateCurrentWorkout, dispatch) => {
             data.sets = [{reps: 10, weight: 50, id: newId()},
                 {reps: 10, weight: 50, id: newId()}, {reps: 10, weight: 50, id: newId()}]
             data.db_id = newId();
+            data.isFetched = true;
             exercises.push(data);
             if(idx === resultArray.length-1) {
                 const currentWorkout = {exercises, date: new Date(), id: newId()}
@@ -24,7 +26,7 @@ export const generateWorkout = (userId, updateCurrentWorkout, dispatch) => {
                 type: WorkoutActionTypes.CREATE_CURRENT_WORKOUT_SUCCESS,
                 payload: currentWorkout
                 });
-                updateCurrentWorkout(userId, currentWorkout)
+                updateCurrentWorkout(userId, createDbWorkout(currentWorkout))
             }
         }).catch(err =>  dispatch({
             type: WorkoutActionTypes.CREATE_CURRENT_WORKOUT_FAIL,

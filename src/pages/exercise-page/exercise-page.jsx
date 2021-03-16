@@ -10,7 +10,7 @@ import './exercise-page.css'
 
 const ExercisePage = (props) => {
     const [activeKey, setActiveKey] = useState("workload");
-    const { exercise, workout, updateExerciseWorkload, currentUserId, isLoading } = props;
+    const { exercise, workout, updateExerciseWorkload, currentUserId, isLoading, history, match } = props;
     const tabOne = {content: <ExerciseWorkload workout={workout} currentUserId={currentUserId}
      updateExerciseWorkload={updateExerciseWorkload} exercise={exercise} isLoading={isLoading} />,
                     props: {key: "workload"}}
@@ -19,7 +19,8 @@ const ExercisePage = (props) => {
 
     return (
         <div className="exercise-page">
-            <h1 className="exercise-title">{activeKey === "info" ? <LeftOutlined onClick={() => setActiveKey("workload")} /> : <></>} 
+            <h1 className="exercise-title">{activeKey === "info" ? <LeftOutlined onClick={() => setActiveKey("workload")} /> 
+                : <LeftOutlined onClick={() => history.push(`/user/workout/${match.params.workoutId}`)} />} 
                 <span style={{margin: '0 20px'}}>{exercise.name}</span>
                 {activeKey === "workload" ? <InfoCircleOutlined onClick={() => setActiveKey("info")} /> : <></>}
             </h1>
