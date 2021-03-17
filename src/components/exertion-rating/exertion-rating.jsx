@@ -5,12 +5,12 @@ import ExertionSlider from './exertion-slider';
 import CustomCollapse from '../antd/custom-collapse/custom-collapse';
 import { marks } from './marks';
 
-const ExertionRating = ({updateExercise, workout, currentUserId, rpe, exerciseIdx}) => {
+const ExertionRating = ({updateExercise, exercise, rpe}) => {
     const [exertionLevel, setExertionLevel] = useState(rpe ? marks[rpe] : marks[3]);
 
     const handleChange = (value, label) => {
-        workout.exercises[exerciseIdx].rpe = value; 
-        updateExercise(workout, currentUserId);
+        exercise.rpe = value; 
+        updateExercise(exercise);
         setExertionLevel(label);
     }
     const panels = [{

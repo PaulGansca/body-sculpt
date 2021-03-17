@@ -5,3 +5,26 @@
     flex-flow: column;
     align-items: center;
 }
+
+.exercises-list .toggle-state-btn {
+    position: fixed;
+    bottom: 50px;
+}
+
+@media only screen and (max-width: 400px) {
+    .exercises-list .toggle-state-btn {
+        bottom: 15px;
+    }
+}
+
+.toggle-state-btn.finish-workout-btn {
+    color: #ff9912;
+    border-color: #ff9912;
+}
+
+.toggle-state-btn.finish-workout-btn:active, 
+.toggle-state-btn.finish-workout-btn:hover,
+.toggle-state-btn.finish-workout-btn:focus {
+    color: #ff6103;
+    border-color: #ff6103;
+}

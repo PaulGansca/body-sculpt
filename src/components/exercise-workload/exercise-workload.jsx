@@ -12,27 +12,23 @@ import newId from '../../utils/id-generator';
 
 import './exercise-workload.css'
 
-const ExerciseWorkload = ({updateExerciseWorkload, exercise, workout,
-     currentUserId, isLoading}) => {
+const ExerciseWorkload = ({updateExerciseWorkload, exercise, exercises, isLoading}) => {
     const { sets } = exercise;
-    const getExerciseIdx = workout.exercises.findIndex(e => e.db_id === exercise.db_id);
+    const getExerciseIdx = exercises.findIndex(e => e.db_id === exercise.db_id);
     const handleChange = (value, setId, field) => {
         const set = exercise.sets.find(s => s.id === setId)
         set[field] = value;
-        workout.exercises[getExerciseIdx] = exercise;
-        updateExerciseWorkload(workout, currentUserId);
+        updateExerciseWorkload(exercise);
     }
     const addSet = () => {
         const copySet = JSON.parse(JSON.stringify(sets[sets.length-1]));
         copySet.id = newId()
         exercise.sets.push(copySet);
-        workout.exercises[getExerciseIdx] = exercise;
-        updateExerciseWorkload(workout, currentUserId);
+        updateExerciseWorkload(exercise);
     }
     const deleteSet = (setId) => {
         exercise.sets = exercise.sets.filter(s => s.id !== setId)
-        workout.exercises[getExerciseIdx] = exercise;
-        updateExerciseWorkload(workout, currentUserId);
+        updateExerciseWorkload(exercise);
     }
     return (
         <>
@@ -51,11 +47,10 @@ const ExerciseWorkload = ({updateExerciseWorkload, exercise, workout,
                     </div>)}
                 <CustomButton style={{margin: 15}} shape={"round"} icon={<PlusOutlined />}
                     onClick={() => addSet()}>Add Working Set</CustomButton>
-                <ExertionRating rpe={exercise.rpe} updateExercise={updateExerciseWorkload}
-                 workout={workout} currentUserId={currentUserId} exerciseIdx={getExerciseIdx} />
+                <ExertionRating rpe={exercise.rpe} updateExercise={updateExerciseWorkload} exerciseIdx={getExerciseIdx} />
                 <Divider><SettingOutlined /></Divider>
-                <SwapExercise userId={currentUserId} workout={workout} btnText={"Replace Exercise"}
-                 isLoading={isLoading} exercise={exercise} exerciseIdx={getExerciseIdx} />
+                <SwapExercise btnText={"Replace Exercise"} isLoading={isLoading}
+                 exercise={exercise} exerciseIdx={getExerciseIdx} />
             </Col>
         </Row>
         </>

@@ -15,4 +15,24 @@ export const selectIsLoading = createSelector(
 export const selectError = createSelector(
     [selectWorkout],
     (workout) => workout.error
-)
+);
+
+export const selectDate = createSelector(
+    [selectWorkout],
+    (workout) => workout.date
+);
+
+export const selectId = createSelector(
+    [selectWorkout],
+    (workout) => workout.id
+);
+
+export const selectTimeElapsed = createSelector(
+    [selectWorkout],
+    (workout) => workout.timeElapsed
+);
+
+export const selectWorkoutState = createSelector(
+    [selectWorkout],
+    (workout) => workout.workoutState
+);

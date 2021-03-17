@@ -43,11 +43,31 @@ export const createCurrentWorkout = (userId) => dispatch => {
     generateWorkout(userId, updateCurrentWorkout, dispatch);
 };
 
-export const addExercise = (id, workout, userId) => async dispatch => {
+export const saveWorkout = (workout, userId) => async dispatch => {
+    dispatch({
+        type: WorkoutActionTypes.SAVE_WORKOUT_START,
+    });
+    try {
+        // TO DO
+        // will need to check whether saving current workout
+        // or saving to users array of workouts in which case new function needed
+        updateCurrentWorkout(userId, createDbWorkout(workout))
+        dispatch({
+            type: WorkoutActionTypes.SAVE_WORKOUT_SUCCESS,
+        });
+    } catch (err) {
+        alert("Error updating document: ", err);
+        dispatch({
+            type: WorkoutActionTypes.SAVE_WORKOUT_FAIL,
+            payload: err
+        });
+    }
+};
+
+export const addExercise = (id) => async dispatch => {
     dispatch({
         type: WorkoutActionTypes.ADD_EXERCISE_START,
     });
-
     try {
         const exercise = await getExerciseInfo(id);
         // TO DO GENERATE WORKLOAD EX
@@ -55,11 +75,9 @@ export const addExercise = (id, workout, userId) => async dispatch => {
              {reps: 10, weight: 50, id: newId()}, {reps: 10, weight: 50, id: newId()}]
         exercise.db_id = newId()
         exercise.isFetched = true;
-        const newWorkout = {...workout, exercises: [...workout.exercises, exercise]}
-        updateCurrentWorkout(userId, createDbWorkout(newWorkout))
         dispatch({
             type: WorkoutActionTypes.ADD_EXERCISE_SUCCESS,
-            payload: newWorkout.exercises
+            payload: exercise
         });
     } catch (err) {
         alert("Error updating document: ", err);
@@ -70,46 +88,27 @@ export const addExercise = (id, workout, userId) => async dispatch => {
     }
 };
 
-export const deleteExercise = (idx, workout, userId) => async dispatch => {
+export const deleteExercise = (idx) => async dispatch => {
     dispatch({
-        type: WorkoutActionTypes.DELETE_EXERCISE_START,
+        type: WorkoutActionTypes.DELETE_EXERCISE,
+        payload: idx
     });
-
-    try {
-        //delete element at idx
-        const newWorkout = {...workout, exercises: workout.exercises.filter((e, index) => index !== idx)}
-        updateCurrentWorkout(userId, createDbWorkout(newWorkout))
-        dispatch({
-            type: WorkoutActionTypes.DELETE_EXERCISE_SUCCESS,
-            payload: newWorkout.exercises
-        });
-    } catch (err) {
-        alert("Error updating document: ", err);
-        dispatch({
-            type: WorkoutActionTypes.DELETE_EXERCISE_FAIL,
-            payload: err
-        });
-    }
 };
 
-export const swapExercise = (exerciseIdx, exerciseId, workout, userId) => async dispatch => {
+export const swapExercise = (exerciseIdx, exerciseId, exerciseDbId) => async dispatch => {
     dispatch({
         type: WorkoutActionTypes.SWAP_EXERCISE_START,
     });
-
     try {
         const exercise = await getExerciseInfo(exerciseId);
         // TO DO GENERATE WORKLOAD EX
         exercise.sets = [{reps: 10, weight: 50, id: newId()},
             {reps: 10, weight: 50, id: newId()}, {reps: 10, weight: 50, id: newId()}]
-        exercise.db_id = workout.exercises[exerciseIdx].db_id;
+        exercise.db_id = exerciseDbId;
         exercise.isFetched = true;
-        workout.exercises[exerciseIdx] = exercise;
-        const newWorkout = { ...workout };
-        updateCurrentWorkout(userId, createDbWorkout(newWorkout))
         dispatch({
             type: WorkoutActionTypes.SWAP_EXERCISE_SUCCESS,
-            payload: newWorkout.exercises
+            payload: {exercise, exerciseIdx},
         });
     } catch (err) {
         alert("Error updating document: ", err);
@@ -120,36 +119,30 @@ export const swapExercise = (exerciseIdx, exerciseId, workout, userId) => async 
     }
 };
 
-export const moveExercise = (oldIndex, newIndex, workout, userId) => async dispatch => {
-    workout.exercises = arrayMove(workout.exercises, oldIndex, newIndex)
-    const newWorkout = { ...workout };
+export const moveExercise = (oldIndex, newIndex, exercises) => async dispatch => {
     dispatch({
-        type: WorkoutActionTypes.MOVE_EXERCISE_SUCCESS,
-        payload: newWorkout.exercises
+        type: WorkoutActionTypes.MOVE_EXERCISE,
+        payload: arrayMove(exercises, oldIndex, newIndex)
     });
-    try {
-        updateCurrentWorkout(userId, createDbWorkout(newWorkout))
-    } catch (err) {
-        alert("Error updating document: ", err);
-        dispatch({
-            type: WorkoutActionTypes.MOVE_EXERCISE_FAIL,
-            payload: err
-        });
-    }
 };
 
-export const updateExerciseWorkload = (workout, userId) => async dispatch => {
+export const updateExerciseWorkload = (exercise) => async dispatch => {
     dispatch({
-        type: WorkoutActionTypes.UPDATE_EXERCISE_SUCCESS,
-        payload: workout.exercises
+        type: WorkoutActionTypes.UPDATE_EXERCISE,
+        payload: exercise
     });
-    try {
-        updateCurrentWorkout(userId, createDbWorkout(workout))
-    } catch (err) {
-        alert("Error updating document: ", err);
-        dispatch({
-            type: WorkoutActionTypes.UPDATE_EXERCISE_FAIL,
-            payload: err
-        });
-    }
+};
+
+export const toggleWorkoutState = (state) => async dispatch => {
+    dispatch({
+        type: WorkoutActionTypes.TOGGLE_WORKOUT_STATE,
+        payload: state
+    });
+};
+
+export const updateTimeElapsed = (timeElapsed) => async dispatch => {
+    dispatch({
+        type: WorkoutActionTypes.UPDATE_TIME_ELAPSED,
+        payload: timeElapsed
+    });
 };

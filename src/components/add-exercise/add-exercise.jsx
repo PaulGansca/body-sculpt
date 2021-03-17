@@ -9,18 +9,18 @@ import CustomButton from '../antd/custom-button/custom-button';
 import SearchExercises from '../search-exercises.jsx/search-exercises';
 
 import { addExercise } from '../../redux/workout/workout.actions';
-import { selectIsLoading, selectWorkout } from '../../redux/workout/workout.selectors';
-import { selectCurrentUserId } from '../../redux/user/user.selectors';
+import { selectIsLoading, selectWorkoutState } from '../../redux/workout/workout.selectors';
 
 
-const AddExercise = ({addExercise, isLoading, workout, userId}) => {
+const AddExercise = ({addExercise, isLoading, workoutState, userId}) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedExerciseId, setSelectedExerciseId] = useState(0);
+    const marginRight = {marginRight: workoutState !== "not started" ? 15 : 0}
     return (
         <>
-            <CustomButton style={{marginRight: 130}} shape={"round"} icon={<PlusOutlined />}
+            <CustomButton style={{...marginRight}} shape={"round"} icon={<PlusOutlined />}
                 onClick={() => setIsModalVisible(true)}>Add Exercise</CustomButton>
-            <CustomModal visible={isModalVisible} onOk={() => {addExercise(selectedExerciseId, workout, userId); setIsModalVisible(false)}}
+            <CustomModal visible={isModalVisible} onOk={() => {addExercise(selectedExerciseId); setIsModalVisible(false)}}
                 onCancel={() => setIsModalVisible(false)} confirmLoading={isLoading}>
                 <p>Add an exercise to your workout.</p>
                 <p>BodySculpt will automatically determine workload.</p>
@@ -31,13 +31,12 @@ const AddExercise = ({addExercise, isLoading, workout, userId}) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-    workout: selectWorkout,
     isLoading: selectIsLoading,
-    userId: selectCurrentUserId
+    workoutState: selectWorkoutState
 })
 
 const mapDispatchToProps = dispatch => ({
-    addExercise: (exerciseId, workout, userId) => dispatch(addExercise(exerciseId, workout, userId, dispatch)),
+    addExercise: (exerciseId) => dispatch(addExercise(exerciseId, dispatch)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddExercise);

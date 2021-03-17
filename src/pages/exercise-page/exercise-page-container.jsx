@@ -5,8 +5,7 @@ import { createStructuredSelector } from 'reselect';
 import { withRouter } from 'react-router-dom';
 
 import { updateExerciseWorkload } from '../../redux/workout/workout.actions';
-import { selectWorkoutExercises, selectWorkout, selectIsLoading } from '../../redux/workout/workout.selectors';
-import { selectCurrentUserId } from '../../redux/user/user.selectors';
+import { selectWorkoutExercises, selectIsLoading, selectWorkoutState } from '../../redux/workout/workout.selectors';
 
 import ExercisePage from './exercise-page';
 
@@ -24,9 +23,8 @@ const exerciseEffects = (WrappedComponent) => (props) => {
 
 const mapStateToProps = createStructuredSelector({
     exercises: selectWorkoutExercises,
-    currentUserId: selectCurrentUserId,
-    workout: selectWorkout,
-    isLoading: selectIsLoading
+    isLoading: selectIsLoading,
+    workoutState: selectWorkoutState
 })
 
 const mapDispatchToProps = dispatch => ({

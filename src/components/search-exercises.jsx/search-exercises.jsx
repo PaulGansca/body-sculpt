@@ -32,14 +32,14 @@ const SearchExercises = ({ setSelectedExerciseId  }) => {
         setExpandedKeys([])
         if(term.length) {
             const searchResults = (await searchExercises(term)).suggestions;
-            const exercisesByCategory = searchResults.reduce((exercisesByCategory, exercise) => {
-                let key = exercise.data.category;
-                if (!exercisesByCategory[key]) {
-                    exercisesByCategory[key] = []
-                }
-                exercisesByCategory[key].push(exercise.data)
-                return exercisesByCategory
-            }, {});
+            // const exercisesByCategory = searchResults.reduce((exercisesByCategory, exercise) => {
+            //     let key = exercise.data.category;
+            //     if (!exercisesByCategory[key]) {
+            //         exercisesByCategory[key] = []
+            //     }
+            //     exercisesByCategory[key].push(exercise.data)
+            //     return exercisesByCategory
+            // }, {});
             //setExercisesByCategory(exercisesByCategory)
             setSearchResults(searchResults.map(s => s.data))
         }

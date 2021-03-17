@@ -47,7 +47,6 @@ const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUser
         })
         setMusclesImages(musclesImages)
     }, [primaryMuscles, muscles]);
-
     return (
         otherProps.isUserLoading || otherProps.isWorkoutLoading  ? 
             <CustomSpin size={"large"} />  :

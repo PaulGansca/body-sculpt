@@ -5,7 +5,9 @@ const INITIAL_STATE = {
     exercises: [],
     date: Date.now(),
     isLoading: true,
-    err: ""
+    err: "",
+    timeElapsed: "0:0",
+    workoutState: "not started",
 }
 
 const workoutReducer = (state = INITIAL_STATE, action) => {
@@ -53,7 +55,7 @@ const workoutReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 isLoading: false,
-                exercises: [...action.payload]
+                exercises: [...state.exercises, action.payload]
         }
         case WorkoutActionTypes.ADD_EXERCISE_FAIL:
             return {
@@ -61,22 +63,11 @@ const workoutReducer = (state = INITIAL_STATE, action) => {
                 isLoading: false,
                 err: action.payload
         }
-        case WorkoutActionTypes.DELETE_EXERCISE_START:
-            return {
-                ...state,
-                isLoading: true,
-        }
-        case WorkoutActionTypes.DELETE_EXERCISE_SUCCESS:
+        case WorkoutActionTypes.DELETE_EXERCISE:
             return {
                 ...state,
                 isLoading: false,
-                exercises: [...action.payload]
-        }
-        case WorkoutActionTypes.DELETE_EXERCISE_FAIL:
-            return {
-                ...state,
-                isLoading: false,
-                err: action.payload
+                exercises: state.exercises.filter((e, index) => index !== action.payload)
         }
         case WorkoutActionTypes.SWAP_EXERCISE_START:
             return {
@@ -87,7 +78,8 @@ const workoutReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 isLoading: false,
-                exercises: [...action.payload]
+                exercises: state.exercises.map((e, idx) =>
+                 (idx === action.payload.exerciseIdx ? {...action.payload.exercise} : e))
         }
         case WorkoutActionTypes.SWAP_EXERCISE_FAIL:
             return {
@@ -95,25 +87,34 @@ const workoutReducer = (state = INITIAL_STATE, action) => {
                 isLoading: false,
                 err: action.payload
         }
-        case WorkoutActionTypes.MOVE_EXERCISE_SUCCESS:
+        case WorkoutActionTypes.MOVE_EXERCISE:
             return {
                 ...state,
                 exercises: [...action.payload]
         }
-        case WorkoutActionTypes.MOVE_EXERCISE_FAIL:
+        case WorkoutActionTypes.UPDATE_EXERCISE:
             return {
                 ...state,
-                err: action.payload
+                exercises: state.exercises.map(e =>
+                (e.db_id === action.payload.db_id ? {...action.payload} : e))
         }
-        case WorkoutActionTypes.UPDATE_EXERCISE_SUCCESS:
+        case WorkoutActionTypes.TOGGLE_WORKOUT_STATE:
             return {
                 ...state,
-                exercises: [...action.payload]
+                workoutState: action.payload
         }
-        case WorkoutActionTypes.UPDATE_EXERCISE_FAIL:
+        case WorkoutActionTypes.UPDATE_TIME_ELAPSED:
             return {
                 ...state,
-                err: action.payload
+                timeElapsed: action.payload
+        }
+        case WorkoutActionTypes.SAVE_WORKOUT_START:
+            return {
+                ...state,
+        }
+        case WorkoutActionTypes.SAVE_WORKOUT_SUCCESS:
+            return {
+                ...state,
         }
 
         default:

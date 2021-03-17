@@ -20,7 +20,7 @@ const columns = [
 ];
 
 
-const SwapExercise = ({swapExercise, isLoading, workout, userId, exerciseIdx, exercise, btnText}) => {
+const SwapExercise = ({swapExercise, isLoading, exerciseIdx, exercise, btnText}) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedExerciseId, setSelectedExerciseId] = useState(0);
     const [allExercises, setAllExercises] = useState([]);
@@ -46,7 +46,7 @@ const SwapExercise = ({swapExercise, isLoading, workout, userId, exerciseIdx, ex
                     {btnText}</CustomButton>
             </CustomTooltip>
             <CustomModal visible={isModalVisible} onOk={() => {
-                    swapExercise(exerciseIdx, selectedExerciseId, workout, userId); setIsModalVisible(false)
+                    swapExercise(exerciseIdx, selectedExerciseId, exercise.db_id); setIsModalVisible(false)
                 }} onCancel={() => setIsModalVisible(false)} confirmLoading={isLoading}>
                 <p>Swap <em style={{fontWeight: 'bold'}}>{exercise.name}</em> with one of {allExercises.length} alternatives.</p>
                 <p>BodySculpt will automatically determine workload.</p>
@@ -70,7 +70,7 @@ const SwapExercise = ({swapExercise, isLoading, workout, userId, exerciseIdx, ex
 };
 
 const mapDispatchToProps = dispatch => ({
-    swapExercise: (exerciseIdx, exerciseId, workout, userId) => dispatch(swapExercise(exerciseIdx, exerciseId, workout, userId, dispatch)),
+    swapExercise: (exerciseIdx, exerciseId, exerciseDbId) => dispatch(swapExercise(exerciseIdx, exerciseId, exerciseDbId, dispatch)),
 })
 
 export default connect(null, mapDispatchToProps)(SwapExercise);
