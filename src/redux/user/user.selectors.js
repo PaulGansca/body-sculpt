@@ -26,3 +26,8 @@ export const selectCurrentUserId = createSelector(
     [selectCurrentUser],
     (currentUser) => currentUser.id
 );
+
+export const selectUserWeight = createSelector(
+    [selectCurrentUser],
+    (currentUser) => currentUser.weight
+);

@@ -1,12 +1,11 @@
 import React from 'react';
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
-import { PlayCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
 
 import ExerciseListItem from '../exercises-list-item/exercise-list-item';
 import ExerciseWorkload from '../exercises-list-item/exercise-workload';
 import SwapDeleteIcons from '../exercises-list-item/swap-delete-icons';
 import Timer from '../timer/timer';
-import CustomButton from '../antd/custom-button/custom-button';
+import FinishWorkoutModal from '../finish-workout-modal/finish-workout-modal';
 
 import { exerciseCategory }  from '../../static/exercise-category';
 
@@ -14,8 +13,8 @@ import './exercises-list.css';
 
 const ExercisesList = (props) => {
     const { exercises, muscles, AddExercise, moveExercise,
-         history, workoutState, toggleWorkoutState } = props;
-    const btnClass = workoutState === "not started" ? "" : "finish-workout-btn";
+         history, workoutState } = props;
+
     const SortableExercise = SortableElement(({exercise, idx, muscleImage, ...otherProps}) => 
         <ExerciseListItem {...otherProps} idx={idx} ExerciseWorkload={ExerciseWorkload}
             SwapDeleteIcons={SwapDeleteIcons} exercise={exercise} history={history}
@@ -38,11 +37,7 @@ const ExercisesList = (props) => {
                     });
                     return <SortableExercise key={exercise.db_id} index={idx} exercise={exercise} idx={idx} muscleImage={muscleImage} />
                 })}
-                <CustomButton className={`toggle-state-btn ${btnClass}`} shape={"round"} icon={workoutState === "not started" ? <PlayCircleOutlined /> : <CheckCircleOutlined />}
-                onClick={() => {
-                    let state = workoutState === "not started" || workoutState === "paused" ? "in progress" : "paused";
-                    toggleWorkoutState(state)
-                }}>{workoutState === "not started" ? "Start Workout" : "Finish Workout"}</CustomButton>
+                <FinishWorkoutModal />
         </div>
     ));
     return (
