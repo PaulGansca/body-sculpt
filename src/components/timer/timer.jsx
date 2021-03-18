@@ -14,7 +14,7 @@ const Timer = (props) => {
     const seconds =  parseInt(timeElapsed.substring(colonIdx+1));
     useEffect(()=>{
         let myInterval = setInterval(() => {
-                if(workoutState !== "paused") {
+                if(workoutState === "in progress") {
                     if (seconds < 59) {
                         updateTimeElapsed(`${minutes < 10 ? `0${minutes}` : minutes}:${seconds + 1 < 10 ?  `0${seconds + 1}` : seconds + 1}`)
                     }
