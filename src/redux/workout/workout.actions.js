@@ -71,8 +71,8 @@ export const addExercise = (id) => async dispatch => {
     try {
         const exercise = await getExerciseInfo(id);
         // TO DO GENERATE WORKLOAD EX
-        exercise.sets = [{reps: 10, weight: 50, id: newId()},
-             {reps: 10, weight: 50, id: newId()}, {reps: 10, weight: 50, id: newId()}]
+        exercise.sets = [{reps: 10, weight: 50, id: newId(), isLogged: false},
+             {reps: 10, weight: 50, id: newId(), isLogged: false}, {reps: 10, weight: 50, id: newId(), isLogged: false}]
         exercise.db_id = newId()
         exercise.isFetched = true;
         dispatch({
@@ -88,7 +88,7 @@ export const addExercise = (id) => async dispatch => {
     }
 };
 
-export const deleteExercise = (idx) => async dispatch => {
+export const deleteExercise = (idx) => dispatch => {
     dispatch({
         type: WorkoutActionTypes.DELETE_EXERCISE,
         payload: idx
@@ -102,8 +102,8 @@ export const swapExercise = (exerciseIdx, exerciseId, exerciseDbId) => async dis
     try {
         const exercise = await getExerciseInfo(exerciseId);
         // TO DO GENERATE WORKLOAD EX
-        exercise.sets = [{reps: 10, weight: 50, id: newId()},
-            {reps: 10, weight: 50, id: newId()}, {reps: 10, weight: 50, id: newId()}]
+        exercise.sets = [{reps: 10, weight: 50, id: newId(), isLogged: false},
+            {reps: 10, weight: 50, id: newId(), isLogged: false}, {reps: 10, weight: 50, id: newId(), isLogged: false}]
         exercise.db_id = exerciseDbId;
         exercise.isFetched = true;
         dispatch({
@@ -119,30 +119,44 @@ export const swapExercise = (exerciseIdx, exerciseId, exerciseDbId) => async dis
     }
 };
 
-export const moveExercise = (oldIndex, newIndex, exercises) => async dispatch => {
+export const moveExercise = (oldIndex, newIndex, exercises) => dispatch => {
     dispatch({
         type: WorkoutActionTypes.MOVE_EXERCISE,
         payload: arrayMove(exercises, oldIndex, newIndex)
     });
 };
 
-export const updateExerciseWorkload = (exercise) => async dispatch => {
+export const updateExerciseWorkload = (exercise) => dispatch => {
     dispatch({
         type: WorkoutActionTypes.UPDATE_EXERCISE,
         payload: exercise
     });
 };
 
-export const toggleWorkoutState = (state) => async dispatch => {
+export const toggleWorkoutState = (state) => dispatch => {
     dispatch({
         type: WorkoutActionTypes.TOGGLE_WORKOUT_STATE,
         payload: state
     });
 };
 
-export const updateTimeElapsed = (timeElapsed) => async dispatch => {
+export const updateTimeElapsed = (timeElapsed) => dispatch => {
     dispatch({
         type: WorkoutActionTypes.UPDATE_TIME_ELAPSED,
         payload: timeElapsed
+    });
+};
+
+export const logSet = (exercise) => dispatch => {
+    dispatch({
+        type: WorkoutActionTypes.LOG_SET,
+        payload: exercise
+    });
+};
+
+export const logSetWithSwapExercise = (exercises, exerciseIdx, swapIdx) => dispatch => {
+    dispatch({
+        type: WorkoutActionTypes.LOG_SET_WITH_SWAP,
+        payload: arrayMove(exercises, exerciseIdx, swapIdx)
     });
 };

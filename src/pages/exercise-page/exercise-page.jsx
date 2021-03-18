@@ -13,8 +13,9 @@ import './exercise-page.css'
 const ExercisePage = (props) => {
     const [activeKey, setActiveKey] = useState("workload");
     const { exercise, exercises, updateExerciseWorkload, isLoading, history, match, workoutState } = props;
+    
     const tabOne = {content: <ExerciseWorkload updateExerciseWorkload={updateExerciseWorkload}
-         exercise={exercise} isLoading={isLoading} exercises={exercises} />,
+         exercise={exercise} isLoading={isLoading} exercises={exercises} workoutState={workoutState} />,
                     props: {key: "workload"}}
     const tabTwo = {content: <ExerciseInfo {...exercise} />,
                     props: {key: "info"}}

@@ -28,7 +28,7 @@ const mapStateToProps = createStructuredSelector({
 })
 
 const mapDispatchToProps = dispatch => ({
-    updateExerciseWorkload: (workout, userId) => dispatch(updateExerciseWorkload(workout, userId, dispatch)),
+    updateExerciseWorkload: (exercise) => dispatch(updateExerciseWorkload(exercise, dispatch))
 })
 
 const ExercisePageContainer = compose(

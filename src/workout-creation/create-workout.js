@@ -15,8 +15,9 @@ export const generateWorkout = (userId, updateCurrentWorkout, dispatch) => {
     
     return exerciseFetch.then(resultArray => {
         resultArray.forEach((exercise, idx) => exercise.json().then(data => {
-            data.sets = [{reps: 10, weight: 50, id: newId()},
-                {reps: 10, weight: 50, id: newId()}, {reps: 10, weight: 50, id: newId()}]
+            data.sets = [{reps: 10, weight: 50, id: newId(), isLogged: false},
+                {reps: 10, weight: 50, id: newId(), isLogged: false},
+                {reps: 10, weight: 50, id: newId(), isLogged: false}]
             data.db_id = newId();
             data.isFetched = true;
             exercises.push(data);

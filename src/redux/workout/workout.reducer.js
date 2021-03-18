@@ -116,6 +116,18 @@ const workoutReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
         }
+        case WorkoutActionTypes.LOG_SET:
+            return {
+                ...state,
+                exercises: state.exercises.map(e =>
+                (e.db_id === action.payload.db_id ? {...action.payload} : e))
+        }
+        case WorkoutActionTypes.LOG_SET_WITH_SWAP:
+            return {
+                ...state,
+                exercises: [...action.payload]
+        }
+
 
         default:
             return state;
