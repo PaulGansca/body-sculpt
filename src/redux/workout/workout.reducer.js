@@ -127,6 +127,20 @@ const workoutReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 exercises: [...action.payload]
         }
+        case WorkoutActionTypes.COMPLETE_WORKOUT_START:
+            return {
+                ...state,
+        }
+        case WorkoutActionTypes.COMPLETE_WORKOUT_SUCCESS:
+            return {
+                ...INITIAL_STATE,
+                isLoading: false
+        }
+        case WorkoutActionTypes.COMPLETE_WORKOUT_FAIL:
+            return {
+                ...state,
+                err: action.payload
+        }
 
 
         default:

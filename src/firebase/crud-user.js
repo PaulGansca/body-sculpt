@@ -1,4 +1,5 @@
 import { firestore } from './firebase.utils';
+import firebase from 'firebase/app';
 
 //check if email is already in use in app
 //prevents sign-up form submission if in use
@@ -63,5 +64,17 @@ export const updateCurrentWorkout = async(userId, currentWorkout) => {
 
     return userRef.update({
         currentWorkout
+    });
+}
+
+//complete workout
+export const completeWorkout = async(userId, workout) => {
+    if (!userId) return;
+
+    const userRef = firestore.doc(`users/${userId}`);
+
+    return userRef.update({
+        workouts: firebase.firestore.FieldValue.arrayUnion(workout),
+        currentWorkout: {}
     });
 }

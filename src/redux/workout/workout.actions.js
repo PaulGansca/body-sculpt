@@ -3,7 +3,7 @@ import arrayMove from "array-move";
 import { WorkoutActionTypes } from './workout.types';
 
 import { generateWorkout } from '../../workout-creation/create-workout';
-import { updateCurrentWorkout } from '../../firebase/crud-user';
+import { updateCurrentWorkout, completeWorkout as firebaseCompleteWorkout } from '../../firebase/crud-user';
 import { getExerciseInfo } from '../../api/wger';
 import { createDbWorkout } from '../../static/exercise-fields-stored';
 
@@ -159,4 +159,23 @@ export const logSetWithSwapExercise = (exercises, exerciseIdx, swapIdx) => dispa
         type: WorkoutActionTypes.LOG_SET_WITH_SWAP,
         payload: arrayMove(exercises, exerciseIdx, swapIdx)
     });
+};
+
+export const completeWorkout = (workout, currentUserId, history) => async dispatch => {
+    dispatch({
+        type: WorkoutActionTypes.COMPLETE_WORKOUT_START,
+    });
+    try {
+        firebaseCompleteWorkout(currentUserId, createDbWorkout(workout))
+        history.push('/user/profile')
+        dispatch({
+            type: WorkoutActionTypes.COMPLETE_WORKOUT_SUCCESS,
+        });
+    } catch (err) {
+        alert("Error updating document: ", err);
+        dispatch({
+            type: WorkoutActionTypes.COMPLETE_WORKOUT_FAIL,
+            payload: err
+        });
+    }
 };
