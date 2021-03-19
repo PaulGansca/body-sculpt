@@ -4,14 +4,14 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { Route, Switch } from 'react-router-dom';
 
-import { createCurrentWorkout, setWorkout } from '../../redux/workout/workout.actions';
-import { selectWorkoutExercises, selectIsLoading as selectIsWorkoutLoading } from '../../redux/workout/workout.selectors';
+import { createCurrentWorkout, setWorkout, fetchWorkout } from '../../redux/workout/workout.actions';
+import { selectWorkoutExercises, selectIsLoading as selectIsWorkoutLoading, selectError } from '../../redux/workout/workout.selectors';
 import { selectCurrentUserId, selectCurrentWorkout, selectIsLoading } from '../../redux/user/user.selectors';
 import WorkoutPage from './workout-page';
 import ExercisePageContainer from '../exercise-page/exercise-page-container';
 import CustomSpin from '../../components/antd/custom-spin/custom-spin';
 
-const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUserId,
+const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUserId, fetchWorkout, error,
     setWorkout, currentWorkout, match, ...otherProps}) => {
     const { exercises } = otherProps;
     const [muscles, setMusclesArr] = useState([]);
@@ -23,13 +23,20 @@ const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUser
         fetch("https://wger.de/api/v2/muscle/").then(muscles => muscles.json()
             .then(muscles => setMusclesArr(muscles.results)));
         if(currentUserId) {
-            //TO DO use match to get workout id and set either current workout or workout from array
-            //console.log(match)
-            if(currentWorkout.exercises.length) setWorkout(currentWorkout)
-            else createCurrentWorkout(currentUserId)
+            console.log(match)
+            if(match.params.workoutId === "new") {
+                if(currentWorkout.exercises.length) setWorkout(currentWorkout)
+                else createCurrentWorkout(currentUserId)
+            } else {
+                fetchWorkout(currentUserId, match.params.workoutId)
+            }
         }
         // eslint-disable-next-line
     }, [currentUserId]);
+
+    useEffect(() => {
+        if(error === "Permission Denied") alert(error)
+    }, [error])
 
     useEffect(() => {
         const primaryMuscles = {}
@@ -63,12 +70,14 @@ const mapStateToProps = createStructuredSelector({
     currentUserId: selectCurrentUserId,
     currentWorkout: selectCurrentWorkout,
     isUserLoading: selectIsLoading,
-    isWorkoutLoading: selectIsWorkoutLoading
+    isWorkoutLoading: selectIsWorkoutLoading,
+    error: selectError,
 })
 
 const mapDispatchToProps = dispatch => ({
     createCurrentWorkout: userId => dispatch(createCurrentWorkout(userId, dispatch)),
-    setWorkout: workout => dispatch(setWorkout(workout, dispatch))
+    setWorkout: workout => dispatch(setWorkout(workout, dispatch)),
+    fetchWorkout: (userId, workoutId) => dispatch(fetchWorkout(userId, workoutId, dispatch))
 })
 
 const WorkoutPageContainer = compose(

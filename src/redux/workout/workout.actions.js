@@ -3,7 +3,7 @@ import arrayMove from "array-move";
 import { WorkoutActionTypes } from './workout.types';
 
 import { generateWorkout } from '../../workout-creation/create-workout';
-import { updateCurrentWorkout, completeWorkout as firebaseCompleteWorkout } from '../../firebase/crud-user';
+import { updateCurrentWorkout, completeWorkout as firebaseCompleteWorkout, getWorkout, updateCompledWorkout } from '../../firebase/crud-user';
 import { getExerciseInfo } from '../../api/wger';
 import { createDbWorkout } from '../../static/exercise-fields-stored';
 
@@ -43,15 +43,16 @@ export const createCurrentWorkout = (userId) => dispatch => {
     generateWorkout(userId, updateCurrentWorkout, dispatch);
 };
 
-export const saveWorkout = (workout, userId) => async dispatch => {
+export const saveWorkout = (workout, userId, workoutId) => async dispatch => {
     dispatch({
         type: WorkoutActionTypes.SAVE_WORKOUT_START,
     });
     try {
-        // TO DO
-        // will need to check whether saving current workout
-        // or saving to users array of workouts in which case new function needed
-        updateCurrentWorkout(userId, createDbWorkout(workout))
+        if(!workoutId) updateCurrentWorkout(userId, createDbWorkout(workout))
+        else {
+            workout.userId = userId
+            updateCompledWorkout(workoutId, createDbWorkout(workout))
+        }
         dispatch({
             type: WorkoutActionTypes.SAVE_WORKOUT_SUCCESS,
         });
@@ -175,6 +176,43 @@ export const completeWorkout = (workout, currentUserId, history) => async dispat
         alert("Error updating document: ", err);
         dispatch({
             type: WorkoutActionTypes.COMPLETE_WORKOUT_FAIL,
+            payload: err
+        });
+    }
+};
+
+export const fetchWorkout = (userId, workoutId) => async dispatch => {
+    dispatch({
+        type: WorkoutActionTypes.FETCH_WORKOUT_START,
+    });
+    try {
+        //fetch firebase workouts per user id
+        const workout = (await getWorkout(userId, workoutId)).data();
+        if(workout !== "Permission Denied") {
+            workout.id = workoutId
+            workout.exercises = workout.exercises.map(async e => {
+                if(!e.isFetched) {
+                    const exercise = await getExerciseInfo(e.id);
+                    return {...exercise, ...e, isFetched: true}
+                } else return e;
+            })
+            Promise.all(workout.exercises).then(r => {
+                workout.exercises = r
+                dispatch({
+                    type: WorkoutActionTypes.FETCH_WORKOUT_SUCCESS,
+                    payload: workout
+                });
+            })
+        } else {
+            dispatch({
+                type: WorkoutActionTypes.PERMISSION_DENIED,
+                payload: "Permission Denied"
+            });
+        }
+    } catch (err) {
+        alert("Error updating document: ", err);
+        dispatch({
+            type: WorkoutActionTypes.FETCH_WORKOUT_FAIL,
             payload: err
         });
     }

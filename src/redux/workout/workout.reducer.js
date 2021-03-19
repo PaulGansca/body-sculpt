@@ -5,6 +5,7 @@ const INITIAL_STATE = {
     date: Date.now(),
     isLoading: true,
     err: "",
+    id: "",
     timeElapsed: "0:0",
     workoutState: "not started",
 }
@@ -37,6 +38,7 @@ const workoutReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 isLoading: false,
+                id: "",
                 ...action.payload
         }
         case WorkoutActionTypes.CREATE_CURRENT_WORKOUT_FAIL:
@@ -140,7 +142,29 @@ const workoutReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 err: action.payload
         }
-
+        case WorkoutActionTypes.FETCH_WORKOUT_START:
+            return {
+                ...state,
+                isLoading: true,
+        }
+        case WorkoutActionTypes.FETCH_WORKOUT_SUCCESS:
+            return {
+                ...state,
+                ...action.payload,
+                isLoading: false,
+        }
+        case WorkoutActionTypes.FETCH_WORKOUT_FAIL:
+            return {
+                ...state,
+                isLoading: false,
+                err: action.payload
+        }
+        case WorkoutActionTypes.PERMISSION_DENIED:
+            return {
+                ...state,
+                isLoading: false,
+                err: action.payload
+        }
 
         default:
             return state;

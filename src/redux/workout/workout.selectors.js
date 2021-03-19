@@ -31,3 +31,8 @@ export const selectWorkoutState = createSelector(
     [selectWorkout],
     (workout) => workout.workoutState
 );
+
+export const selectId = createSelector(
+    [selectWorkout],
+    (workout) => workout.id
+);

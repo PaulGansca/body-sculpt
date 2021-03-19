@@ -5,7 +5,7 @@ import { createStructuredSelector } from 'reselect';
 
 import { saveWorkout } from '../../redux/workout/workout.actions';
 import { selectWorkoutExercises, selectIsLoading as selectIsWorkoutLoading, selectWorkoutState,
-     selectDate, selectTimeElapsed } from '../../redux/workout/workout.selectors';
+     selectDate, selectTimeElapsed, selectId } from '../../redux/workout/workout.selectors';
 import { selectCurrentUserId, selectCurrentWorkout } from '../../redux/user/user.selectors';
 
 const SaveEffects = ({currentUserId, workoutState, saveWorkout, exercises,
@@ -17,7 +17,7 @@ const SaveEffects = ({currentUserId, workoutState, saveWorkout, exercises,
             workoutState,
             timeElapsed
         }
-        saveWorkout(workout, currentUserId)
+        saveWorkout(workout, currentUserId, workoutId)
         // eslint-disable-next-line
     }, [exercises, workoutState])
 
@@ -33,11 +33,12 @@ const mapStateToProps = createStructuredSelector({
     isWorkoutLoading: selectIsWorkoutLoading,
     workoutState: selectWorkoutState,
     date: selectDate,
+    workoutId: selectId,
     timeElapsed: selectTimeElapsed
 })
 
 const mapDispatchToProps = dispatch => ({
-    saveWorkout: (workout, userId) => dispatch(saveWorkout(workout, userId, dispatch))
+    saveWorkout: (workout, userId, workoutId) => dispatch(saveWorkout(workout, userId, workoutId, dispatch))
 })
 
 const SaveWorkout = compose(

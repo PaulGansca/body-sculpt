@@ -65,6 +65,17 @@ export const updateCurrentWorkout = async(userId, currentWorkout) => {
     });
 }
 
+//update completed workout
+export const updateCompledWorkout = async(workoutId, completedWorkout) => {
+    if (!workoutId) return;
+
+    const workoutRef = firestore.doc(`workouts/${workoutId}`)
+
+    return workoutRef.update({
+        ...completedWorkout
+    });
+}
+
 //complete workout
 export const completeWorkout = async(userId, workout) => {
     if (!userId) return;
@@ -81,4 +92,12 @@ export const getUserWorkouts = (userId) => {
     const workouts = workoutsRef.where('userId', '==', userId).get();
 
     return workouts;
+}
+
+export const getWorkout = async (userId, workoutId) => {
+    const workoutRef = firestore.doc(`workouts/${workoutId}`);
+    const workout = await workoutRef.get();
+    if(workout.data().userId === userId) {
+        return workout;
+    } else return "Permission Denied"
 }

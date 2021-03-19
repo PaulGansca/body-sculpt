@@ -46,7 +46,7 @@ const FinishWorkoutModal = ({workoutState, toggleWorkoutState, weight, exercises
     const btnClass = workoutState === "not started" ? "" : "finish-workout-btn";
     return (
         <>
-            {workoutState !== "completed" ? <CustomButton className={`toggle-state-btn ${btnClass}`} shape={"round"} icon={workoutState === "not started" ? <PlayCircleOutlined /> : <CheckCircleOutlined />}
+            {workoutState !== "complete" ? <CustomButton className={`toggle-state-btn ${btnClass}`} shape={"round"} icon={workoutState === "not started" ? <PlayCircleOutlined /> : <CheckCircleOutlined />}
                 onClick={() => {
                     let state = workoutState === "not started" || workoutState === "paused" ? "in progress" : "paused";
                     toggleWorkoutState(state)
