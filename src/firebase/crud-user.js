@@ -75,3 +75,10 @@ export const completeWorkout = async(userId, workout) => {
     return Promise.all([workoutsRef.add(workout),
     userRef.update({currentWorkout: {exercises: []}})]);
 }
+
+export const getUserWorkouts = (userId) => {
+    const workoutsRef = firestore.collection(`workouts`);
+    const workouts = workoutsRef.where('userId', '==', userId).get();
+
+    return workouts;
+}
