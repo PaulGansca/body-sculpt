@@ -30,8 +30,7 @@ export const createUserProfileDocument = async(userAuth, additionalData) => {
                 email,
                 createdAt,
                 goalSet: false,
-                workouts: [],
-                currentWorkout: {},
+                currentWorkout: {exercises: []},
                 ...additionalData
             });
         } catch (err) {

@@ -31,8 +31,3 @@ export const selectUserWeight = createSelector(
     [selectCurrentUser],
     (currentUser) => currentUser.weight
 );
-
-export const selectUserWorkouts = createSelector(
-    [selectCurrentUser],
-    (currentUser) => currentUser.workouts
-);

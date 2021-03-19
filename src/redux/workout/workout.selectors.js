@@ -22,11 +22,6 @@ export const selectDate = createSelector(
     (workout) => workout.date
 );
 
-export const selectId = createSelector(
-    [selectWorkout],
-    (workout) => workout.id
-);
-
 export const selectTimeElapsed = createSelector(
     [selectWorkout],
     (workout) => workout.timeElapsed
