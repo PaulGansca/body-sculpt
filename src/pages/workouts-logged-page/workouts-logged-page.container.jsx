@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { withRouter } from 'react-router-dom';
 
 import { fetchWorkouts } from '../../redux/workouts/workouts.actions';
 import { selectCurrentUserId } from '../../redux/user/user.selectors';
@@ -10,7 +11,7 @@ import WorkoutsLoggedPage from './workouts-logged-page';
 import CustomSpin from '../../components/antd/custom-spin/custom-spin';
 
 const workoutEffects = (WrappedComponent) => ({fetchWorkouts, currentUserId, isLoading,
-    match, ...otherProps}) => {
+    ...otherProps}) => {
 
     useEffect(() => {
         if(currentUserId) {
@@ -38,6 +39,7 @@ const mapDispatchToProps = dispatch => ({
 
 const WorkoutsLoggedPageContainer = compose(
     connect(mapStateToProps, mapDispatchToProps),
+    withRouter,
     workoutEffects
 )(WorkoutsLoggedPage);
 

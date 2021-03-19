@@ -1,0 +1,27 @@
+.workouts-logged-calendar .cal-time-elapsed {
+    font-size: 10px;
+    position: absolute;
+    left: -2px;
+    bottom: -15px;
+    color: green
+}
+
+.workouts-logged-calendar .ant-picker-cell-in-view.ant-picker-cell-selected
+ .ant-picker-cell-inner .cal-time-elapsed,
+.workouts-logged-calendar .ant-picker-cell-today .cal-time-elapsed  {
+    bottom: -20px;
+    color: green;
+}
+
+.workouts-logged-calendar .ant-picker-calendar-date-value.workout-logged {
+    color: green;
+}
+
+.workouts-logged-calendar .ant-picker-cell-selected .ant-picker-calendar-date-value.workout-logged {
+    color: #fff;
+}
+
+.workouts-logged-calendar .ant-picker-calendar-date-today 
+.ant-picker-calendar-date-value.workout-logged {
+    color: #fff;
+}
