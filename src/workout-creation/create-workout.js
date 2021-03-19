@@ -22,7 +22,7 @@ export const generateWorkout = (userId, updateCurrentWorkout, dispatch) => {
             data.isFetched = true;
             exercises.push(data);
             if(idx === resultArray.length-1) {
-                const currentWorkout = {exercises, date: new Date(), id: newId()}
+                const currentWorkout = {exercises, date: new Date()}
                 dispatch({
                 type: WorkoutActionTypes.CREATE_CURRENT_WORKOUT_SUCCESS,
                 payload: currentWorkout

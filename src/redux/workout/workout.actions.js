@@ -167,7 +167,7 @@ export const completeWorkout = (workout, currentUserId, history) => async dispat
     });
     try {
         firebaseCompleteWorkout(currentUserId, createDbWorkout(workout))
-        history.push('/user/profile')
+        history.push('/user/workouts-logged')
         dispatch({
             type: WorkoutActionTypes.COMPLETE_WORKOUT_SUCCESS,
         });

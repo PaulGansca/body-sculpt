@@ -1,7 +1,6 @@
 import { WorkoutActionTypes } from './workout.types';
 
 const INITIAL_STATE = {
-    id: "",
     exercises: [],
     date: Date.now(),
     isLoading: true,

@@ -11,7 +11,7 @@ import CustomButton from '../antd/custom-button/custom-button';
 import WorkoutSummary from '../workout-summary/workout-summary';
 
 import { toggleWorkoutState, completeWorkout } from '../../redux/workout/workout.actions';
-import { selectWorkoutState, selectWorkoutExercises, selectTimeElapsed, selectId } from '../../redux/workout/workout.selectors';
+import { selectWorkoutState, selectWorkoutExercises, selectTimeElapsed } from '../../redux/workout/workout.selectors';
 import { selectUserWeight, selectCurrentUserId } from '../../redux/user/user.selectors';
 
 
@@ -37,7 +37,8 @@ const FinishWorkoutModal = ({workoutState, toggleWorkoutState, weight, exercises
             date: new Date(),
             exercises: exercisesComplete,
             workoutState: 'complete',
-            timeElapsed
+            timeElapsed,
+            userId: currentUserId
         }
         completeWorkout(workout, currentUserId, history)
     }
@@ -65,7 +66,6 @@ const mapStateToProps = createStructuredSelector({
     timeElapsed: selectTimeElapsed,
     weight: selectUserWeight,
     exercises: selectWorkoutExercises,
-    workoutId: selectId,
     currentUserId: selectCurrentUserId,
 });
 

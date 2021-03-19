@@ -5,8 +5,7 @@ import { createStructuredSelector } from 'reselect';
 import { Route, Switch } from 'react-router-dom';
 
 import { createCurrentWorkout, setWorkout } from '../../redux/workout/workout.actions';
-import { selectWorkoutExercises, selectIsLoading as selectIsWorkoutLoading } from '../../redux/workout/workout.selectors';
-import { selectCurrentUserId, selectCurrentWorkout, selectIsLoading } from '../../redux/user/user.selectors';
+import { selectCurrentUserId, selectUserWorkouts, selectIsLoading } from '../../redux/user/user.selectors';
 import WorkoutPage from './workout-page';
 import ExercisePageContainer from '../exercise-page/exercise-page-container';
 import CustomSpin from '../../components/antd/custom-spin/custom-spin';
@@ -25,7 +24,7 @@ const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUser
         if(currentUserId) {
             //TO DO use match to get workout id and set either current workout or workout from array
             //console.log(match)
-            if(currentWorkout.exercises.length) setWorkout(currentWorkout)
+            if(currentWorkout.id && currentWorkout.exercises.length) setWorkout(currentWorkout)
             else createCurrentWorkout(currentUserId)
         }
         // eslint-disable-next-line
@@ -59,11 +58,9 @@ const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUser
 }
 
 const mapStateToProps = createStructuredSelector({
-    exercises: selectWorkoutExercises,
     currentUserId: selectCurrentUserId,
-    currentWorkout: selectCurrentWorkout,
     isUserLoading: selectIsLoading,
-    isWorkoutLoading: selectIsWorkoutLoading
+    workouts: selectUserWorkouts
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -71,9 +68,9 @@ const mapDispatchToProps = dispatch => ({
     setWorkout: workout => dispatch(setWorkout(workout, dispatch))
 })
 
-const WorkoutPageContainer = compose(
+const WorkoutsLoggedPageContainer = compose(
     connect(mapStateToProps, mapDispatchToProps),
     workoutEffects
 )(WorkoutPage);
 
-export default WorkoutPageContainer;
+export default WorkoutsLoggedPageContainer;
