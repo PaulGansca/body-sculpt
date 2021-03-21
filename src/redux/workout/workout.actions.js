@@ -217,3 +217,9 @@ export const fetchWorkout = (userId, workoutId) => async dispatch => {
         });
     }
 };
+
+export const resetState = () => dispatch => {
+    dispatch({
+        type: WorkoutActionTypes.RESET_WORKOUT_STATE,
+    });
+};

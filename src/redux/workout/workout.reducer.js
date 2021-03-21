@@ -165,6 +165,11 @@ const workoutReducer = (state = INITIAL_STATE, action) => {
                 isLoading: false,
                 err: action.payload
         }
+        case WorkoutActionTypes.RESET_WORKOUT_STATE:
+            return {
+                ...INITIAL_STATE,
+                isLoading: false
+        }
 
         default:
             return state;

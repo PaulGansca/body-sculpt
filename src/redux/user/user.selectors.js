@@ -31,3 +31,8 @@ export const selectUserWeight = createSelector(
     [selectCurrentUser],
     (currentUser) => currentUser.weight
 );
+
+export const selectTrainingFrequency = createSelector(
+    [selectCurrentUser],
+    (currentUser) => currentUser.trainingFrequency
+);

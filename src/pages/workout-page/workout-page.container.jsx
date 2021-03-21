@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { Route, Switch } from 'react-router-dom';
 
-import { createCurrentWorkout, setWorkout, fetchWorkout } from '../../redux/workout/workout.actions';
+import { createCurrentWorkout, setWorkout, fetchWorkout, resetState } from '../../redux/workout/workout.actions';
 import { selectWorkoutExercises, selectIsLoading as selectIsWorkoutLoading, selectError } from '../../redux/workout/workout.selectors';
 import { selectCurrentUserId, selectCurrentWorkout, selectIsLoading } from '../../redux/user/user.selectors';
 import WorkoutPage from './workout-page';
@@ -12,7 +12,7 @@ import ExercisePageContainer from '../exercise-page/exercise-page-container';
 import CustomSpin from '../../components/antd/custom-spin/custom-spin';
 
 const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUserId, fetchWorkout, error,
-    setWorkout, currentWorkout, match, ...otherProps}) => {
+    setWorkout, currentWorkout, match, resetState, ...otherProps}) => {
     const { exercises } = otherProps;
     const [muscles, setMusclesArr] = useState([]);
     const [primaryMuscles, setPrimaryMuscles] = useState({});
@@ -22,14 +22,19 @@ const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUser
         //fetch muscles targeted images
         fetch("https://wger.de/api/v2/muscle/").then(muscles => muscles.json()
             .then(muscles => setMusclesArr(muscles.results)));
+    }, [])
+
+    useEffect(() => {
         if(currentUserId) {
-            console.log(match)
             if(match.params.workoutId === "new") {
                 if(currentWorkout.exercises.length) setWorkout(currentWorkout)
                 else createCurrentWorkout(currentUserId)
             } else {
                 fetchWorkout(currentUserId, match.params.workoutId)
             }
+        }
+        return () => {
+            resetState()
         }
         // eslint-disable-next-line
     }, [currentUserId]);
@@ -45,7 +50,7 @@ const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUser
     }, [exercises]);
 
     useEffect(() => {
-        const musclesImages = []
+        const musclesImages = [];
         Object.keys(primaryMuscles).forEach(id => {
             const muscle = muscles.find(muscle => muscle.id === parseInt(id))
             const imgUrls = [`https://wger.de/${muscle.image_url_main}`];
@@ -54,6 +59,7 @@ const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUser
         })
         setMusclesImages(musclesImages)
     }, [primaryMuscles, muscles]);
+    console.log(otherProps.isWorkoutLoading)
     return (
         otherProps.isUserLoading || otherProps.isWorkoutLoading  ? 
             <CustomSpin size={"large"} />  :
@@ -77,7 +83,8 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = dispatch => ({
     createCurrentWorkout: userId => dispatch(createCurrentWorkout(userId, dispatch)),
     setWorkout: workout => dispatch(setWorkout(workout, dispatch)),
-    fetchWorkout: (userId, workoutId) => dispatch(fetchWorkout(userId, workoutId, dispatch))
+    fetchWorkout: (userId, workoutId) => dispatch(fetchWorkout(userId, workoutId, dispatch)),
+    resetState: () => dispatch(resetState(dispatch))
 })
 
 const WorkoutPageContainer = compose(
