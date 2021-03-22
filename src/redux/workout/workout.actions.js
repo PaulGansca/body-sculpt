@@ -3,7 +3,8 @@ import arrayMove from "array-move";
 import { WorkoutActionTypes } from './workout.types';
 
 import { generateWorkout } from '../../workout-creation/create-workout';
-import { updateCurrentWorkout, completeWorkout as firebaseCompleteWorkout, getWorkout, updateCompledWorkout } from '../../firebase/crud-user';
+import { updateCurrentWorkout, completeWorkout as firebaseCompleteWorkout,
+     getWorkout, updateCompledWorkout } from '../../firebase/crud-user';
 import { getExerciseInfo } from '../../api/wger';
 import { createDbWorkout } from '../../static/exercise-fields-stored';
 

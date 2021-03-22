@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { withRouter } from 'react-router-dom';
 
-import { fetchWorkouts } from '../../redux/workouts/workouts.actions';
+import { fetchWorkouts, deleteWorkout } from '../../redux/workouts/workouts.actions';
 import { setWorkout } from '../../redux/workout/workout.actions';
-import { selectCurrentUserId, selectTrainingFrequency } from '../../redux/user/user.selectors';
+import { selectCurrentUserId, selectTrainingFrequency, selectUserWeight } from '../../redux/user/user.selectors';
 import { selectIsLoading, selectWorkoutsArray } from '../../redux/workouts/workouts.selectors';
 import WorkoutsLoggedPage from './workouts-logged-page';
 import CustomSpin from '../../components/antd/custom-spin/custom-spin';
@@ -24,7 +24,7 @@ const workoutEffects = (WrappedComponent) => ({fetchWorkouts, currentUserId, isL
     return (
         isLoading ? 
             <CustomSpin size={"large"} />  :
-            <WrappedComponent {...otherProps} />
+            <WrappedComponent userId={currentUserId} {...otherProps} />
     )
 }
 
@@ -32,12 +32,14 @@ const mapStateToProps = createStructuredSelector({
     currentUserId: selectCurrentUserId,
     isLoading: selectIsLoading,
     workouts: selectWorkoutsArray,
-    trainingFrequency: selectTrainingFrequency
+    trainingFrequency: selectTrainingFrequency,
+    weight: selectUserWeight,
 })
 
 const mapDispatchToProps = dispatch => ({
     fetchWorkouts: userId => dispatch(fetchWorkouts(userId, dispatch)),
-    setWorkout: workout => dispatch(setWorkout(workout, dispatch))
+    setWorkout: workout => dispatch(setWorkout(workout, dispatch)),
+    deleteWorkout: (userId, workoutId) => dispatch(deleteWorkout(userId, workoutId))
 })
 
 const WorkoutsLoggedPageContainer = compose(

@@ -7,7 +7,7 @@ const CustomCard = ({children, meta, customRef, ...cardProps}) => {
 
     return (
     <Card ref={customRef} {...cardProps}>
-        {meta.name ? childElements[meta.name]({...meta.props}) : <></>}
+        {meta && meta.name ? childElements[meta.name]({...meta.props}) : <></>}
         {children}
     </Card>
 )};

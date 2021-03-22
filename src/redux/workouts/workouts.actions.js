@@ -1,6 +1,6 @@
 import { WorkoutsActionTypes } from './workouts.types';
 
-import { getUserWorkouts } from '../../firebase/crud-user';
+import { getUserWorkouts, deleteWorkout as firebaseDeleteWorkout} from '../../firebase/crud-user';
 
 export const fetchWorkouts = (userId) => async dispatch => {
     dispatch({
@@ -20,6 +20,32 @@ export const fetchWorkouts = (userId) => async dispatch => {
         alert("Error updating document: ", err);
         dispatch({
             type: WorkoutsActionTypes.FETCH_WORKOUTS_FAIL,
+            payload: err
+        });
+    }
+};
+
+export const deleteWorkout = (userId, workoutId) => async dispatch => {
+    dispatch({
+        type: WorkoutsActionTypes.DELETE_WORKOUT_START,
+    });
+    try {
+        const res = await firebaseDeleteWorkout(userId, workoutId);
+        if(res !== "Permission Denied") {
+            dispatch({
+                type: WorkoutsActionTypes.DELETE_WORKOUT_SUCCESS,
+                payload: workoutId
+            });
+        } else {
+            dispatch({
+                type: WorkoutsActionTypes.PERMISSION_DENIED,
+                payload: "Permission Denied"
+            });
+        }
+    } catch (err) {
+        alert("Error updating document: ", err);
+        dispatch({
+            type: WorkoutsActionTypes.DELETE_WORKOUT_FAIL,
             payload: err
         });
     }

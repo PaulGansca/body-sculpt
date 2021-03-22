@@ -1,12 +1,17 @@
 import React from 'react';
 import moment from 'moment';
 import { Row, Col } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
 
 import CustomCalendar from '../../components/antd/custom-calendar/custom-calendar';
+import WorkoutSummary from '../../components/workout-summary/workout-summary';
+import CustomCard from '../../components/antd/custom-card/custom-card';
+import CustomButton from '../../components/antd/custom-button/custom-button';
 
 import './workouts-logged.css';
 
-const WorkoutsLoggedPage = ({workouts, history, trainingFrequency, setWorkout}) => {
+const WorkoutsLoggedPage = ({workouts, history, trainingFrequency, setWorkout,
+     weight, deleteWorkout, userId}) => {
     const getWorkoutData = (value) => {
         return workouts.filter(w => value.isSame(moment(w.date).format('YYYY-MM-DD')));
       }
@@ -32,7 +37,6 @@ const WorkoutsLoggedPage = ({workouts, history, trainingFrequency, setWorkout}) 
     const to_date = today.day() === 0 ? moment().subtract(1, 'd').endOf('week').add(1, 'd').format("YYYY-MM-DD")
     : moment().endOf('week').add(1, 'd').format("YYYY-MM-DD");
     const workoutsInWeek = workouts.filter(w => moment(moment(w.date).format('YYYY-MM-DD')).isBetween(moment(from_date), moment(to_date))).length
-    
     return (
         <div className="workouts-logged-container">
             <Row>
@@ -43,6 +47,18 @@ const WorkoutsLoggedPage = ({workouts, history, trainingFrequency, setWorkout}) 
                         {7 - (moment().day() === 0 ? 6 : moment().day()) >= trainingFrequency - workoutsInWeek ?
                         " You are on track to hit your weekly session goal." :
                         " You won't be able to hit your weekly session goal."}</h3>
+                    <Row justify={'space-between'} gutter={[16, 16]}>
+                    {workouts.slice().reverse().map(w => 
+                    <CustomCard key={w.id} size="small" title={moment(w.date).format("ddd, MMM Do YYYY")} style={{ width: 330 }} hoverable
+                    actions={[
+                        <CustomButton onClick={() => deleteWorkout(userId, w.id)}
+                            size={"small"} danger shape={"round"} icon={<DeleteOutlined />} />
+                    ]}
+                     extra={<CustomButton type="link" onClick={() => {setWorkout(w); history.push(`/user/workout/${w.id}`)}}>View Workout</CustomButton>}>
+                        <WorkoutSummary exercises={w.exercises} timeElapsed={w.timeElapsed} weight={weight} />
+                    </CustomCard>
+                    )}
+                    </Row>
                 </Col>
             </Row>
         </div>

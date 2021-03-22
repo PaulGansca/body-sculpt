@@ -101,3 +101,11 @@ export const getWorkout = async (userId, workoutId) => {
         return workout;
     } else return "Permission Denied"
 }
+
+export const deleteWorkout = async (userId, workoutId) => {
+    const workoutRef = firestore.doc(`workouts/${workoutId}`);
+    const workout = await workoutRef.get();
+    if(workout.data().userId === userId) {
+        return workoutRef.delete();
+    } else return "Permission Denied";
+}
