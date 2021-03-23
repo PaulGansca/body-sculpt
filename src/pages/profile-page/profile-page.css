@@ -1,0 +1,36 @@
+.profile-page{
+    min-height: 100vh;
+    min-width: 100vw;
+    background: rgb(16, 61, 187);
+    text-align: center;
+}
+
+.profile-page .muscle-background {
+    width: 150px;
+    height: 276px;
+    background-size: 150px;
+    background-repeat: no-repeat;
+}
+
+.profile-page .muscles-overview-section { 
+    margin-top: 5vh;
+    background-color: #fdfdfd;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 8px 2px rgb(0 0 0 / 60%);
+}
+
+.profile-page .ant-collapse div.profile-page-panel {
+    margin-bottom: 24px;
+    background: #fdfdfd;
+    border-radius: 15px;
+    box-shadow: 0px 0px 8px 2px rgb(0 0 0 / 60%);
+}
+
+.profile-page .ant-collapse div.profile-page-panel .ant-collapse-header {
+    border-radius: 15px;
+}
+
+.profile-page .ant-collapse div.profile-page-panel .ant-collapse-content.ant-collapse-content-active {
+    border-radius: 0 0 15px 15px;
+}

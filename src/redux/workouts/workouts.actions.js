@@ -1,6 +1,7 @@
 import { WorkoutsActionTypes } from './workouts.types';
 
 import { getUserWorkouts, deleteWorkout as firebaseDeleteWorkout} from '../../firebase/crud-user';
+import { getExerciseInfo } from '../../api/wger';
 
 export const fetchWorkouts = (userId) => async dispatch => {
     dispatch({
@@ -46,6 +47,44 @@ export const deleteWorkout = (userId, workoutId) => async dispatch => {
         alert("Error updating document: ", err);
         dispatch({
             type: WorkoutsActionTypes.DELETE_WORKOUT_FAIL,
+            payload: err
+        });
+    }
+};
+
+export const fetchWorkoutsWithExercises = (userId) => async dispatch => {
+    dispatch({
+        type: WorkoutsActionTypes.FETCH_WORKOUTS_EXERCISES_START,
+    });
+    try {
+        //fetch firebase workouts per user id
+        const results = [];
+        const exercises = {};
+        const userWorkouts = await getUserWorkouts(userId);
+        let workoutIdx = -1;
+        userWorkouts.forEach(doc => {
+            const temp = {...doc.data(), id: doc.id};
+            Promise.all(temp.exercises.map(async (e, idx) => {
+                if(!exercises[e.id]) {
+                    const exercise = await getExerciseInfo(e.id);
+                    exercises[e.id] = {...exercise}
+                    temp.exercises[idx] = {...exercise, ...e, isFetched: true}
+                } else temp.exercises[idx] = {...exercises[e.id], ...e, isFetched: true}
+            })).then(r => {
+                workoutIdx++;
+                results.push(temp)
+                if(workoutIdx === userWorkouts.size -1) {
+                    dispatch({
+                        type: WorkoutsActionTypes.FETCH_WORKOUTS_EXERCISES_SUCCESS,
+                        payload: results
+                    });
+                }
+            })
+        });
+    } catch (err) {
+        alert("Error updating document: ", err);
+        dispatch({
+            type: WorkoutsActionTypes.FETCH_WORKOUTS_EXERCISES_FAIL,
             payload: err
         });
     }
