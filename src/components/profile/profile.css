@@ -1,0 +1,7 @@
+.workout-program p.workout-description{
+    text-align: left;
+}
+
+.profile-details .muscles-prioritized-label .ant-descriptions-item-label::after {
+    content: ' ';
+}

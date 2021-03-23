@@ -26,7 +26,9 @@ const questionsData = {
         muscleGain: <>{<span style={{fontWeight: 'bold'}}>Muscle Hypertrophy:</span>} workouts focus
         on building muscle to improve aesthetics and strength.</>,
         strengthGain: <>{<span style={{fontWeight: 'bold'}}>Strength Training:</span>} longer rest times,
-        small number of reps, increase power output consistenly.</>
+        small number of reps, increase power output consistenly.</>,
+        endurance: <>{<span style={{fontWeight: 'bold'}}>Endurance Training:</span>} short rest times,
+        high number of reps, improve cardio and functional performance.</>,
     },
     isMusclePrioritized: {
         true: <>{<span style={{fontWeight: 'bold'}}>Yes</span>} </>,
