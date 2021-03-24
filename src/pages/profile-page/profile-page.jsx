@@ -12,7 +12,7 @@ import './profile-page.css';
 
 const ProfilePage = (props) => {
     const { workouts, currentUser } = props;
-    console.log(currentUser);
+
     const panels = [{
         content: <WorkoutProgramOverview />, 
         props: {header: "Workout style overview", key: "1",

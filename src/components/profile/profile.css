@@ -17,3 +17,8 @@
 .exercise-performance .exercise-dropdown {
     margin-bottom: 20px;
 }
+
+.exercise-performance-chart .chart-container{
+    display: flex;
+    flex-flow: row wrap;
+}

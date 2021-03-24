@@ -38,7 +38,6 @@ const ExercisePerformance = ({workouts}) => {
         setOptions(optionList);
     }, [uniqueExercises])
 
-    console.log(uniqueExercises)
     return (
         <div className="exercise-performance">
             <CustomSelect className="exercise-dropdown" placeholder={"Select Exercise"} options={options}
