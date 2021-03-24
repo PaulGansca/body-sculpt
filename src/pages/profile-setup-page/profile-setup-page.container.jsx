@@ -4,7 +4,7 @@ import { createStructuredSelector } from 'reselect';
 
 import { setUserGoals } from '../../redux/user/user.actions';
 import { selectCurrentUser, selectIsLoading } from '../../redux/user/user.selectors';
-
+import WithSpinner from '../../components/with-spinner/with-spinner';
 import ProfileSetupPage from './profile-setup-page';
 
 const mapStateToProps = createStructuredSelector({
@@ -18,6 +18,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const ProfileSetupPageContainer = compose(
     connect(mapStateToProps, mapDispatchToProps),
+    WithSpinner
 )(ProfileSetupPage);
 
 export default ProfileSetupPageContainer;

@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
+import moment from 'moment';
 
 import CustomProgress from '../../components/antd/custom-progress-bar/custom-progress-bar';
 import Question from '../../components/question/question';
@@ -58,7 +59,10 @@ const ProfileSetupPage = (props) => {
         firstErrorIdx = firstErrorIdx > 4 ? 5 : firstErrorIdx;
         carouselQuestion.current.goTo(firstErrorIdx, false);
     };
-
+    console.log(currentUser);
+    const initialValues = currentUser.goalSet ?
+        {...currentUser, birthday: moment(new Date(currentUser.birthday.seconds * 1000))} 
+        : {weight: 70, height: 180};
     return (
       <div className="profile-setup-page">
         <CustomProgress className="setup-progress" style={{marginTop: '5vh'}}
@@ -66,7 +70,7 @@ const ProfileSetupPage = (props) => {
             format={(percent) => 'Profile Setup'} />
         <CustomForm name="profileSetup" onFinish={onFinish} onFinishFailed={onFinishFailed}
             onValuesChange={handleValuesChange} ref={formRef}
-            initialValues={{weight: 70, height: 180}}>
+            initialValues={initialValues}>
             <CustomCarousel effect={"fade"} customRef={carouselQuestion} dots={false}>
                 {formQuestionsList.map((question, idx) =>
                     <Question key={idx} question={question}/>  

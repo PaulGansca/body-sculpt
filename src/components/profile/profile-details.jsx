@@ -1,13 +1,17 @@
 import React from 'react';
 import moment from 'moment';
 import { Descriptions } from 'antd';
+import { Link } from 'react-router-dom';
+
+import CustomButton from '../antd/custom-button/custom-button'
 
 const ProfileDetails = ({displayName, email, fitnessLevel, birthday, goal,
     isMusclesPrioritized, musclePriority, weight, height, gender,
     trainingDuration, trainingFrequency}) => {
     return (
         <div className="profile-details">
-            <Descriptions style={{marginLeft: 25}} title="About You">
+
+            <Descriptions style={{marginLeft: 25}} extra={<CustomButton type="link"><Link to="/user/profile-setup">Configure Profile</Link></CustomButton>}>
                 <Descriptions.Item label="Display Name">{displayName}</Descriptions.Item>
                 <Descriptions.Item label="Email">{email}</Descriptions.Item>
                 <Descriptions.Item label="Birthday">{moment(new Date(birthday.seconds * 1000)).format("Do of MMM YYYY")}</Descriptions.Item>
