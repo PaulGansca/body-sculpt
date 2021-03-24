@@ -1,7 +1,19 @@
+.profile-details, .workout-program, .exercise-performance {
+    padding-left: 25px;
+}
+
 .workout-program p.workout-description{
     text-align: left;
 }
 
 .profile-details .muscles-prioritized-label .ant-descriptions-item-label::after {
     content: ' ';
+}
+
+.exercise-performance {
+    text-align: left;
+}
+
+.exercise-performance .exercise-dropdown {
+    margin-bottom: 20px;
 }

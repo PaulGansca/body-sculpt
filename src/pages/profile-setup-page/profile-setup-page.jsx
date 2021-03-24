@@ -59,7 +59,6 @@ const ProfileSetupPage = (props) => {
         firstErrorIdx = firstErrorIdx > 4 ? 5 : firstErrorIdx;
         carouselQuestion.current.goTo(firstErrorIdx, false);
     };
-    console.log(currentUser);
     const initialValues = currentUser.goalSet ?
         {...currentUser, birthday: moment(new Date(currentUser.birthday.seconds * 1000))} 
         : {weight: 70, height: 180};
