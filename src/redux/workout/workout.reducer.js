@@ -3,7 +3,7 @@ import { WorkoutActionTypes } from './workout.types';
 const INITIAL_STATE = {
     exercises: [],
     date: Date.now(),
-    isLoading: false,
+    isLoading: true,
     err: "",
     id: "",
     timeElapsed: "0:0",
