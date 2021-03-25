@@ -7,7 +7,7 @@ import { ReactComponent as Dumbbell } from '../../assets/dumbbell.svg';
 import CustomDrawer from '../antd/custom-drawer/custom-drawer';
 import {auth} from '../../firebase/firebase.utils';
 
-const NavBarMobile = (props) => {
+const NavBarMobile = ({handleMountProfile}) => {
     const [visible, setVisible] = useState(false);
 
     const showDrawer = () => {
@@ -32,7 +32,7 @@ const NavBarMobile = (props) => {
             <ul className="mobile-nav">
                 <li className="mobile-nav-link"><NavLink activeClassName="selected" to="/user/workout/new">Workout <Dumbbell className="dumbbell" /></NavLink></li>
                 <li className="mobile-nav-link"><NavLink activeClassName="selected" to="/user/workouts-logged">Log <HistoryOutlined /></NavLink></li>
-                <li className="mobile-nav-link"><NavLink activeClassName="selected" to="/user/profile">Profile <UserOutlined /></NavLink></li>
+                <li className="mobile-nav-link"><NavLink activeClassName="selected" onClick={() => handleMountProfile()} to="/user/profile">Profile <UserOutlined /></NavLink></li>
                 <li className="mobile-nav-link"><NavLink to="/" onClick={() => auth.signOut()}>Sign out</NavLink></li>
                 <li className="mobile-nav-link"><NavLink to="/"><Logo /></NavLink></li>
             </ul>

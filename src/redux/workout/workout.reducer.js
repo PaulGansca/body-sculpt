@@ -167,8 +167,7 @@ const workoutReducer = (state = INITIAL_STATE, action) => {
         }
         case WorkoutActionTypes.RESET_WORKOUT_STATE:
             return {
-                ...INITIAL_STATE,
-                isLoading: true
+                ...INITIAL_STATE
         }
 
         default:
