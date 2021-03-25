@@ -17,7 +17,7 @@ const SaveEffects = ({currentUserId, workoutState, saveWorkout, exercises,
             workoutState,
             timeElapsed
         }
-        saveWorkout(workout, currentUserId, workoutId)
+        if(exercises.length || workoutState !== "not started") saveWorkout(workout, currentUserId, workoutId)
         // eslint-disable-next-line
     }, [exercises, workoutState])
 

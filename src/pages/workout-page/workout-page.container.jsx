@@ -10,19 +10,13 @@ import { selectCurrentUserId, selectCurrentWorkout, selectIsLoading } from '../.
 import WorkoutPage from './workout-page';
 import ExercisePageContainer from '../exercise-page/exercise-page-container';
 import CustomSpin from '../../components/antd/custom-spin/custom-spin';
+import { MUSCLES_DATA } from '../../static/muscle-images';
 
 const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUserId, fetchWorkout, error,
     setWorkout, currentWorkout, match, resetState, ...otherProps}) => {
     const { exercises } = otherProps;
-    const [muscles, setMusclesArr] = useState([]);
     const [primaryMuscles, setPrimaryMuscles] = useState({});
     const [musclesImages, setMusclesImages] = useState([]);
-
-    useEffect(() => {
-        //fetch muscles targeted images
-        fetch("https://wger.de/api/v2/muscle/").then(muscles => muscles.json()
-            .then(muscles => setMusclesArr(muscles.results)));
-    }, [])
 
     useEffect(() => {
         if(currentUserId) {
@@ -37,7 +31,7 @@ const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUser
             resetState()
         }
         // eslint-disable-next-line
-    }, [currentUserId]);
+    }, [currentUserId, match.params.workoutId]);
 
     useEffect(() => {
         if(error === "Permission Denied") alert(error)
@@ -52,20 +46,20 @@ const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUser
     useEffect(() => {
         const musclesImages = [];
         Object.keys(primaryMuscles).forEach(id => {
-            const muscle = muscles.find(muscle => muscle.id === parseInt(id))
+            const muscle = MUSCLES_DATA.find(muscle => muscle.id === parseInt(id))
             const imgUrls = [`https://wger.de/${muscle.image_url_main}`];
             const isFront = muscle.is_front;
             musclesImages.push({imgUrls, isFront, id: parseInt(id)})
         })
         setMusclesImages(musclesImages)
-    }, [primaryMuscles, muscles]);
+    }, [primaryMuscles]);
 
     return (
         otherProps.isUserLoading || otherProps.isWorkoutLoading  ? 
             <CustomSpin size={"large"} />  :
             <Switch>
                 <Route exact={true} path={`${match.path}`} render={() => 
-                <WrappedComponent primaryMuscles={primaryMuscles} musclesImages={musclesImages} muscles={muscles} {...otherProps} />} />
+                <WrappedComponent primaryMuscles={primaryMuscles} musclesImages={musclesImages} muscles={MUSCLES_DATA} {...otherProps} />} />
                 <Route exact={true} path={`${match.path}/exercise/:exerciseId`} component={ExercisePageContainer} />
             </Switch>
     )

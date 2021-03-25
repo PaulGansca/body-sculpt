@@ -3,7 +3,7 @@ import { WorkoutActionTypes } from './workout.types';
 const INITIAL_STATE = {
     exercises: [],
     date: Date.now(),
-    isLoading: true,
+    isLoading: false,
     err: "",
     id: "",
     timeElapsed: "0:0",
@@ -168,7 +168,7 @@ const workoutReducer = (state = INITIAL_STATE, action) => {
         case WorkoutActionTypes.RESET_WORKOUT_STATE:
             return {
                 ...INITIAL_STATE,
-                isLoading: false
+                isLoading: true
         }
 
         default:
