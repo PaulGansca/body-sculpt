@@ -5,16 +5,19 @@ import { withRouter } from 'react-router-dom';
 
 import ExercisesList from './exercises-list';
 
+import { selectCurrentUserId } from '../../redux/user/user.selectors';
 import { selectWorkoutState } from '../../redux/workout/workout.selectors';
-import { moveExercise } from '../../redux/workout/workout.actions';
+import { moveExercise, createCurrentWorkout } from '../../redux/workout/workout.actions';
 
 
 const mapStateToProps = createStructuredSelector({
-    workoutState: selectWorkoutState
+    workoutState: selectWorkoutState,
+    currentUserId: selectCurrentUserId
 })
 
 const mapDispatchToProps = dispatch => ({
     moveExercise: (oldIndex, newIndex, exercises) => dispatch(moveExercise(oldIndex, newIndex, exercises, dispatch)),
+    createCurrentWorkout: userId => dispatch(createCurrentWorkout(userId, dispatch)),
 });
 
 

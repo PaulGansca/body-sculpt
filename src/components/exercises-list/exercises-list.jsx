@@ -1,11 +1,13 @@
 import React from 'react';
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
+import { PlusOutlined } from '@ant-design/icons';
 
 import ExerciseListItem from '../exercises-list-item/exercise-list-item';
 import ExerciseWorkload from '../exercises-list-item/exercise-workload';
 import SwapDeleteIcons from '../exercises-list-item/swap-delete-icons';
 import Timer from '../timer/timer';
 import FinishWorkoutModal from '../finish-workout-modal/finish-workout-modal';
+import CustomButton from '../antd/custom-button/custom-button';
 
 import { exerciseCategory }  from '../../static/exercise-category';
 
@@ -13,7 +15,7 @@ import './exercises-list.css';
 
 const ExercisesList = (props) => {
     const { exercises, muscles, AddExercise, moveExercise,
-         history, workoutState } = props;
+         history, workoutState, createCurrentWorkout, currentUserId } = props;
 
     const SortableExercise = SortableElement(({exercise, idx, muscleImage, ...otherProps}) => 
         <ExerciseListItem {...otherProps} idx={idx} ExerciseWorkload={ExerciseWorkload}
@@ -22,6 +24,9 @@ const ExercisesList = (props) => {
     const SortableList = SortableContainer(({ exercises }) => (
       <div className="exercises-list">
                 <div>
+                    {workoutState === "not started" ? 
+                    <CustomButton danger style={{marginRight: 20}} shape={"round"} icon={<PlusOutlined />}
+                        onClick={() => createCurrentWorkout(currentUserId)}>New Workout</CustomButton> : <></> }
                     <AddExercise />
                     {workoutState !== "not started" ? <Timer workoutState={workoutState} /> : <></>}
                 </div>
