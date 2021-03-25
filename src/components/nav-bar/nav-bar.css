@@ -1,0 +1,69 @@
+ul.desktop-nav {
+  display: flex;
+  padding-top: 5vh;
+  list-style-type: none;
+  background-color: rgb(16, 61, 187);
+  justify-content: center;
+  margin-bottom: -1px;
+  width: 100%;
+  padding-left: 0;
+}
+
+ul.mobile-nav {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+ul.desktop-nav li.desktop-nav-link {
+    margin: 10px;
+    padding: 6px 0;
+}
+
+ul.mobile-nav li.mobile-nav-link {
+    margin-top: 50px;
+}
+
+ul.desktop-nav li.desktop-nav-link a,
+ul.mobile-nav li.mobile-nav-link a  {
+      position: relative;
+      display: block;
+      padding: 4px 0;
+      font: 700 2rem Raleway, sans-serif;
+      text-decoration: none;
+      text-transform: uppercase;
+      -webkit-text-stroke: 2px #ffd662ff;
+      background: linear-gradient(#ffd662ff 0 100%) left / 0 no-repeat;
+      color: transparent;
+      background-clip: text;
+      transition: 0.5s linear;
+}
+
+ul.desktop-nav li.desktop-nav-link a:hover,
+ul.mobile-nav li.mobile-nav-link a  {
+    background-size: 100%;
+}
+
+ul.desktop-nav li.desktop-nav-link a.selected,
+ul.mobile-nav li.mobile-nav-link a.selected {
+    background-size: 100%;
+}
+
+ul.desktop-nav li.desktop-nav-link a.selected svg,
+ul.mobile-nav li.mobile-nav-link a.selected svg ,
+ul.desktop-nav li.desktop-nav-link a:hover svg {
+    fill: #ffd662ff;
+    transition: 0.5s linear;
+}
+
+ul.desktop-nav li.desktop-nav-link .dumbell,
+ul.mobile-nav li.mobile-nav-link .dumbell  {
+    position: relative;
+    top: 2px;
+}
+
+ul.desktop-nav li.desktop-nav-link svg,
+ul.mobile-nav li.mobile-nav-link svg {
+    width: 30px;
+    height: 30px;
+    fill: white;
+}

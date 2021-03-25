@@ -7,7 +7,7 @@ import CustomButton from '../../components/antd/custom-button/custom-button';
 import CustomInput from '../../components/antd/custom-inputs/custom-input';
 import CustomForm from '../../components/antd/custom-form/custom-form';
 import AnimatedBackground from '../../components/animated-background/animated-background';
-import { ReactComponent as Logo } from '../../assets/dumbbell.svg';
+import { ReactComponent as Logo } from '../../assets/bicep.svg';
 
 import { auth, signInWithGoogle } from '../../firebase/firebase.utils';
 

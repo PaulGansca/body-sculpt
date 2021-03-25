@@ -28,7 +28,6 @@ const ProfilePage = (props) => {
     }];
     return (
         <div className="profile-page">
-            <h1>User: {currentUser.displayName}</h1>
             <Row>
                 <Col xs={{ offset: 1, span: 22 }} md={{offset: 2, span: 20}} lg={{offset: 4, span: 16}}>
                     <MusclesSore fitnessLevel={currentUser.fitnessLevel}

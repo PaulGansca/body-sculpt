@@ -5,15 +5,19 @@ import ProfileSetupPageContainer from '../profile-setup-page/profile-setup-page.
 import WorkoutPageContainer from '../workout-page/workout-page.container';
 import WorkoutsLoggedPageContainer from '../workouts-logged-page/workouts-logged-page.container';
 import ProfilePageContainer from '../profile-page/profile-page-container';
+import NavBar from '../../components/nav-bar/nav-bar';
 
-const User = ({match}) => {
+const User = ({match, location}) => {
     return (
-        <Switch>
-          <Route exact={true} path={`${match.path}/profile-setup`} component={ProfileSetupPageContainer} />
-          <Route path={`${match.path}/workout/:workoutId`} component={WorkoutPageContainer} />
-          <Route exact={true} path={`${match.path}/workouts-logged`} component={WorkoutsLoggedPageContainer} />
-          <Route exact={true} path={`${match.path}/profile`} component={ProfilePageContainer} />
-        </Switch>
+        <>
+          {location.pathname !== "/user/profile-setup" ? <NavBar /> : <></>}
+          <Switch>
+            <Route exact={true} path={`${match.path}/profile-setup`} component={ProfileSetupPageContainer} />
+            <Route path={`${match.path}/workout/:workoutId`} component={WorkoutPageContainer} />
+            <Route exact={true} path={`${match.path}/workouts-logged`} component={WorkoutsLoggedPageContainer} />
+            <Route exact={true} path={`${match.path}/profile`} component={ProfilePageContainer} />
+          </Switch>
+        </>
     );
 };
 

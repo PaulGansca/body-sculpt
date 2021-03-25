@@ -1,7 +1,7 @@
 import React from 'react';
 
 import CustomButton from '../../components/antd/custom-button/custom-button';
-import { ReactComponent as Logo } from '../../assets/dumbbell.svg';
+import { ReactComponent as Logo } from '../../assets/bicep.svg';
 import AnimatedBackground from '../../components/animated-background/animated-background';
 //import { ReactComponent as Wave } from '../../assets/wave.svg';
 
