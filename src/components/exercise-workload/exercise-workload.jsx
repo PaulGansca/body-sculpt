@@ -8,7 +8,7 @@ import CustomButton from '../antd/custom-button/custom-button';
 import ExertionRating from '../exertion-rating/exertion-rating';
 import SwapExercise from '../swap-exercise/swap-exercise';
 import LogSet from './log-set';
-import ExerciseChartContainer from '../exercise-performance-chart/exercise-performance-chart-container';
+import ExerciseChartCollapse from '../exercise-performance-chart/exercise-chart-collapse';
 
 import newId from '../../utils/id-generator';
 
@@ -58,7 +58,7 @@ const ExerciseWorkload = ({updateExerciseWorkload, exercise, exercises, isLoadin
                 <Divider><SettingOutlined /></Divider>
                 <SwapExercise btnText={"Replace Exercise"} isLoading={isLoading}
                  exercise={exercise} exerciseIdx={getExerciseIdx} />
-                <ExerciseChartContainer exerciseId={exercise.id} />
+                <ExerciseChartCollapse exerciseId={exercise.id} />
             </Col>
         </Row>
         </>

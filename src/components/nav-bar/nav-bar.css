@@ -39,7 +39,7 @@ ul.mobile-nav li.mobile-nav-link a  {
 }
 
 ul.desktop-nav li.desktop-nav-link a:hover,
-ul.mobile-nav li.mobile-nav-link a  {
+ul.mobile-nav li.mobile-nav-link a:hover  {
     background-size: 100%;
 }
 
