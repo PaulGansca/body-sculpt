@@ -56,7 +56,7 @@ const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUser
 
     return (
         otherProps.isUserLoading || otherProps.isWorkoutLoading  ? 
-            <CustomSpin size={"large"} />  :
+            <CustomSpin className="main-spinner" size={"large"} />  :
             <Switch>
                 <Route exact={true} path={`${match.path}`} render={() => 
                 <WrappedComponent primaryMuscles={primaryMuscles} musclesImages={musclesImages} muscles={MUSCLES_DATA} {...otherProps} />} />

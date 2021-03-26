@@ -26,7 +26,7 @@ const workoutEffects = (WrappedComponent) => ({fetchWorkouts, currentUserId, isL
 
     return (
         isLoading ? 
-            <CustomSpin size={"large"} />  :
+            <CustomSpin className="main-spinner" size={"large"} />  :
             <WrappedComponent userId={currentUserId} {...otherProps} />
     )
 }

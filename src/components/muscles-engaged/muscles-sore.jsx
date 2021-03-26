@@ -33,12 +33,15 @@ const MusclesSore = ({recentWorkouts, fitnessLevel}) => {
                 <Row className="muscles-overview-section">
                 <Col xs={{ span: 24 }} lg={{ span: 12 }}>
                     {muscleImgs.frontImgs.length ? <div style={{display: 'inline-block', backgroundImage: muscleImgs.frontImgs.map(i => i.imgUrl)
-                        .concat("url(https://wger.de/static/images/muscles/muscular_system_front.svg)").join()}} className="muscle-background" /> : <></>}
+                        .concat("url(https://wger.de/static/images/muscles/muscular_system_front.svg)").join()}} className="muscle-background" /> :
+                        <div style={{display: 'inline-block', backgroundImage: "url(https://wger.de/static/images/muscles/muscular_system_front.svg)"}} className="muscle-background" />}
                     {muscleImgs.backImgs.length ? <div style={{display: 'inline-block', backgroundImage: muscleImgs.backImgs.map(i => i.imgUrl)
-                        .concat("url(https://wger.de/static/images/muscles/muscular_system_back.svg)").join()}} className="muscle-background" /> : <></>}
+                        .concat("url(https://wger.de/static/images/muscles/muscular_system_back.svg)").join()}} className="muscle-background" /> :
+                        <div style={{display: 'inline-block', backgroundImage: "url(https://wger.de/static/images/muscles/muscular_system_back.svg)"}} className="muscle-background" />}
                 </Col>
                 <Col xs={{ span: 24 }} lg={{ span: 12 }}>
-                    <p style={{marginTop: 15}}>Muscles trained for optimal workload volume in the last 7 days:{' '}
+                    <p style={{marginTop: 15}}>
+                        {Object.keys(muscles).length ? "Muscles trained for optimal workload volume in the last 7 days: " : <p>All muscles are fully recovered.</p>}
                         {Object.keys(muscles).map((m, idx) => {
                             let workloadPercentage = Math.round(muscles[m].sets/maxWorkload[fitnessLevel] * 100);
                             workloadPercentage = workloadPercentage > 100 ? 100 : workloadPercentage;

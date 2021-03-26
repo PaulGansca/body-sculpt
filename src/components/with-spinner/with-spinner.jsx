@@ -4,7 +4,7 @@ import CustomSpin from '../antd/custom-spin/custom-spin';
 
 const WithSpinner = WrappedComponent => ({ loading, ...otherProps }) => {
     return (loading ?
-         <CustomSpin /> 
+         <CustomSpin className="main-spinner" /> 
          : <WrappedComponent {...otherProps} />);
 };
 

@@ -1,7 +1,9 @@
-/* .App {
-  min-height: 100vh;
-  justify-content: center;
-  display: flex;
-  flex-flow: column;
-  align-items: flex-end;
-} */
+.main-spinner {
+    display: block;
+    margin-top: 15vh;
+}
+
+.main-spinner .ant-spin-dot-item {
+    background-color: #ff6103;
+    opacity: 1;
+}
