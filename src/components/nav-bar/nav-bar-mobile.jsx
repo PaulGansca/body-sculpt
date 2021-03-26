@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { MenuUnfoldOutlined, HistoryOutlined, UserOutlined } from '@ant-design/icons';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { ReactComponent as Logo } from '../../assets/bicep.svg';
 import { ReactComponent as Dumbbell } from '../../assets/dumbbell.svg';
 
 import CustomDrawer from '../antd/custom-drawer/custom-drawer';
 import {auth} from '../../firebase/firebase.utils';
 
-const NavBarMobile = ({handleMountProfile}) => {
+const NavBarMobile = ({handleMountProfile, setCurrentUser}) => {
     const [visible, setVisible] = useState(false);
 
     const showDrawer = () => {
@@ -33,8 +33,8 @@ const NavBarMobile = ({handleMountProfile}) => {
                 <li className="mobile-nav-link"><NavLink activeClassName="selected" to="/user/workout/new">Workout <Dumbbell className="dumbbell" /></NavLink></li>
                 <li className="mobile-nav-link"><NavLink activeClassName="selected" to="/user/workouts-logged">Log <HistoryOutlined /></NavLink></li>
                 <li className="mobile-nav-link"><NavLink activeClassName="selected" onClick={() => handleMountProfile()} to="/user/profile">Profile <UserOutlined /></NavLink></li>
-                <li className="mobile-nav-link"><NavLink to="/" onClick={() => auth.signOut()}>Sign out</NavLink></li>
-                <li className="mobile-nav-link"><NavLink to="/"><Logo /></NavLink></li>
+                <li className="mobile-nav-link"><Link to="/" onClick={() => {setCurrentUser(""); auth.signOut()}}>Sign out</Link></li>
+                <li className="mobile-nav-link"><Logo /></li>
             </ul>
             </CustomDrawer>
         </>
