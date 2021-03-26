@@ -10,7 +10,7 @@ import NavBar from '../../components/nav-bar/nav-bar';
 const User = ({match, location}) => {
     return (
         <>
-          {location.pathname !== "/user/profile-setup" ? <NavBar /> : <></>}
+          {location.pathname !== "/user/profile-setup"  && !location.pathname.includes("/exercise/") ? <NavBar /> : <></>}
           <Switch>
             <Route exact={true} path={`${match.path}/profile-setup`} component={ProfileSetupPageContainer} />
             <Route path={`${match.path}/workout/:workoutId`} component={WorkoutPageContainer} />

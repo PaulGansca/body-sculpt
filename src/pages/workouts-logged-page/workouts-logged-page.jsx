@@ -41,9 +41,8 @@ const WorkoutsLoggedPage = ({workouts, history, trainingFrequency, setWorkout,
         <div className="workouts-logged-container">
             <Row>
                 <Col xs={{span: 22, offset: 1}} md={{span: 20, offset: 2}} lg={{span: 18, offset: 3}}>
-                    <h1>Very beautiful list of WorkoutsLogged</h1>
                     <CustomCalendar dateFullCellRender={cellRender} className="workouts-logged-calendar" fullscreen={false} />
-                    <h3>Sessions this week {workoutsInWeek}/{trainingFrequency} - 
+                    <h3 style={{margin: "20px 0", color: "white"}}>Sessions this week {workoutsInWeek}/{trainingFrequency} - 
                         {7 - (moment().day() === 0 ? 6 : moment().day()) >= trainingFrequency - workoutsInWeek ?
                         " You are on track to hit your weekly session goal." :
                         " You won't be able to hit your weekly session goal."}</h3>

@@ -12,7 +12,7 @@ import './exercise-info.css'
 const ExerciseInfo = ({muscles, muscles_secondary, description, images, comments, equipment}) => {
     return (
         <Row className="exercise-info">
-            <Col xs={{span: 20, offset: 2}} lg={{span: 18, offset: 3}}>
+            <Col className="exercise-info-section" xs={{span: 20, offset: 2}} lg={{span: 18, offset: 3}}>
                 {images.length ? 
                     <Row gutter={{xs: 4, sm: 8, md: 16}} className="images-container">
                     {images.map(image => <Col key={image.id} xs={{ span: 12 }}>

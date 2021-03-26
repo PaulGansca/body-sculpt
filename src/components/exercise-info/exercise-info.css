@@ -1,3 +1,14 @@
+.exercise-info {
+    margin-top: 5vh;
+}
+
+.exercise-info .exercise-info-section {
+    background-color: #fdfdfd;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 8px 2px rgb(0 0 0 / 60%);
+}
+
 .exercise-info .images-container {
     justify-content: space-between;
     margin-bottom: 20px;

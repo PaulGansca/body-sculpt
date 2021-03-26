@@ -5,6 +5,8 @@ import ExercisesListContainer from '../../components/exercises-list/exercises-li
 import AddExercise from '../../components/add-exercise/add-exercise';
 import SaveWorkout from '../../components/save-workout/save-workout';
 
+import './workout-page.css';
+
 const WorkoutPage = (props) => {
     const { exercises, muscles, primaryMuscles, musclesImages } = props;
 

@@ -1,3 +1,10 @@
+.workouts-logged-container {
+    padding-top: 5vh;
+    background: rgb(16, 61, 187);
+    min-height: 100vh;
+    padding-bottom: 5vh;
+}
+
 .workouts-logged-calendar .cal-time-elapsed {
     font-size: 10px;
     position: absolute;

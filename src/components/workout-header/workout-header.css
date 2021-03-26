@@ -3,3 +3,7 @@
     overflow-x: auto;
     margin: 20px;
 }
+
+.workout-page .workout-header .ant-typography {
+    color: #fff;
+}
