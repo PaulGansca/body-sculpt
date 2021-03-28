@@ -62,25 +62,32 @@ export const fetchWorkoutsWithExercises = (userId) => async dispatch => {
         const exercises = {};
         const userWorkouts = await getUserWorkouts(userId);
         let workoutIdx = -1;
-        userWorkouts.forEach(doc => {
-            const temp = {...doc.data(), id: doc.id};
-            Promise.all(temp.exercises.map(async (e, idx) => {
-                if(!exercises[e.id]) {
-                    const exercise = await getExerciseInfo(e.id);
-                    exercises[e.id] = {...exercise}
-                    temp.exercises[idx] = {...exercise, ...e, isFetched: true}
-                } else temp.exercises[idx] = {...exercises[e.id], ...e, isFetched: true}
-            })).then(r => {
-                workoutIdx++;
-                results.push(temp)
-                if(workoutIdx === userWorkouts.size -1) {
-                    dispatch({
-                        type: WorkoutsActionTypes.FETCH_WORKOUTS_EXERCISES_SUCCESS,
-                        payload: results
-                    });
-                }
-            })
-        });
+        if(!userWorkouts.empty) {
+            userWorkouts.forEach(doc => {
+                const temp = {...doc.data(), id: doc.id};
+                Promise.all(temp.exercises.map(async (e, idx) => {
+                    if(!exercises[e.id]) {
+                        const exercise = await getExerciseInfo(e.id);
+                        exercises[e.id] = {...exercise}
+                        temp.exercises[idx] = {...exercise, ...e, isFetched: true}
+                    } else temp.exercises[idx] = {...exercises[e.id], ...e, isFetched: true}
+                })).then(r => {
+                    workoutIdx++;
+                    results.push(temp)
+                    if(workoutIdx === userWorkouts.size -1) {
+                        dispatch({
+                            type: WorkoutsActionTypes.FETCH_WORKOUTS_EXERCISES_SUCCESS,
+                            payload: results
+                        });
+                    }
+                })
+            });
+        } else {
+            dispatch({
+                type: WorkoutsActionTypes.FETCH_WORKOUTS_EXERCISES_SUCCESS,
+                payload: []
+            });
+        }
     } catch (err) {
         alert("Error updating document: ", err);
         dispatch({

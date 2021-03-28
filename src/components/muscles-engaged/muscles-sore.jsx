@@ -41,7 +41,7 @@ const MusclesSore = ({recentWorkouts, fitnessLevel}) => {
                 </Col>
                 <Col xs={{ span: 24 }} lg={{ span: 12 }}>
                     <p style={{marginTop: 15}}>
-                        {Object.keys(muscles).length ? "Muscles trained for optimal workload volume in the last 7 days: " : <p>All muscles are fully recovered.</p>}
+                        {Object.keys(muscles).length ? "Muscles trained for optimal workload volume in the last 7 days: " : <>All muscles are fully recovered.</>}
                         {Object.keys(muscles).map((m, idx) => {
                             let workloadPercentage = Math.round(muscles[m].sets/maxWorkload[fitnessLevel] * 100);
                             workloadPercentage = workloadPercentage > 100 ? 100 : workloadPercentage;
