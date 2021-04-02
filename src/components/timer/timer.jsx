@@ -28,7 +28,7 @@ const Timer = (props) => {
               };
         });
     return (
-        <span style={{...display}}>Time Elapsed: { minutes === 0 && seconds === 0
+        <span style={{...display, color: 'white'}}>Time Elapsed: { minutes === 0 && seconds === 0
             ? <span>00:00</span>
             : <span> {minutes < 10 ? `0${minutes}` : minutes}:{seconds < 10 ?  `0${seconds}` : seconds}</span> 
         }</span>
