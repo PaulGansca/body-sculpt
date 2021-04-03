@@ -9,6 +9,7 @@ import CustomCarousel from '../../components/antd/custom-carousel/custom-carouse
 import CustomButton from '../../components/antd/custom-button/custom-button';
 import CustomSpace from '../../components/antd/custom-space/custom-space';
 import CustomForm from '../../components/antd/custom-form/custom-form';
+import { computeWorkoutType } from '../../workout-creation/compute-workout-type';
 
 
 import './profile-setup.css';
@@ -48,7 +49,9 @@ const ProfileSetupPage = ({currentUser, setUserGoals, history}) => {
 
     const onFinish = (values) => {
         console.log('Success:', values);
+        const { trainingFrequency, trainingDuration, fitnessLevel, goal, musclePriority } = values;
         values.birthday = values.birthday.toDate();
+        values.splitType = computeWorkoutType(trainingFrequency, trainingDuration, fitnessLevel, goal, musclePriority)
         try {
             setUserGoals(currentUser.id, values, history)
         } catch (e){
