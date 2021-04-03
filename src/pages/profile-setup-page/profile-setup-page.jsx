@@ -13,12 +13,14 @@ import CustomForm from '../../components/antd/custom-form/custom-form';
 
 import './profile-setup.css';
 
-const ProfileSetupPage = (props) => {
+const ProfileSetupPage = ({currentUser, setUserGoals, history}) => {
     const carouselQuestion = useRef(null);
     const formRef = useRef(null);
+    const initialValues = currentUser.goalSet ?
+        {...currentUser, birthday: moment(new Date(currentUser.birthday.seconds * 1000))} 
+        : {weight: 70, height: 180};
     const [formQuestionsList, setFormQuestionsList] = useState(questionsList.filter(q => q.name !== "musclePriority"));
-    const [formProgress, setFormProgress] = useState(0);
-    const {currentUser, setUserGoals, history} = props;
+    const [formProgress, setFormProgress] = useState((Object.keys(initialValues).length/fieldNames.length)*100);
 
     const handleValuesChange = (changedValues, allValues) => {
         //handle conditional show of muscles to prioritize
@@ -30,9 +32,10 @@ const ProfileSetupPage = (props) => {
             }
             carouselQuestion.current.goTo(2, false);
         }
-        const touchedFields = fieldNames.filter(name => formRef.current.isFieldTouched(name))
+        const touchedFields = Object.keys(formRef.current.getFieldsValue(true))
         formRef.current.validateFields(touchedFields)
             .then(result => {
+                console.log(result)
                 const validFields = Object.keys(result); 
                 setFormProgress(validFields.length/fieldNames.length*100);
             })
@@ -59,9 +62,6 @@ const ProfileSetupPage = (props) => {
         firstErrorIdx = firstErrorIdx > 4 ? 5 : firstErrorIdx;
         carouselQuestion.current.goTo(firstErrorIdx, false);
     };
-    const initialValues = currentUser.goalSet ?
-        {...currentUser, birthday: moment(new Date(currentUser.birthday.seconds * 1000))} 
-        : {weight: 70, height: 180};
     return (
       <div className="profile-setup-page">
         <CustomProgress className="setup-progress" style={{marginTop: '5vh'}}
