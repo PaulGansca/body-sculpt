@@ -3,6 +3,8 @@ import React from 'react';
 import { Row, Col } from 'antd';
 
 import CustomTag from '../antd/custom-tag/custom-tag';
+import { exerciseCategory }  from '../../static/exercise-category';
+import { MUSCLES_DATA }  from '../../static/muscle-images';
 
 const MusclesSore = ({recentWorkouts, fitnessLevel}) => {
     const muscles = {}
@@ -17,6 +19,18 @@ const MusclesSore = ({recentWorkouts, fitnessLevel}) => {
                 muscles[m.id] = {...m, sets: exercise.sets.length / 4};
             } else muscles[m.id].sets = muscles[m.id].sets + exercise.sets.length/4;
         })
+        if(!exercise.muscles.concat(exercise.muscles_secondary).length) {
+            const muscleId = exerciseCategory[exercise.category.name].muscleIds[0];
+            const muscle = {
+                imgUrl: `url(https://wger.de${exerciseCategory[exercise.category.name].image_url_main})`,
+                name: MUSCLES_DATA.find(mD => exerciseCategory[exercise.category.name].muscleIds[0] === mD.id).name,
+                id: muscleId,
+                is_front: exerciseCategory[exercise.category.name].isFront
+            }
+            if(!muscles[muscleId]) {
+                muscles[muscleId] = {...muscle, sets: exercise.sets.length};
+            } else muscles[muscleId].sets = muscles[muscleId].sets + exercise.sets.length;
+        }
     }))
 
     const muscleImgs = Object.keys(muscles).reduce((acc, m) => {

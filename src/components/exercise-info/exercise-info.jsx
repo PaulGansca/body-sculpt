@@ -9,7 +9,7 @@ import MusclesEngaged from '../muscles-engaged/muscles-engaged';
 
 import './exercise-info.css'
 
-const ExerciseInfo = ({muscles, muscles_secondary, description, images, comments, equipment}) => {
+const ExerciseInfo = ({muscles, muscles_secondary, description, images, comments, equipment, category}) => {
     return (
         <Row className="exercise-info">
             <Col className="exercise-info-section" xs={{span: 20, offset: 2}} lg={{span: 18, offset: 3}}>
@@ -29,7 +29,7 @@ const ExerciseInfo = ({muscles, muscles_secondary, description, images, comments
                     {comments.length ? comments.map(c => <Markup key={c.id} content={c.comment} />) : <></>}
                 </>
                 <Divider orientation="left">Muscles</Divider>
-                <MusclesEngaged muscles={muscles} muscles_secondary={muscles_secondary} />
+                <MusclesEngaged category={category} muscles={muscles} muscles_secondary={muscles_secondary} />
             </Col>
         </Row>
     )

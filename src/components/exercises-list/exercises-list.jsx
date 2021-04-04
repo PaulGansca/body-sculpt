@@ -32,6 +32,12 @@ const ExercisesList = (props) => {
                 </div>
                 {exercises.map((exercise, idx) => {
                     const muscleImage = { imgUrls: [] };
+                    if(!exercise.muscles.length) {
+                        const category = exerciseCategory[exercise.category.name]
+                        muscleImage.imgUrls.push(`https://wger.de/${category.image_url_main}`);
+                        muscleImage.isFront = category.isFront
+                        muscleImage.id = category.muscleIds[0];
+                    }
                     exercise.muscles.forEach(m => {
                         const muscle = muscles.find(muscle => muscle.id === m.id);
                         if(exerciseCategory[exercise.category.name].muscleIds.includes(muscle.id)) {

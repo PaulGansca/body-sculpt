@@ -11,6 +11,7 @@ import WorkoutPage from './workout-page';
 import ExercisePageContainer from '../exercise-page/exercise-page-container';
 import CustomSpin from '../../components/antd/custom-spin/custom-spin';
 import { MUSCLES_DATA } from '../../static/muscle-images';
+import { exerciseCategory }  from '../../static/exercise-category';
 
 const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUserId, fetchWorkout, error,
     setWorkout, currentWorkout, match, resetState, ...otherProps}) => {
@@ -39,7 +40,13 @@ const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUser
 
     useEffect(() => {
         const primaryMuscles = {}
-        exercises.forEach(e => e.muscles.forEach(m => primaryMuscles[m.id]= m.name));
+        exercises.forEach(e => {
+            if(!e.muscles.length) {
+                const mId = exerciseCategory[e.category.name].muscleIds[0];
+                primaryMuscles[mId] = MUSCLES_DATA[mId].name
+            }
+            e.muscles.forEach(m => primaryMuscles[m.id]= m.name)
+        });
         setPrimaryMuscles(primaryMuscles)
     }, [exercises]);
 
