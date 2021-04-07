@@ -20,7 +20,6 @@
 .exercise-workload.workout-in-progress .completed-set .ant-input-number {
     opacity: 0.8;
     color: green;
-    /* to replace with on background change #ffd662ff; */
 }
 
 .exercise-workload.workout-in-progress .completed-set .ant-btn-dangerous {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Typography, Row, Col } from 'antd';
+import { muscleNamesTaxonomy }  from '../../static/exercise-category';
 
 import './workout-header.css';
 
@@ -13,7 +14,7 @@ const WorkoutHeader = (props) => {
     return (
         <Row>
             <Col xs={{span: 22, offset: 1}} md={{span: 20, offset: 2}} lg={{span: 18, offset: 3}} className="workout-header">
-                <Title level={headingSize}>Muscles Engaged: {Object.keys(primaryMuscles).map(id => primaryMuscles[id]).join(', ')}</Title>
+                <Title level={headingSize}>Muscles Engaged: {Object.keys(primaryMuscles).map(id => muscleNamesTaxonomy[id]).join(', ')}</Title>
                 <div className="workout-header-images">
                     {musclesImages.map((muscleImage, idx) => <MuscleImg key={idx} muscleImage={muscleImage} />)}
                 </div>

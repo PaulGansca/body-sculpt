@@ -15,7 +15,7 @@ import './exercises-list.css';
 
 const ExercisesList = (props) => {
     const { exercises, muscles, AddExercise, moveExercise,
-         history, workoutState, createCurrentWorkout, currentUserId } = props;
+         history, workoutState, createCurrentWorkout, currentUserId, currentUser } = props;
 
     const SortableExercise = SortableElement(({exercise, idx, muscleImage, ...otherProps}) => 
         <ExerciseListItem {...otherProps} idx={idx} ExerciseWorkload={ExerciseWorkload}
@@ -26,7 +26,7 @@ const ExercisesList = (props) => {
                 <div>
                     {workoutState === "not started" ? 
                     <CustomButton danger style={{marginRight: 20}} shape={"round"} icon={<PlusOutlined />}
-                        onClick={() => createCurrentWorkout(currentUserId)}>New Workout</CustomButton> : <></> }
+                        onClick={() => createCurrentWorkout(currentUserId, currentUser)}>New Workout</CustomButton> : <></> }
                     <AddExercise />
                     {workoutState !== "not started" ? <Timer workoutState={workoutState} /> : <></>}
                 </div>

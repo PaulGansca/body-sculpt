@@ -6,12 +6,13 @@ import { Route, Switch } from 'react-router-dom';
 
 import { createCurrentWorkout, setWorkout, fetchWorkout, resetState } from '../../redux/workout/workout.actions';
 import { selectWorkoutExercises, selectIsLoading as selectIsWorkoutLoading, selectError } from '../../redux/workout/workout.selectors';
-import { selectCurrentUserId, selectCurrentWorkout, selectIsLoading } from '../../redux/user/user.selectors';
+import { selectCurrentUserId, selectCurrentWorkout, selectIsLoading,
+    selectCurrentUser} from '../../redux/user/user.selectors';
 import WorkoutPage from './workout-page';
 import ExercisePageContainer from '../exercise-page/exercise-page-container';
 import CustomSpin from '../../components/antd/custom-spin/custom-spin';
 import { MUSCLES_DATA } from '../../static/muscle-images';
-import { exerciseCategory }  from '../../static/exercise-category';
+import { exerciseCategory, muscleNamesTaxonomy }  from '../../static/exercise-category';
 
 const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUserId, fetchWorkout, error,
     setWorkout, currentWorkout, match, resetState, ...otherProps}) => {
@@ -23,7 +24,7 @@ const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUser
         if(currentUserId) {
             if(match.params.workoutId === "new") {
                 if(currentWorkout.exercises.length) setWorkout(currentWorkout)
-                else createCurrentWorkout(currentUserId)
+                else createCurrentWorkout(currentUserId, otherProps.currentUser)
             } else {
                 fetchWorkout(currentUserId, match.params.workoutId)
             }
@@ -43,9 +44,9 @@ const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUser
         exercises.forEach(e => {
             if(!e.muscles.length) {
                 const mId = exerciseCategory[e.category.name].muscleIds[0];
-                primaryMuscles[mId] = MUSCLES_DATA[mId].name
+                primaryMuscles[mId] = muscleNamesTaxonomy[mId]
             }
-            e.muscles.forEach(m => primaryMuscles[m.id]= m.name)
+            e.muscles.forEach(m => primaryMuscles[m.id]= muscleNamesTaxonomy[m.id])
         });
         setPrimaryMuscles(primaryMuscles)
     }, [exercises]);
@@ -79,10 +80,12 @@ const mapStateToProps = createStructuredSelector({
     isUserLoading: selectIsLoading,
     isWorkoutLoading: selectIsWorkoutLoading,
     error: selectError,
+    currentUser: selectCurrentUser
 })
 
 const mapDispatchToProps = dispatch => ({
-    createCurrentWorkout: userId => dispatch(createCurrentWorkout(userId, dispatch)),
+    createCurrentWorkout: (userId, currentUser) => 
+        dispatch(createCurrentWorkout(userId, currentUser, dispatch)),
     setWorkout: workout => dispatch(setWorkout(workout, dispatch)),
     fetchWorkout: (userId, workoutId) => dispatch(fetchWorkout(userId, workoutId, dispatch)),
     resetState: () => dispatch(resetState(dispatch))

@@ -3,7 +3,7 @@ import React from 'react';
 import { Row } from 'antd';
 
 import CustomTag from '../antd/custom-tag/custom-tag';
-import { exerciseCategory }  from '../../static/exercise-category';
+import { exerciseCategory, muscleNamesTaxonomy }  from '../../static/exercise-category';
 import { MUSCLES_DATA }  from '../../static/muscle-images';
 
 const MusclesEngaged = ({muscles_secondary, muscles, category}) => {
@@ -26,11 +26,11 @@ const MusclesEngaged = ({muscles_secondary, muscles, category}) => {
                         .concat("url(https://wger.de/static/images/muscles/muscular_system_front.svg)").join()}} className="muscle-background" /> : <></>}
                     {muscleImgs.backImgs.length ? <div style={{backgroundImage: muscleImgs.backImgs.map(i => i.imgUrl)
                         .concat("url(https://wger.de/static/images/muscles/muscular_system_back.svg)").join()}} className="muscle-background" /> : <></>}
-                    <p style={{marginTop: 15}}>Muscles engaged: {muscles.map(m => <CustomTag key={m.id} color="#cc0000">{m.name}</CustomTag>)}
-                         {muscles_secondary.map(m => <CustomTag key={m.id} color="#f57900">{m.name}</CustomTag>)}
+                    <p style={{marginTop: 15}}>Muscles engaged: {muscles.map(m => <CustomTag key={m.id} color="#cc0000">{muscleNamesTaxonomy[m.id]}</CustomTag>)}
+                         {muscles_secondary.map(m => <CustomTag key={m.id} color="#f57900">{muscleNamesTaxonomy[m.id]}</CustomTag>)}
                          {!muscles.concat(muscles_secondary).length ?
                             muscleImgs.frontImgs.concat(muscleImgs.backImgs)
-                            .map(m => <CustomTag key={m.id} color="#cc0000">{m.name}</CustomTag>) : <></>}</p>
+                            .map(m => <CustomTag key={m.id} color="#cc0000">{muscleNamesTaxonomy[m.id]}</CustomTag>) : <></>}</p>
         </Row>
     );
 };

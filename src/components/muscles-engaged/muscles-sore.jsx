@@ -3,7 +3,7 @@ import React from 'react';
 import { Row, Col } from 'antd';
 
 import CustomTag from '../antd/custom-tag/custom-tag';
-import { exerciseCategory }  from '../../static/exercise-category';
+import { exerciseCategory, MAX_WORKLOAD, muscleNamesTaxonomy }  from '../../static/exercise-category';
 import { MUSCLES_DATA }  from '../../static/muscle-images';
 
 const MusclesSore = ({recentWorkouts, fitnessLevel}) => {
@@ -20,16 +20,17 @@ const MusclesSore = ({recentWorkouts, fitnessLevel}) => {
             } else muscles[m.id].sets = muscles[m.id].sets + exercise.sets.length/4;
         })
         if(!exercise.muscles.concat(exercise.muscles_secondary).length) {
-            const muscleId = exerciseCategory[exercise.category.name].muscleIds[0];
-            const muscle = {
-                imgUrl: `url(https://wger.de${exerciseCategory[exercise.category.name].image_url_main})`,
-                name: MUSCLES_DATA.find(mD => exerciseCategory[exercise.category.name].muscleIds[0] === mD.id).name,
-                id: muscleId,
-                is_front: exerciseCategory[exercise.category.name].isFront
-            }
-            if(!muscles[muscleId]) {
-                muscles[muscleId] = {...muscle, sets: exercise.sets.length};
-            } else muscles[muscleId].sets = muscles[muscleId].sets + exercise.sets.length;
+            exerciseCategory[exercise.category.name].muscleIds.forEach(muscleId => {
+                const muscle = {
+                    imgUrl: `url(https://wger.de${exerciseCategory[exercise.category.name].image_url_main})`,
+                    name: MUSCLES_DATA.find(mD => muscleId === mD.id).name,
+                    id: muscleId,
+                    is_front: exerciseCategory[exercise.category.name].isFront
+                }
+                if(!muscles[muscleId]) {
+                    muscles[muscleId] = {...muscle, sets: exercise.sets.length/2};
+                } else muscles[muscleId].sets = muscles[muscleId].sets + exercise.sets.length/2;
+            })
         }
     }))
 
@@ -39,7 +40,7 @@ const MusclesSore = ({recentWorkouts, fitnessLevel}) => {
         else acc.backImgs.push(muscles[m])
         return acc;
     }, {frontImgs: [], backImgs: []});
-    const maxWorkload = {beginner: 10, intermediate: 15, advanced: 20}
+
     const smallScreen = window.innerWidth < 992 || Object.keys(muscles).length < 9 ? {display: 'block', marginTop: 5, marginRight: 0, width: '100%'} : {};
     
     return (
@@ -57,10 +58,10 @@ const MusclesSore = ({recentWorkouts, fitnessLevel}) => {
                     <p style={{marginTop: 15}}>
                         {Object.keys(muscles).length ? "Muscles trained for optimal workload volume in the last 7 days: " : <>All muscles are fully recovered.</>}
                         {Object.keys(muscles).map((m, idx) => {
-                            let workloadPercentage = Math.round(muscles[m].sets/maxWorkload[fitnessLevel] * 100);
+                            let workloadPercentage = Math.round(muscles[m].sets/MAX_WORKLOAD[fitnessLevel] * 100);
                             workloadPercentage = workloadPercentage > 100 ? 100 : workloadPercentage;
                             return <CustomTag style={{...smallScreen}} key={idx} 
-                            color={workloadPercentage > 30 ?  (workloadPercentage > 60 ? "#87d068" : "#fa8c16"): "#cc0000"}>{muscles[m].name} {' '}
+                            color={workloadPercentage > 30 ?  (workloadPercentage > 60 ? "#87d068" : "#fa8c16"): "#cc0000"}>{muscleNamesTaxonomy[m.id]} {' '}
                              {workloadPercentage}% of workload</CustomTag>})}
                     </p>
                 </Col>

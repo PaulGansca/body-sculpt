@@ -37,11 +37,11 @@ export const setWorkout = (workout) => dispatch => {
     }
 };
 
-export const createCurrentWorkout = (userId) => dispatch => {
+export const createCurrentWorkout = (userId, currentUser) => dispatch => {
     dispatch({
         type: WorkoutActionTypes.CREATE_CURRENT_WORKOUT_START,
     });
-    generateWorkout(userId, updateCurrentWorkout, dispatch);
+    generateWorkout(userId, currentUser, updateCurrentWorkout, dispatch);
 };
 
 export const saveWorkout = (workout, userId, workoutId) => async dispatch => {

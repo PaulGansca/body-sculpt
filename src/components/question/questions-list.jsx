@@ -21,8 +21,8 @@ const questionsData = {
         for over two years.</>
     },
     goal: {
-        weightLoss: <>{<span style={{fontWeight: 'bold'}}>Weight loss:</span>} short rest times,
-        circuit style training to maximize fat burn.</>,
+        // weightLoss: <>{<span style={{fontWeight: 'bold'}}>Weight loss:</span>} short rest times,
+        // circuit style training to maximize fat burn.</>,
         muscleGain: <>{<span style={{fontWeight: 'bold'}}>Muscle Hypertrophy:</span>} workouts focus
         on building muscle to improve aesthetics and strength.</>,
         strengthGain: <>{<span style={{fontWeight: 'bold'}}>Strength Training:</span>} longer rest times,
@@ -35,12 +35,15 @@ const questionsData = {
         false: <>{<span style={{fontWeight: 'bold'}}>No</span>} </>,
     },
     musclePriority: {
-        biceps: <>{<span style={{fontWeight: 'bold'}}>Biceps</span>} </>,
-        triceps: <>{<span style={{fontWeight: 'bold'}}>Triceps</span>} </>,
-        chest: <>{<span style={{fontWeight: 'bold'}}>Chest</span>} </>,
-        back: <>{<span style={{fontWeight: 'bold'}}>Back</span>} </>,
-        legs: <>{<span style={{fontWeight: 'bold'}}>Legs</span>} </>,
-        shoulders: <>{<span style={{fontWeight: 'bold'}}>Shoulders</span>} </>
+        1: <>{<span style={{fontWeight: 'bold'}}>Biceps</span>} </>,
+        5: <>{<span style={{fontWeight: 'bold'}}>Triceps</span>} </>,
+        4: <>{<span style={{fontWeight: 'bold'}}>Chest</span>} </>,
+        12: <>{<span style={{fontWeight: 'bold'}}>Back</span>} </>,
+        10: <>{<span style={{fontWeight: 'bold'}}>Quadriceps</span>} </>,
+        11: <>{<span style={{fontWeight: 'bold'}}>Hamstrings</span>} </>,
+        7: <>{<span style={{fontWeight: 'bold'}}>Calves</span>} </>,
+        8: <>{<span style={{fontWeight: 'bold'}}>Glutes</span>} </>,
+        2: <>{<span style={{fontWeight: 'bold'}}>Shoulders</span>} </>
     },
     gender: {
         male: <>{<span style={{fontWeight: 'bold'}}>Male</span>} </>,

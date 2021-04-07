@@ -24,3 +24,9 @@ export const getExerciseInfo = (id) => {
         return res.data;
     });
 };
+
+export const getAllExercises = () => {
+    return fetcher.get(`/exerciseinfo/?limit=1000&language=2`).then(res => {
+        return res.data.results;
+    });
+};

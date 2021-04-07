@@ -1,4 +1,5 @@
 import { firestore } from './firebase.utils';
+import moment from 'moment';
 
 //check if email is already in use in app
 //prevents sign-up form submission if in use
@@ -108,4 +109,11 @@ export const deleteWorkout = async (userId, workoutId) => {
     if(workout.data().userId === userId) {
         return workoutRef.delete();
     } else return "Permission Denied";
+}
+
+//get recent workouts
+export const getUserRecentWorkouts = (userId) => {
+    const workoutsRef = firestore.collection(`workouts`);
+    const workouts = workoutsRef.where('userId', '==', userId).where("date", ">", moment().subtract(7, "d").format("YYYY-MM-DD")).get();
+    return workouts;
 }

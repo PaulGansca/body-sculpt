@@ -24,7 +24,7 @@ const ExerciseWorkload = (props) => {
         <div style={{display: 'flex', flexFlow: 'column', alignItems: 'baseline', overflow: 'hidden'}}>
                 <span style={{textAlign: 'left'}}>{exercise.name}</span>
                 {workoutState !== "not started" && setLoggedCount > 0 ?
-                 <span style={{color: "green"}}><CheckCircleOutlined /> {setLoggedCount}/{exercise.sets.length} sets</span> :
+                 <span style={{color: "#ffd662"}}><CheckCircleOutlined /> {setLoggedCount}/{exercise.sets.length} sets</span> :
                  <span>{exercise.sets.length} sets |
                      {repRange.min === repRange.max ? ` ${repRange.max}` : ` ${repRange.min}-${repRange.max}`} reps
                      {weightRange.min === weightRange.max ? ` | ${weightRange.max} kg` : ""}</span>}

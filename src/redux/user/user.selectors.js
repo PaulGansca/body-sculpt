@@ -36,3 +36,23 @@ export const selectTrainingFrequency = createSelector(
     [selectCurrentUser],
     (currentUser) => currentUser.trainingFrequency
 );
+
+export const selectSplitType = createSelector(
+    [selectCurrentUser],
+    (currentUser) => currentUser.splitType
+);
+
+export const selectTrainingDuration = createSelector(
+    [selectCurrentUser],
+    (currentUser) => currentUser.trainingDuration
+);
+
+export const selectFitnessLevel = createSelector(
+    [selectCurrentUser],
+    (currentUser) => currentUser.fitnessLevel
+);
+
+export const selectGoal = createSelector(
+    [selectCurrentUser],
+    (currentUser) => currentUser.goal
+);
