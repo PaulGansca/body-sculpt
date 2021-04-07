@@ -4,6 +4,8 @@
     display: flex;
     flex-flow: column;
     align-items: center;
+    width: fit-content;
+    margin: 0 auto;
 }
 
 .exercises-list .toggle-state-btn {
@@ -12,6 +14,9 @@
 }
 
 @media only screen and (max-width: 400px) {
+    .exercises-list {
+        max-height: 50vh;
+    }
     .exercises-list .toggle-state-btn {
         bottom: 15px;
     }
