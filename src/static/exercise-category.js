@@ -36,4 +36,10 @@ export const muscleNamesTaxonomy = {
     7: "Calves",
     8: "Glutes",
     2: "Shoulders",
+    13: "Elbow Flexor",
+    14: "Obliques",
+    6: "Abs",
+    3: "Serratus Anterior",
+    15: "Lower Calves",
+    9: "Trapezius",
 }
