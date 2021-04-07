@@ -8,7 +8,7 @@ import { getAllExercises } from '../api/wger';
 import { getUserRecentWorkouts } from '../firebase/crud-user';
 
 export const generateWorkout = async (userId, currentUser, updateCurrentWorkout, dispatch) => {
-    const {splitType, trainingDuration, fitnessLevel, goal, trainingFrequency, musclePriority, isMusclePrioritized} = currentUser;
+    const {splitType, fitnessLevel, goal, trainingFrequency, musclePriority, isMusclePrioritized} = currentUser;
     const workoutExercises = [];
     //fetch exercises
     //fetch user's recent workouts to determine fresh muscles

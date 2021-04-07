@@ -41,7 +41,7 @@ const MusclesSore = ({recentWorkouts, fitnessLevel}) => {
         return acc;
     }, {frontImgs: [], backImgs: []});
 
-    const smallScreen = window.innerWidth < 992 || Object.keys(muscles).length < 9 ? {display: 'block', marginTop: 5, marginRight: 0, width: '100%'} : {};
+    const smallScreen = window.innerWidth < 992 || Object.keys(muscles).length < 9 ? {display: 'block', marginTop: 5, marginRight: 0, width: '100%'} : {width: '150px'};
     
     return (
         <>
@@ -56,13 +56,14 @@ const MusclesSore = ({recentWorkouts, fitnessLevel}) => {
                 </Col>
                 <Col xs={{ span: 24 }} lg={{ span: 12 }}>
                     <p style={{marginTop: 15}}>
-                        {Object.keys(muscles).length ? "Muscles trained for optimal workload volume in the last 7 days: " : <>All muscles are fully recovered.</>}
+                        {Object.keys(muscles).length ? <>Fatigue overview where 100% is completely fatigued <br/><br/></> : <>All muscles are fully recovered.</>}
                         {Object.keys(muscles).map((m, idx) => {
+                            console.log(m)
                             let workloadPercentage = Math.round(muscles[m].sets/MAX_WORKLOAD[fitnessLevel] * 100);
                             workloadPercentage = workloadPercentage > 100 ? 100 : workloadPercentage;
                             return <CustomTag style={{...smallScreen}} key={idx} 
-                            color={workloadPercentage > 30 ?  (workloadPercentage > 60 ? "#87d068" : "#fa8c16"): "#cc0000"}>{muscleNamesTaxonomy[m.id]} {' '}
-                             {workloadPercentage}% of workload</CustomTag>})}
+                            color={workloadPercentage > 30 ?  (workloadPercentage > 60 ? "#87d068" : "#fa8c16"): "#cc0000"}>{muscleNamesTaxonomy[m]} {' '}
+                             {workloadPercentage}% </CustomTag>})}
                     </p>
                 </Col>
                 </Row>

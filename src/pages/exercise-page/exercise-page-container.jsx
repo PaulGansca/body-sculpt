@@ -12,7 +12,7 @@ import ExercisePage from './exercise-page';
 const exerciseEffects = (WrappedComponent) => (props) => {
     const { match, exercises } = props;
     //use later for making sure correct workout is set in redux state and exercise
-    const { workoutId, exerciseId } = match.params;
+    const { exerciseId } = match.params;
     const exercise = exercises.find(e => e.db_id === exerciseId)
     
     return (
