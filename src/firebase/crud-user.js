@@ -112,8 +112,8 @@ export const deleteWorkout = async (userId, workoutId) => {
 }
 
 //get recent workouts
-export const getUserRecentWorkouts = (userId) => {
+export const getUserRecentWorkouts = (userId, amount, units) => {
     const workoutsRef = firestore.collection(`workouts`);
-    const workouts = workoutsRef.where('userId', '==', userId).where("date", ">", moment().subtract(7, "d").format("YYYY-MM-DD")).get();
+    const workouts = workoutsRef.where('userId', '==', userId).where("date", ">", moment().subtract(amount, units).format("YYYY-MM-DD")).get();
     return workouts;
 }

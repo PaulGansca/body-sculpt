@@ -37,3 +37,29 @@ export const REP_RANGE_BY_GOAL = {
         end: [20,25]
     }
 }
+
+// % of 1 rep max
+export const INTENSITY_BY_REPS = {
+    1: 1,
+    3: 0.95,
+    5: 0.90,
+    6: 0.85,
+    12: 0.67,
+    15: 0.58,
+}
+
+/*
+
+Recommended Training Volumes to Achieve Specific Goals
+
+Training Goal       Repetitions        Intensity (% 1-RM)
+
+Endurance               ≥ 12                ≤ 67%
+
+Hypertrophy            6 - 12              67 - 85%
+
+Maximum Strength        ≤ 6                 ≥ 85%
+
+Reference:  NSCA Essentials of Strength Training and Conditioning (3rd ed.) 2008.
+
+*/

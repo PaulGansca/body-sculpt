@@ -1,21 +1,26 @@
+import moment from 'moment';
+import _ from 'lodash';
 import { WorkoutActionTypes } from '../redux/workout/workout.types';
 import newId from '../utils/id-generator';
 import { createDbWorkout } from '../static/exercise-fields-stored';
 import { exerciseCategory, MAX_WORKLOAD, bestExercises }  from '../static/exercise-category';
 import { MUSCLES_DATA }  from '../static/muscle-images';
-import { WORKOUT_SPLITS_DAYS, REP_RANGE_BY_GOAL } from '../static/workout-splits-days';
+import { WORKOUT_SPLITS_DAYS, REP_RANGE_BY_GOAL, INTENSITY_BY_REPS } from '../static/workout-splits-days';
 import { getAllExercises } from '../api/wger';
+import { weightPrediction } from '../api/google-cloud-functions';
 import { getUserRecentWorkouts } from '../firebase/crud-user';
+import { LIFTING_STANDARDS } from './lifting-standars';
 
 export const generateWorkout = async (userId, currentUser, updateCurrentWorkout, dispatch) => {
-    const {splitType, fitnessLevel, goal, trainingFrequency, musclePriority, isMusclePrioritized} = currentUser;
+    const {splitType, fitnessLevel, goal, trainingFrequency, musclePriority, isMusclePrioritized, gender} = currentUser;
     const workoutExercises = [];
+    const pastWorkouts = getUserRecentWorkouts(userId, 12, "w");
     //fetch exercises
     //fetch user's recent workouts to determine fresh muscles
-    Promise.all([getAllExercises(), getUserRecentWorkouts(userId)]).then(async ([exercises, recentWorkouts]) => {
+    Promise.all([getAllExercises(), getUserRecentWorkouts(userId, 7, "d")]).then(async ([exercises, recentWorkouts]) => {
         //recent workouts retrieved
         let recentWorkoutsSorted = [];
-        (await recentWorkouts.forEach(async w => (await recentWorkoutsSorted.push(w.data()))));
+        recentWorkouts.forEach(w => (recentWorkoutsSorted.push(w.data())));
         recentWorkoutsSorted = recentWorkoutsSorted.sort((a, b) => new Date(b.date) - new Date(a.date));
         //calculate sets performed per muscle
         const { musclesFatigue, completedExercises, enchancedRecentWorkouts} = calculateWorkload(recentWorkoutsSorted, exercises);
@@ -33,6 +38,10 @@ export const generateWorkout = async (userId, currentUser, updateCurrentWorkout,
         console.log(musclesFatigue)
         //filter exercises to only contain relevant ones based on day
         const subsetExercises = exercises.filter(e => lowestFatigueDay.category.includes(e.category.id));
+        //reduce all past performances by exercise
+        let pastPerformances = [];
+        (await pastWorkouts).forEach(w => (pastPerformances.push(w.data())));
+        pastPerformances = reducePastWorkoutsByExercise(pastPerformances)
         lowestFatigueDay.muscleIds.forEach(async id => {
             //find position of muscle in previous workouts to determine position today
             let previousPosition = -1;
@@ -44,7 +53,7 @@ export const generateWorkout = async (userId, currentUser, updateCurrentWorkout,
             }
             console.log(previousPosition)
             const newPostion = (previousPosition >= Math.floor(enchancedRecentWorkouts[index].exercises.length / 2)
-                                || (isMusclePrioritized && musclePriority.includes(id))) ? "mid" : "end";
+                                || (isMusclePrioritized === "true" && musclePriority.includes(id))) ? "mid" : "end";
             // get a random best exercises for musclesIds in lowestFatigueDay
             const randomBest = getRandVal(bestExercises[id]);
             const exercise = exercises.find(e => e.id === randomBest);
@@ -71,8 +80,8 @@ export const generateWorkout = async (userId, currentUser, updateCurrentWorkout,
                 console.log("TARGET SETS:", targetSets)
                 console.log("EXERCISE COUNT", exerciseCount)
                 //select half +1 if not integer exercises from past workouts for progressive overload
-                const recentExercises = completedExercises
-                    .filter(e => e.id !== exercise.id && e.muscles.findIndex(m=> m.id === id) > -1)
+                const recentExercises = _.uniqBy(completedExercises
+                    .filter(e => e.id !== exercise.id && e.muscles.findIndex(m=> m.id === id) > -1),'id')
                     .slice(0, Math.round(exerciseCount/2));
                 //select new exercises to stimulate new muscles
                 const newExercises = [];
@@ -80,41 +89,43 @@ export const generateWorkout = async (userId, currentUser, updateCurrentWorkout,
                 while (newExercises.length < newExercisesNeeded) {
                     const randomExercise = getRandVal(subsetExercises);
                     if((randomExercise.muscles.findIndex(m=> m.id === id) > -1)
-                        && !recentExercises.includes(randomExercise.id)
+                        && (recentExercises.findIndex(r => randomExercise.id === r.id) === -1)
                         && randomExercise.id !== exercise.id
-                        && !newExercises.includes(randomExercise.id)) newExercises.push(randomExercise)
+                        && (newExercises.findIndex(r => randomExercise.id === r.id) === -1)
+                        && (workoutExercises.findIndex(r => randomExercise.id === r.id) === -1)) newExercises.push(randomExercise)
                 }
                 console.log("MUSCLE ID: ", id)
                 console.log(recentExercises);
                 console.log(newExercises);
                 const combinedExercises = recentExercises.concat(newExercises);
+
                 let firstExReps = getRandVal(REP_RANGE_BY_GOAL[goal][newPostion === "mid" ? "start" : "mid"])
                 exercise.sets = [...Array(goal === "strengthGain" ? 5 : 4)].map(i => (
-                    {reps: firstExReps, weight: 50, id: newId(), isLogged: false}
+                    {reps: firstExReps, weight: 0, id: newId(), isLogged: false}
                 ))
                 exercise.db_id = newId();
                 exercise.isFetched = true;
                 delete exercise.rpe;
                 console.log(exercise);
+                if(newPostion === "end") workoutExercises.push(exercise);
                 setsToPerform -= goal === "strengthGain" ? 5 : 4;
                 let setsPerEx = Math.floor(setsToPerform / exerciseCount);
-                //assign sets and reps to each exercise
+                //find one rep max
                 combinedExercises.forEach((e, index) => {
+                    //assign sets and reps to each exercise
                     let repRange = getRandVal(REP_RANGE_BY_GOAL[goal][(index/exerciseCount >= 0.5 && newPostion === "end") ? "end" : "mid"]);
-                    if(index === exerciseCount-1 && setsToPerform % exerciseCount !== 0) setsPerEx = setsToPerform % exerciseCount
+                    if(index === exerciseCount-1 && setsToPerform % exerciseCount !== 0) setsPerEx = setsToPerform % exerciseCount;
                     e.sets = [...Array(setsPerEx)].map(i => (
                         //calculate weight
-                        {reps: repRange, weight: 50, id: newId(), isLogged: false}
+                        {reps: repRange, weight: 0, id: newId(), isLogged: false}
                     ))
                     e.db_id = newId();
                     e.isFetched = true;
                     delete e.rpe;
                     if(newPostion === "end") workoutExercises.push(e);
                     else workoutExercises.unshift(e);
-                    console.log(e);
-                });
-                if(newPostion === "end") workoutExercises.push(exercise);
-                else workoutExercises.unshift(exercise);
+                })
+                if(newPostion === "mid") workoutExercises.unshift(exercise);
             } else {
                 // only one exercise available so calculate reps accordingly
                 // for first exercise gains if startingOrder.length > 1 and exercise not performed last time do
@@ -122,7 +133,7 @@ export const generateWorkout = async (userId, currentUser, updateCurrentWorkout,
                 // this is required to ensure muscles and best exercises are shuffled
                 let firstExReps = getRandVal(REP_RANGE_BY_GOAL[goal][newPostion === "end" ? "mid" : "start"])
                 exercise.sets = [...Array(targetSets)].map(i => (
-                    {reps: firstExReps, weight: 50, id: newId(), isLogged: false}
+                    {reps: firstExReps, weight: 0, id: newId(), isLogged: false}
                 ))
                 exercise.db_id = newId();
                 exercise.isFetched = true;
@@ -130,15 +141,30 @@ export const generateWorkout = async (userId, currentUser, updateCurrentWorkout,
                 if(newPostion === "end") workoutExercises.push(exercise);
                 else workoutExercises.unshift(exercise);
             }
-            console.log(workoutExercises)
-            const currentWorkout = {exercises: workoutExercises, date: new Date()}
+        });
+        Promise.all(workoutExercises.map(async e => {
+            let oneRepMax = 0;
+            //exercise has been performed before
+            if(pastPerformances[e.id]) {
+                oneRepMax = (await predictRepMax(pastPerformances, e))
+            } else {
+                //exercise hasn't been performed before prediction is based on user stats
+                oneRepMax = LIFTING_STANDARDS[gender][e.category.name][fitnessLevel] * currentUser.weight;
+            }
+            //determine weight as intensity % of 1 rep max by goal
+            let weight = (INTENSITY_BY_REPS[e.sets[0].reps] ? INTENSITY_BY_REPS[e.sets[0].reps] : INTENSITY_BY_REPS[1] - (0.03 * (e.sets[0].reps-1))) * (oneRepMax);
+            //adjust weight for gym in 2.5 kg increments;
+            weight = weight % 2.5 === 0 ? weight : weight - (weight % 2.5);
+            e.sets = e.sets.map(set => ({...set, weight}));
+            return e;
+        })).then(results => {
+            const currentWorkout = {exercises: results, date: new Date()}
             dispatch({
                 type: WorkoutActionTypes.CREATE_CURRENT_WORKOUT_SUCCESS,
                 payload: currentWorkout
             });
             updateCurrentWorkout(userId, createDbWorkout(currentWorkout))
         })
-
         return []
     }).catch(err => dispatch({
         type: WorkoutActionTypes.CREATE_CURRENT_WORKOUT_FAIL,
@@ -174,4 +200,55 @@ const calculateWorkload = (recentWorkoutsSorted, exercises) => {
 
 function getRandVal(arr) {
    return arr[Math.floor(Math.random() * arr.length)]
+}
+
+
+function reducePastWorkoutsByExercise(workouts) {
+    return workouts.reduce((acc, workout) => {
+        workout.exercises.forEach(exercise => {
+            if(!acc[exercise.id]) {
+                acc[exercise.id] = JSON.parse(JSON.stringify(exercise));
+                acc[exercise.id].sets = acc[exercise.id].sets.map(s => {
+                    s.datePerformed = workout.date
+                    s.rpe = exercise.rpe ? exercise.rpe : 0;
+                    return s;
+                });
+            } else {
+                acc[exercise.id].sets = acc[exercise.id].sets.concat(exercise.sets.map(s => {
+                    s.datePerformed = workout.date;
+                    s.rpe = exercise.rpe ? exercise.rpe : 0;
+                    return s;
+                }));
+            }
+        });
+        return acc;
+    }, {});
+}
+
+function calculateMaxesExercise(sets) {
+    return sets.reduce((acc, set) => {
+        const max = Math.round(set.weight * (1 + (set.reps/30)))
+        if(!acc[set.datePerformed] || 
+            acc[set.datePerformed].max < max) {
+            acc[set.datePerformed] = {
+                datePerformed: moment(set.datePerformed).format("DD-MM-YYYY"), //x axis
+                max, // calculate 1 RM for y axis
+                rpe: set.rpe
+            }
+        }
+        return acc;
+    }, {});
+}
+
+function predictRepMax(pastPerformances, exercise) {
+    let maxes = calculateMaxesExercise(pastPerformances[exercise.id].sets)
+    maxes = Object.keys(maxes)
+                .sort((dateA, dateB) => new Date(dateA) - new Date(dateB))
+                .map(date => ({max: maxes[date].max, rpe: maxes[date].rpe}));
+    if(maxes[maxes.length-1].rpe !== 0) {
+        if(maxes[maxes.length-1].rpe <= 3) maxes.push({max: maxes[maxes.length-1].max+2.5}) // predict greater weight
+        else if(maxes[maxes.length-1].rpe > 4) maxes.push({max: maxes[maxes.length-1].max-2.5}) // reduce weight
+        else maxes.push({max: maxes[maxes.length-1].max}) // maintain with possibility of increase
+    }
+    return weightPrediction(maxes.map(max => max.max));
 }

@@ -21,7 +21,7 @@ const ExertionRating = ({updateExercise, exercise, rpe, currentSet}) => {
                 <ExertionSlider rpe={rpe ? rpe : 3} handleChange={handleChange} /></>, 
         props: {header: <ExertionLabel />, key: "1"}
     }];
-    const isExerciseComplete = currentSet === exercise.sets.length ? "1" : "0"
+    const isExerciseComplete = currentSet === exercise.sets.length - 1 ? "1" : "0"
     return (
         <div className="exertion-rating-container">
             <CustomCollapse defaultActiveKey={isExerciseComplete} className="rating-collapse-header" ghost panels={panels} />
