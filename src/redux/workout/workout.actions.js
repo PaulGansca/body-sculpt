@@ -105,15 +105,21 @@ export const deleteExercise = (idx) => dispatch => {
     });
 };
 
-export const swapExercise = (exerciseIdx, exerciseId, exerciseDbId) => async dispatch => {
+export const swapExercise = (exerciseIdx, exerciseId, exerciseDbId, userStats) => async dispatch => {
     dispatch({
         type: WorkoutActionTypes.SWAP_EXERCISE_START,
     });
     try {
         const exercise = await getExerciseInfo(exerciseId);
-        // TO DO GENERATE WORKLOAD EX
-        exercise.sets = [{reps: 10, weight: 50, id: newId(), isLogged: false},
-            {reps: 10, weight: 50, id: newId(), isLogged: false}, {reps: 10, weight: 50, id: newId(), isLogged: false}]
+        const { goal, userId } = userStats;
+        const pastPerformances = [];
+        const reps = getRandVal(REP_RANGE_BY_GOAL[goal].end)
+        const pastWorkouts = await getUserRecentWorkouts(userId, 12, "w")
+        pastWorkouts.forEach(w => (pastPerformances.push(w.data())));
+        const weight = await calculateWeight(exerciseId, exercise.category.name, reps, userStats, pastPerformances);
+        exercise.sets = [...Array(goal === "strengthGain" ? 3 : 4)].map(i => (
+            {reps, weight, id: newId(), isLogged: false}
+        ))
         exercise.db_id = exerciseDbId;
         exercise.isFetched = true;
         dispatch({
