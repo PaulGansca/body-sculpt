@@ -56,3 +56,8 @@ export const selectGoal = createSelector(
     [selectCurrentUser],
     (currentUser) => currentUser.goal
 );
+
+export const selectGender = createSelector(
+    [selectCurrentUser],
+    (currentUser) => currentUser.gender
+);

@@ -4,10 +4,11 @@ import { WorkoutActionTypes } from './workout.types';
 
 import { generateWorkout } from '../../workout-creation/create-workout';
 import { updateCurrentWorkout, completeWorkout as firebaseCompleteWorkout,
-     getWorkout, updateCompledWorkout } from '../../firebase/crud-user';
+     getWorkout, updateCompledWorkout, getUserRecentWorkouts } from '../../firebase/crud-user';
 import { getExerciseInfo } from '../../api/wger';
 import { createDbWorkout } from '../../static/exercise-fields-stored';
-
+import { REP_RANGE_BY_GOAL } from '../../static/workout-splits-days';
+import { calculateWeight, getRandVal } from '../../workout-creation/create-workout';
 import newId from '../../utils/id-generator';
 
 export const setWorkout = (workout) => dispatch => {
@@ -66,17 +67,24 @@ export const saveWorkout = (workout, userId, workoutId) => async dispatch => {
     }
 };
 
-export const addExercise = (id) => async dispatch => {
+export const addExercise = (id, userStats) => async dispatch => {
     dispatch({
         type: WorkoutActionTypes.ADD_EXERCISE_START,
     });
     try {
         const exercise = await getExerciseInfo(id);
-        // TO DO GENERATE WORKLOAD EX
-        exercise.sets = [{reps: 10, weight: 50, id: newId(), isLogged: false},
-             {reps: 10, weight: 50, id: newId(), isLogged: false}, {reps: 10, weight: 50, id: newId(), isLogged: false}]
-        exercise.db_id = newId()
+        const { goal, userId } = userStats;
+        const pastPerformances = [];
+        const reps = getRandVal(REP_RANGE_BY_GOAL[goal].end)
+        const pastWorkouts = await getUserRecentWorkouts(userId, 12, "w")
+        pastWorkouts.forEach(w => (pastPerformances.push(w.data())));
+        const weight = await calculateWeight(id, exercise.category.name, reps, userStats, pastPerformances);
+        exercise.sets = [...Array(goal === "strengthGain" ? 3 : 4)].map(i => (
+            {reps, weight, id: newId(), isLogged: false}
+        ))
+        exercise.db_id = newId();
         exercise.isFetched = true;
+        console.log(exercise)
         dispatch({
             type: WorkoutActionTypes.ADD_EXERCISE_SUCCESS,
             payload: exercise

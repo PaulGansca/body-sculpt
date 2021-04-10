@@ -10,17 +10,19 @@ import SearchExercises from '../search-exercises.jsx/search-exercises';
 
 import { addExercise } from '../../redux/workout/workout.actions';
 import { selectIsLoading, selectWorkoutState } from '../../redux/workout/workout.selectors';
+import { selectGoal, selectFitnessLevel, selectUserWeight, selectGender, selectCurrentUserId } from '../../redux/user/user.selectors';
 
 
-const AddExercise = ({addExercise, isLoading, workoutState, userId}) => {
+const AddExercise = ({addExercise, isLoading, workoutState, goal, fitnessLevel, gender, weight, userId}) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedExerciseId, setSelectedExerciseId] = useState(0);
-    const marginRight = {marginRight: workoutState !== "not started" ? 15 : 0}
+    const marginRight = {marginRight: workoutState !== "not started" ? 15 : 0};
+    const userStats = {goal, fitnessLevel, gender, userWeight: weight, userId};
     return (
         <>
             <CustomButton style={{...marginRight}} shape={"round"} icon={<PlusOutlined />}
                 onClick={() => setIsModalVisible(true)}>Add Exercise</CustomButton>
-            <CustomModal visible={isModalVisible} onOk={() => {addExercise(selectedExerciseId); setIsModalVisible(false)}}
+            <CustomModal visible={isModalVisible} onOk={() => {addExercise(selectedExerciseId, userStats); setIsModalVisible(false)}}
                 onCancel={() => setIsModalVisible(false)} confirmLoading={isLoading}>
                 <p>Add an exercise to your workout.</p>
                 <p>BodySculpt will automatically determine workload.</p>
@@ -32,11 +34,16 @@ const AddExercise = ({addExercise, isLoading, workoutState, userId}) => {
 
 const mapStateToProps = createStructuredSelector({
     isLoading: selectIsLoading,
-    workoutState: selectWorkoutState
+    workoutState: selectWorkoutState,
+    goal: selectGoal,
+    fitnessLevel: selectFitnessLevel,
+    gender: selectGender,
+    weight: selectUserWeight,
+    userId: selectCurrentUserId
 })
 
 const mapDispatchToProps = dispatch => ({
-    addExercise: (exerciseId) => dispatch(addExercise(exerciseId, dispatch)),
+    addExercise: (exerciseId, userStats) => dispatch(addExercise(exerciseId, userStats, dispatch)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddExercise);

@@ -198,7 +198,7 @@ const calculateWorkload = (recentWorkoutsSorted, exercises) => {
     return {musclesFatigue: muscles, completedExercises, enchancedRecentWorkouts};
 }
 
-function getRandVal(arr) {
+export function getRandVal(arr) {
    return arr[Math.floor(Math.random() * arr.length)]
 }
 
@@ -240,8 +240,8 @@ function calculateMaxesExercise(sets) {
     }, {});
 }
 
-function predictRepMax(pastPerformances, exercise) {
-    let maxes = calculateMaxesExercise(pastPerformances[exercise.id].sets)
+function predictRepMax(pastPerformances, exerciseId) {
+    let maxes = calculateMaxesExercise(pastPerformances[exerciseId].sets)
     maxes = Object.keys(maxes)
                 .sort((dateA, dateB) => new Date(dateA) - new Date(dateB))
                 .map(date => ({max: maxes[date].max, rpe: maxes[date].rpe}));
@@ -251,4 +251,21 @@ function predictRepMax(pastPerformances, exercise) {
         else maxes.push({max: maxes[maxes.length-1].max}) // maintain with possibility of increase
     }
     return weightPrediction(maxes.map(max => max.max));
+}
+
+export async function calculateWeight(exerciseId, categoryName, reps, userStats, pastPerformances) {
+    const { fitnessLevel, gender, userWeight } = userStats;
+    let oneRepMax = 0;
+    //exercise has been performed before
+    if(pastPerformances[exerciseId]) {
+        oneRepMax = (await predictRepMax(pastPerformances, exerciseId))
+    } else {
+        //exercise hasn't been performed before prediction is based on user stats
+        oneRepMax = LIFTING_STANDARDS[gender][categoryName][fitnessLevel] * userWeight;
+    }
+    //determine weight as intensity % of 1 rep max by goal
+    let weight = (INTENSITY_BY_REPS[reps] ? INTENSITY_BY_REPS[reps] : INTENSITY_BY_REPS[1] - (0.03 * (reps-1))) * (oneRepMax);
+    //adjust weight for gym in 2.5 kg increments;
+    weight = weight % 2.5 === 0 ? weight : weight - (weight % 2.5);
+    return weight;
 }

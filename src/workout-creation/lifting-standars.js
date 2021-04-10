@@ -1,5 +1,6 @@
 //exercise strength standards based on level
 //value is % of weight
+//https://exrx.net/Testing/WeightLifting/StrengthStandards
 export const LIFTING_STANDARDS = {
     male: {
         "Abs": {
