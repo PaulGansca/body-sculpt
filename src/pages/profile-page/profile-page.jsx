@@ -11,10 +11,10 @@ import ExercisePerformance from '../../components/profile/exercise-performance';
 import './profile-page.css';
 
 const ProfilePage = (props) => {
-    const { workouts, currentUser } = props;
+    const { workouts, currentUser, setSplitType, isSplitLoading } = props;
 
     const panels = [{
-        content: <WorkoutProgramOverview />, 
+        content: <WorkoutProgramOverview setSplitType={setSplitType} isSplitLoading={isSplitLoading} {...currentUser} />, 
         props: {header: "Workout style overview", key: "1",
                 className: "profile-page-panel"}
     }, {

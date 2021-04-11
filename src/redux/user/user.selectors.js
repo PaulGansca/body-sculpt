@@ -61,3 +61,8 @@ export const selectGender = createSelector(
     [selectCurrentUser],
     (currentUser) => currentUser.gender
 );
+
+export const selectIsSplitLoading = createSelector(
+    [selectUser],
+    (user) => user.isSplitLoading
+);

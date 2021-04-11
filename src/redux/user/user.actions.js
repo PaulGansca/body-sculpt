@@ -27,4 +27,25 @@ export const setUserGoals = (userId, goalsData, history) => dispatch => {
             payload: err
         });
     });
+};
+
+export const setSplitType = (userId, splitType) => dispatch => {
+    dispatch({
+        type: UserActionTypes.SET_SPLIT_TYPE_START,
+    });
+    userOperations.setUserGoals(userId, splitType).then(() => {
+        console.log("Document successfully updated!");
+        dispatch({
+            type: UserActionTypes.SET_SPLIT_TYPE_SUCCESS,
+            payload: splitType
+        });
+    })
+    .catch((err) => {
+        // The document probably doesn't exist.
+        alert("Error updating document: ", err);
+        dispatch({
+            type: UserActionTypes.SET_SPLIT_TYPE_FAIL,
+            payload: err
+        });
+    });
   };

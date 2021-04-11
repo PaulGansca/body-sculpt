@@ -3,7 +3,8 @@ import { UserActionTypes } from './user.types';
 const INITIAL_STATE = {
     currentUser: "",
     isLoading: true,
-    error: ""
+    error: "",
+    isSplitLoading: false
 }
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -32,6 +33,26 @@ const userReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 isLoading: false,
+                error: action.payload,
+        }
+        case UserActionTypes.SET_SPLIT_TYPE_START:
+            return {
+                ...state,
+                isSplitLoading: true,
+        }
+        case UserActionTypes.SET_SPLIT_TYPE_SUCCESS:
+            return {
+                ...state,
+                isSplitLoading: false,
+                currentUser: {
+                    ...action.payload,
+                    ...state.currentUser,
+                }
+        }
+        case UserActionTypes.SET_SPLIT_TYPE_FAIL:
+            return {
+                ...state,
+                isSplitLoading: false,
                 error: action.payload,
         }
         default:
