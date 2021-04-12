@@ -29,23 +29,23 @@ export const setUserGoals = (userId, goalsData, history) => dispatch => {
     });
 };
 
-export const setSplitType = (userId, splitType) => dispatch => {
+export const setProfileSettings = (userId, profileSettings) => dispatch => {
     dispatch({
-        type: UserActionTypes.SET_SPLIT_TYPE_START,
+        type: UserActionTypes.SET_PROFILE_SETTINGS_START,
     });
-    userOperations.setUserGoals(userId, splitType).then(() => {
+    userOperations.setUserGoals(userId, profileSettings).then(() => {
         console.log("Document successfully updated!");
         dispatch({
-            type: UserActionTypes.SET_SPLIT_TYPE_SUCCESS,
-            payload: splitType
+            type: UserActionTypes.SET_PROFILE_SETTINGS_SUCCESS,
+            payload: profileSettings
         });
     })
     .catch((err) => {
         // The document probably doesn't exist.
         alert("Error updating document: ", err);
         dispatch({
-            type: UserActionTypes.SET_SPLIT_TYPE_FAIL,
+            type: UserActionTypes.SET_PROFILE_SETTINGS_FAIL,
             payload: err
         });
     });
-  };
+};

@@ -66,3 +66,13 @@ export const selectIsSplitLoading = createSelector(
     [selectUser],
     (user) => user.isSplitLoading
 );
+
+export const selectWorkoutReminders = createSelector(
+    [selectCurrentUser],
+    (currentUser) => currentUser.workoutReminders
+);
+
+export const selectTrainingDays = createSelector(
+    [selectCurrentUser],
+    (currentUser) => currentUser.trainingDays
+);

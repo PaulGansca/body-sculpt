@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
 import { fetchWorkoutsWithExercises } from '../../redux/workouts/workouts.actions';
-import { setSplitType } from '../../redux/user/user.actions';
+import { setProfileSettings } from '../../redux/user/user.actions';
 import { selectCurrentUser, selectIsLoading, selectCurrentUserId, selectIsSplitLoading } from '../../redux/user/user.selectors';
 import { selectWorkoutsArray, selectIsLoading as workoutsLoading } from '../../redux/workouts/workouts.selectors';
 
@@ -38,7 +38,7 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = (dispatch) => ({
     fetchWorkoutsWithExercises: (userId) => dispatch(fetchWorkoutsWithExercises(userId, dispatch)),
-    setSplitType: (userId, splitType) => dispatch(setSplitType(userId, splitType))
+    setProfileSettings: (userId, profileSettings) => dispatch(setProfileSettings(userId, profileSettings, dispatch))
 })
 
 const ProfilePageContainer = compose(

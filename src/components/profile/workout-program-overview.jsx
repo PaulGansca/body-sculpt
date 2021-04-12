@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import _ from 'lodash';
 import { SwapOutlined } from '@ant-design/icons';
 
+import WorkoutReminders from '../workout-reminders/workout-reminders';
 import CustomTag from '../antd/custom-tag/custom-tag';
 import CustomButton from '../antd/custom-button/custom-button';
 import CustomTooltip from '../antd/custom-tooltip/custom-tooltip';
@@ -15,7 +16,7 @@ import { muscleNamesTaxonomy } from '../../static/exercise-category';
 import './profile.css';
 
 const WorkoutProgramOverview = ({goal, fitnessLevel, isMusclePrioritized, musclesPrioritized,
-        splitType, trainingFrequency, isSplitLoading, setSplitType, id}) => {
+        splitType, trainingFrequency, isSplitLoading, setProfileSettings, id}) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedOption, setSelectedOption] = useState(splitType);
     const options = Object.keys(SPLIT_INFORMATION).map(split => ({
@@ -30,7 +31,7 @@ const WorkoutProgramOverview = ({goal, fitnessLevel, isMusclePrioritized, muscle
                             size={"small"} shape={"round"} icon={<SwapOutlined />} />
                 </CustomTooltip>
             </h1>
-            <CustomModal visible={isModalVisible} onOk={() => {setSplitType(id, {splitType: selectedOption}); setIsModalVisible(false);}}  
+            <CustomModal visible={isModalVisible} onOk={() => {setProfileSettings(id, {splitType: selectedOption}); setIsModalVisible(false);}}  
                 confirmLoading={isSplitLoading} onCancel={() => setIsModalVisible(false)}>
                 Available programs: <CustomSelect style={{width: 200, marginBottom: 15}} defaultValue={selectedOption} placeholder={"Select Program"}
                     options={options} onSelect={(split) => setSelectedOption(split)} />
@@ -43,7 +44,7 @@ const WorkoutProgramOverview = ({goal, fitnessLevel, isMusclePrioritized, muscle
                 {musclesPrioritized.map(m => <CustomTag color={'#2db7f5'}>{muscleNamesTaxonomy[m]}</CustomTag>)}
             </p> : <></>}
             <p>Training Frequncy: <CustomTag color={'#2db7f5'}>{trainingFrequency} x Week</CustomTag></p>
-            <p>Set workout reminders via email.</p>
+            <WorkoutReminders setProfileSettings={setProfileSettings} userId={id} />
         </div>
     )
 };

@@ -35,12 +35,12 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 isLoading: false,
                 error: action.payload,
         }
-        case UserActionTypes.SET_SPLIT_TYPE_START:
+        case UserActionTypes.SET_PROFILE_SETTINGS_START:
             return {
                 ...state,
                 isSplitLoading: true,
         }
-        case UserActionTypes.SET_SPLIT_TYPE_SUCCESS:
+        case UserActionTypes.SET_PROFILE_SETTINGS_SUCCESS:
             return {
                 ...state,
                 isSplitLoading: false,
@@ -49,7 +49,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
                     ...state.currentUser,
                 }
         }
-        case UserActionTypes.SET_SPLIT_TYPE_FAIL:
+        case UserActionTypes.SET_PROFILE_SETTINGS_FAIL:
             return {
                 ...state,
                 isSplitLoading: false,
