@@ -9,29 +9,43 @@ import CustomTooltip from '../antd/custom-tooltip/custom-tooltip';
 
 import { logSet, logSetWithSwapExercise } from '../../redux/workout/workout.actions';
 import { selectWorkoutExercises } from '../../redux/workout/workout.selectors';
+import { selectCurrentUserId, selectDisplayName } from '../../redux/user/user.selectors';
 
-const LogSet = ({logSet, exercise, currentSet, exercises, exerciseIdx, logSetWithSwapExercise}) => {
-    const handleLog = () => {
+import { createLeaderboardEntry } from '../../firebase/crud-leaderboard';
+
+const LogSet = ({logSet, exercise, currentSet, exercises, exerciseIdx,
+    logSetWithSwapExercise, userId, displayName}) => {
+    const handleLog = (setsLogged) => {
         const swapIdx = exercises.findIndex(e => e.sets.findIndex(s => !s.isLogged) > -1);
-                if(swapIdx < exerciseIdx) {
-                    exercises[exerciseIdx] = exercise
-                    logSetWithSwapExercise(exercises, exerciseIdx, swapIdx)
-                }
-                else logSet(exercise)
+        if(swapIdx < exerciseIdx) {
+            exercises[exerciseIdx] = exercise
+            logSetWithSwapExercise(exercises, exerciseIdx, swapIdx)
+        }
+        else logSet(exercise)
+        //calculateleaderboard entry for setsLogged
+        const data = {displayName, exerciseId: exercise.id}
+        setsLogged.forEach(s => {
+            const performance = {date: new Date(), name: exercise.name,
+                max: Math.round(s.weight * (1 + s.reps / 30)), set: {reps: s.reps, weight: s.weight}};
+            if(data.performance) {
+                if(data.performance.max < performance.max) data.performance = performance
+            } else data.performance = performance
+        });
+        createLeaderboardEntry(userId, data);
     }
     return (
         <>
         <CustomTooltip title={`Marks highlighted set as complete`}>
             <CustomButton style={{marginRight: 15}} onClick={() => {
                 exercise.sets[currentSet].isLogged = true;
-                handleLog()
+                handleLog([exercise.sets[currentSet]])
             }} icon={<CheckCircleOutlined />}
             shape={"round"}>Log Set</CustomButton>
         </CustomTooltip>
         <CustomTooltip title={`Marks all sets as complete`}>
             <CustomButton onClick={() => {
                 exercise.sets.forEach(s => s.isLogged = true)
-                handleLog()
+                handleLog(exercise.sets)
             }} icon={<CheckCircleOutlined />}
             shape={"round"}>Log All Sets</CustomButton>
         </CustomTooltip>
@@ -41,6 +55,8 @@ const LogSet = ({logSet, exercise, currentSet, exercises, exerciseIdx, logSetWit
 
 const mapStateToProps = createStructuredSelector({
     exercises: selectWorkoutExercises,
+    userId: selectCurrentUserId,
+    displayName: selectDisplayName
 })
 
 const mapDispatchToProps = dispatch => ({
