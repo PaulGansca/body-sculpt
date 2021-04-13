@@ -4,6 +4,7 @@ const INITIAL_STATE = {
     exercises: [],
     date: Date.now(),
     isLoading: true,
+    isExerciseLoading: false,
     err: "",
     id: "",
     timeElapsed: "0:0",
@@ -50,18 +51,18 @@ const workoutReducer = (state = INITIAL_STATE, action) => {
         case WorkoutActionTypes.ADD_EXERCISE_START:
             return {
                 ...state,
-                isLoading: true,
+                isExerciseLoading: true,
         }
         case WorkoutActionTypes.ADD_EXERCISE_SUCCESS:
             return {
                 ...state,
-                isLoading: false,
+                isExerciseLoading: false,
                 exercises: [...state.exercises, action.payload]
         }
         case WorkoutActionTypes.ADD_EXERCISE_FAIL:
             return {
                 ...state,
-                isLoading: false,
+                isExerciseLoading: false,
                 err: action.payload
         }
         case WorkoutActionTypes.DELETE_EXERCISE:
@@ -73,19 +74,19 @@ const workoutReducer = (state = INITIAL_STATE, action) => {
         case WorkoutActionTypes.SWAP_EXERCISE_START:
             return {
                 ...state,
-                isLoading: true,
+                isExerciseLoading: true,
         }
         case WorkoutActionTypes.SWAP_EXERCISE_SUCCESS:
             return {
                 ...state,
-                isLoading: false,
+                isExerciseLoading: false,
                 exercises: state.exercises.map((e, idx) =>
                  (idx === action.payload.exerciseIdx ? {...action.payload.exercise} : e))
         }
         case WorkoutActionTypes.SWAP_EXERCISE_FAIL:
             return {
                 ...state,
-                isLoading: false,
+                isExerciseLoading: false,
                 err: action.payload
         }
         case WorkoutActionTypes.MOVE_EXERCISE:

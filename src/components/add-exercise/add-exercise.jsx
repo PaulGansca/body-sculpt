@@ -9,7 +9,7 @@ import CustomButton from '../antd/custom-button/custom-button';
 import SearchExercises from '../search-exercises.jsx/search-exercises';
 
 import { addExercise } from '../../redux/workout/workout.actions';
-import { selectIsLoading, selectWorkoutState } from '../../redux/workout/workout.selectors';
+import { selectIsExerciseLoading, selectWorkoutState } from '../../redux/workout/workout.selectors';
 import { selectGoal, selectFitnessLevel, selectUserWeight, selectGender, selectCurrentUserId } from '../../redux/user/user.selectors';
 
 
@@ -33,7 +33,7 @@ const AddExercise = ({addExercise, isLoading, workoutState, goal, fitnessLevel, 
 };
 
 const mapStateToProps = createStructuredSelector({
-    isLoading: selectIsLoading,
+    isLoading: selectIsExerciseLoading,
     workoutState: selectWorkoutState,
     goal: selectGoal,
     fitnessLevel: selectFitnessLevel,

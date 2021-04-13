@@ -8,7 +8,7 @@ import SwapExercise from '../swap-exercise/swap-exercise';
 import CustomButton from '../antd/custom-button/custom-button';
 
 import { deleteExercise } from '../../redux/workout/workout.actions';
-import { selectIsLoading, selectWorkout } from '../../redux/workout/workout.selectors';
+import { selectIsExerciseLoading, selectWorkout } from '../../redux/workout/workout.selectors';
 import { selectCurrentUserId } from '../../redux/user/user.selectors';
 
 const SwapDeleteIcons = ({exercise, exerciseIdx, workout, isLoading, userId, deleteExercise }) => {
@@ -23,7 +23,7 @@ const SwapDeleteIcons = ({exercise, exerciseIdx, workout, isLoading, userId, del
 
 const mapStateToProps = createStructuredSelector({
     workout: selectWorkout,
-    isLoading: selectIsLoading,
+    isLoading: selectIsExerciseLoading,
     userId: selectCurrentUserId
 });
 
