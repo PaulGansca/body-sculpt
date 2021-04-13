@@ -8,6 +8,7 @@ import SwapDeleteIcons from '../exercises-list-item/swap-delete-icons';
 import Timer from '../timer/timer';
 import FinishWorkoutModal from '../finish-workout-modal/finish-workout-modal';
 import CustomButton from '../antd/custom-button/custom-button';
+import CustomPopconfirm from '../antd/custom-popconfirm/custom-popconfirm';
 
 import { exerciseCategory }  from '../../static/exercise-category';
 
@@ -25,8 +26,10 @@ const ExercisesList = (props) => {
       <div className="exercises-list">
                 <div>
                     {workoutState === "not started" ? 
-                    <CustomButton danger style={{marginRight: 20}} shape={"round"} icon={<PlusOutlined />}
-                        onClick={() => createCurrentWorkout(currentUserId, currentUser)}>New Workout</CustomButton> : <></> }
+                    <CustomPopconfirm okText={"Yes"} cancelText={"No"} title={"Are you sure you want to generate a new workout?"}
+                        onConfirm={() => createCurrentWorkout(currentUserId, currentUser)}>
+                        <CustomButton danger style={{marginRight: 20}} shape={"round"} icon={<PlusOutlined />}>
+                        New Workout</CustomButton></CustomPopconfirm> : <></> }
                     <AddExercise />
                     {workoutState !== "not started" ? <Timer workoutState={workoutState} /> : <></>}
                 </div>
