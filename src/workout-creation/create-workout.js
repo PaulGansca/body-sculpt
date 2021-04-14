@@ -146,7 +146,7 @@ export const generateWorkout = async (userId, currentUser, updateCurrentWorkout,
             let oneRepMax = 0;
             //exercise has been performed before
             if(pastPerformances[e.id]) {
-                oneRepMax = (await predictRepMax(pastPerformances, e))
+                oneRepMax = (await predictRepMax(pastPerformances, e.id))
             } else {
                 //exercise hasn't been performed before prediction is based on user stats
                 oneRepMax = LIFTING_STANDARDS[gender][e.category.name][fitnessLevel] * currentUser.weight;

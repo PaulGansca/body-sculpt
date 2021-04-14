@@ -67,6 +67,11 @@ export const selectGender = createSelector(
     (currentUser) => currentUser.gender
 );
 
+export const selectPrivacy = createSelector(
+    [selectCurrentUser],
+    (currentUser) => currentUser.privacy
+);
+
 export const selectIsSplitLoading = createSelector(
     [selectUser],
     (user) => user.isSplitLoading

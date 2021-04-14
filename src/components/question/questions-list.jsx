@@ -48,6 +48,10 @@ const questionsData = {
     gender: {
         male: <>{<span style={{fontWeight: 'bold'}}>Male</span>} </>,
         female: <>{<span style={{fontWeight: 'bold'}}>Female</span>} </>
+    },
+    privacy: {
+        public: <>{<span style={{fontWeight: 'bold'}}>Public</span>} </>,
+        private: <>{<span style={{fontWeight: 'bold'}}>Private</span>} </>
     }
 }
 
@@ -117,6 +121,8 @@ export const questionsList = [
                     name={"birthday"} key={"birthday"}><CustomDatePicker placeholder="Birthday" name="birthday" /></Form.Item>
                 <Form.Item rules={[{required: true, message: 'Please set gender!'}]}
                     name={"gender"} key={"gender"}><CustomRadio className="multi-choice-input" name={"gender"}
-                options={questionsData["gender"]} /></Form.Item></>,
+                options={questionsData["gender"]} /></Form.Item><Form.Item rules={[{required: true, message: 'Please configure profile privacy!'}]}
+                    name={"privacy"} key={"privacy"}><CustomRadio className="multi-choice-input" name={"privacy"}
+                options={questionsData["privacy"]} /></Form.Item></>,
     }
 ]

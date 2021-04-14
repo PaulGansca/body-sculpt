@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 import CustomSelect from '../antd/custom-inputs/custom-select';
 import ExercisePerformanceChart from '../exercise-performance-chart/exercise-performance-chart';
@@ -45,6 +46,7 @@ const ExercisePerformance = ({workouts}) => {
                 style={{width: 300}} filterOption={(input, option) =>
                     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 } />
+            <Link style={{marginLeft: 10}} to={"/user/leaderboard"}>View Exercise Leaderboard</Link>
             {selectedOption > -1 ? <ExercisePerformanceChart {...uniqueExercises[selectedOption]} /> : <></>}
         </div>
     )

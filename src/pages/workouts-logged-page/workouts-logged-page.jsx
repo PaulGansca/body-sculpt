@@ -46,9 +46,9 @@ const WorkoutsLoggedPage = ({workouts, history, trainingFrequency, setWorkout,
                         {7 - (moment().day() === 0 ? 6 : moment().day()) >= trainingFrequency - workoutsInWeek ?
                         " You are on track to hit your weekly session goal." :
                         " You won't be able to hit your weekly session goal."}</h3>
-                    <Row justify={'space-between'} gutter={[16, 16]}>
+                    <Row justify={window.innerWidth < 800 ? 'center' : 'space-between'} gutter={[16, 16]}>
                     {workouts.slice().reverse().map(w => 
-                    <CustomCard key={w.id} size="small" title={moment(w.date).format("ddd, MMM Do YYYY")} style={{ width: 330 }} hoverable
+                    <CustomCard key={w.id} size="small" title={moment(w.date).format("ddd, MMM Do YYYY")} style={{ width: 330 }} hoverable={true}
                     actions={[
                         <CustomButton onClick={() => deleteWorkout(userId, w.id)}
                             size={"small"} danger shape={"round"} icon={<DeleteOutlined />} />
