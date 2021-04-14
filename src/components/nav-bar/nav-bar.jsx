@@ -17,7 +17,7 @@ import './nav-bar.css';
 const NavBar = ({currentUserId, fetchWorkoutsWithExercises, history, setCurrentUser}) => {
     const handleMountProfile = () => fetchWorkoutsWithExercises(currentUserId);
     return (
-        window.innerWidth > 500 ? 
+        window.innerWidth > 900 ? 
         <ul className="desktop-nav">
             <li className="desktop-nav-link"><NavLink activeClassName="selected" to="/user/workout/new">Workout <Dumbbell className="dumbbell" /></NavLink></li>
             <li className="desktop-nav-link"><NavLink activeClassName="selected" to="/user/workouts-logged">Log <HistoryOutlined /></NavLink></li>

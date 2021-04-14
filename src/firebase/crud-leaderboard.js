@@ -37,3 +37,11 @@ export const createLeaderboardEntry = async(userId, data) => {
         }
     }
 }
+
+
+// retrieve all entries in leaderboard collection
+export const getLeaderboard = () => {
+    const leaderboardRef = firestore.collection(`leaderboard`).get();
+
+    return leaderboardRef;
+}

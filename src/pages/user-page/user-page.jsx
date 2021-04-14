@@ -5,6 +5,7 @@ import ProfileSetupPageContainer from '../profile-setup-page/profile-setup-page.
 import WorkoutPageContainer from '../workout-page/workout-page.container';
 import WorkoutsLoggedPageContainer from '../workouts-logged-page/workouts-logged-page.container';
 import ProfilePageContainer from '../profile-page/profile-page-container';
+import LeaderboardPageContainer from '../leaderboard-page/leaderboard-page-container';
 import NavBar from '../../components/nav-bar/nav-bar';
 
 const User = ({match, location}) => {
@@ -16,6 +17,7 @@ const User = ({match, location}) => {
             <Route path={`${match.path}/workout/:workoutId`} component={WorkoutPageContainer} />
             <Route exact={true} path={`${match.path}/workouts-logged`} component={WorkoutsLoggedPageContainer} />
             <Route exact={true} path={`${match.path}/profile`} component={ProfilePageContainer} />
+            <Route exact={true} path={`${match.path}/leaderboard`} component={LeaderboardPageContainer} />
           </Switch>
         </>
     );
