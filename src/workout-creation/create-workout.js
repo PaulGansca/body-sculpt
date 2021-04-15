@@ -55,10 +55,20 @@ export const generateWorkout = async (userId, currentUser, updateCurrentWorkout,
             const newPostion = (previousPosition >= Math.floor(enchancedRecentWorkouts[index].exercises.length / 2)
                                 || (isMusclePrioritized === "true" && musclePriority.includes(id))) ? "mid" : "end";
             // get a random best exercises for musclesIds in lowestFatigueDay
-            const randomBest = getRandVal(bestExercises[id]);
+            let randomBest = getRandVal(bestExercises[id]);
+            let tries = {[randomBest]: true}
+            let isExerciseNew = workoutExercises.findIndex(we => we.id === randomBest) === -1 ? true : false;
+            while(!isExerciseNew || (Object.keys(tries).length < bestExercises[id].length && !isExerciseNew)) {
+                randomBest = getRandVal(bestExercises[id]);
+                tries[randomBest] = true;
+                // eslint-disable-next-line
+                isExerciseNew = workoutExercises.findIndex(we => we.id === randomBest) === -1 ? true : false;
+            }        
+            // best exercise could already be in workout
             const exercise = exercises.find(e => e.id === randomBest);
+            exercise.keep = true;
             // calculate sets to do this session
-            let targetSets = Math.round((MAX_WORKLOAD[fitnessLevel] - musclesFatigue[id]) / (trainingFrequency / WORKOUT_SPLITS_DAYS[splitType].length))
+            let targetSets = Math.round((MAX_WORKLOAD[fitnessLevel] - musclesFatigue[id]) / (trainingFrequency / WORKOUT_SPLITS_DAYS[splitType].length));
             targetSets = targetSets > MAX_WORKLOAD[fitnessLevel] ? 20 : targetSets;
             // find exercise count for using goals muscleId
             let exerciseCount = 0;
@@ -70,9 +80,10 @@ export const generateWorkout = async (userId, currentUser, updateCurrentWorkout,
             } else {
                 if(targetSets <= 5) exerciseCount = 1;
                 else if(targetSets <= 10) exerciseCount = targetSets === 6 ? 2 : 3;
-                else if(targetSets <= 15) exerciseCount = targetSets === 11 ? 3 : 4;
+                else if(targetSets <= 15) exerciseCount = targetSets < 14 ? 3 : 4;
                 else exerciseCount = targetSets === 16 ? 4 : 5;
             }
+            if(targetSets < 1) exerciseCount = 0
             if(exerciseCount > 1) {
                 //subtract one as that's the starting exercise which is selected
                 exerciseCount -=  1;
@@ -82,6 +93,7 @@ export const generateWorkout = async (userId, currentUser, updateCurrentWorkout,
                 //select half +1 if not integer exercises from past workouts for progressive overload
                 const recentExercises = _.uniqBy(completedExercises
                     .filter(e => e.id !== exercise.id && e.muscles.findIndex(m=> m.id === id) > -1),'id')
+                    .filter(e => workoutExercises.findIndex(we => we.id === e.id) === -1)
                     .slice(0, Math.round(exerciseCount/2));
                 //select new exercises to stimulate new muscles
                 const newExercises = [];
@@ -106,6 +118,7 @@ export const generateWorkout = async (userId, currentUser, updateCurrentWorkout,
                 exercise.db_id = newId();
                 exercise.isFetched = true;
                 delete exercise.rpe;
+                updateWorkload(musclesFatigue, [exercise])
                 console.log(exercise);
                 if(newPostion === "end") workoutExercises.push(exercise);
                 setsToPerform -= goal === "strengthGain" ? 5 : 4;
@@ -122,14 +135,17 @@ export const generateWorkout = async (userId, currentUser, updateCurrentWorkout,
                     e.db_id = newId();
                     e.isFetched = true;
                     delete e.rpe;
-                    if(newPostion === "end") workoutExercises.push(e);
-                    else workoutExercises.unshift(e);
+                    updateWorkload(musclesFatigue, [e])
+                    if(musclesFatigue[id] < MAX_WORKLOAD[fitnessLevel] + e.sets.length) {
+                        console.log("TASTINO PUSHED")
+                        if(newPostion === "end") workoutExercises.push(e);
+                        else workoutExercises.unshift(e);
+                    }
                 })
                 if(newPostion === "mid") workoutExercises.unshift(exercise);
-            } else {
+            } else if(exerciseCount === 1) {
                 // only one exercise available so calculate reps accordingly
-                // for first exercise gains if startingOrder.length > 1 and exercise not performed last time do
-                // or if muscle id is in musclesPrioritiezed do
+                // if muscle id is in musclesPrioritiezed do
                 // this is required to ensure muscles and best exercises are shuffled
                 let firstExReps = getRandVal(REP_RANGE_BY_GOAL[goal][newPostion === "end" ? "mid" : "start"])
                 exercise.sets = [...Array(targetSets)].map(i => (
@@ -137,6 +153,7 @@ export const generateWorkout = async (userId, currentUser, updateCurrentWorkout,
                 ))
                 exercise.db_id = newId();
                 exercise.isFetched = true;
+                updateWorkload(musclesFatigue, [exercise])
                 delete exercise.rpe;
                 if(newPostion === "end") workoutExercises.push(exercise);
                 else workoutExercises.unshift(exercise);
@@ -185,7 +202,7 @@ const calculateWorkload = (recentWorkoutsSorted, exercises) => {
         w.exercises.forEach((exercise) => {
             const completeExercise = {...exercise, ...(exercises.find(e=> e.id === exercise.id))}
             completeExercise.muscles.forEach(m => muscles[m.id] = muscles[m.id] + completeExercise.sets.length)
-            completeExercise.muscles_secondary.forEach(m => muscles[m.id] = muscles[m.id] + completeExercise.sets.length/4)
+            completeExercise.muscles_secondary.forEach(m => muscles[m.id] = muscles[m.id] + completeExercise.sets.length/2)
             if(!completeExercise.muscles.concat(completeExercise.muscles_secondary).length) {
                 exerciseCategory[completeExercise.category.name].muscleIds.forEach(muscleId =>
                     muscles[muscleId] = muscles[muscleId] + completeExercise.sets.length/2
@@ -196,6 +213,24 @@ const calculateWorkload = (recentWorkoutsSorted, exercises) => {
         })
     });
     return {musclesFatigue: muscles, completedExercises, enchancedRecentWorkouts};
+}
+
+// as exercises get added to the workout they will hit multiple muscles
+// this need to be reflected in muscles fatigue to avoid overtraining
+function updateWorkload (musclesFatigue, exercises) {
+    exercises.forEach((exercise) => {
+        exercise.muscles.forEach(m => {
+            console.log(m);
+            console.log(musclesFatigue[m.id])
+            musclesFatigue[m.id] = musclesFatigue[m.id] + exercise.sets.length
+        })
+        exercise.muscles_secondary.forEach(m => musclesFatigue[m.id] = musclesFatigue[m.id] + exercise.sets.length/2)
+        if((exercise.muscles.concat(exercise.muscles_secondary)).length < 1) {
+            exerciseCategory[exercise.category.name].muscleIds.forEach(muscleId =>
+                musclesFatigue[muscleId] = musclesFatigue[muscleId] + exercise.sets.length/2
+            )
+        }
+    })
 }
 
 export function getRandVal(arr) {

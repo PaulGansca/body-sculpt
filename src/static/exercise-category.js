@@ -14,15 +14,15 @@ export const MAX_WORKLOAD = {beginner: 10, intermediate: 15, advanced: 20};
 
 export const bestExercises = {
     6: [125, 91], // ABS
-    12: [107, 109, 105], // BACK
-    1: [81], // Bicep
+    12: [107, 109], // BACK
+    1: [81, 74, 86], // Bicep
     4: [163, 192, 101], // Chest
     10: [105, 111, 113], // QUADS
-    8: [191, 160], // GLUTES
-    11: [209, 160], // HAMSTRINGS
-    7: [788], // CALVES
-    2: [227, 119], //DELTS
-    5: [217] //triceps
+    8: [191, 161, 249], // GLUTES
+    11: [209, 160, 116], // HAMSTRINGS
+    7: [308, 776, 102], // CALVES
+    2: [227, 119, 802], //DELTS
+    5: [217, 84, 85] //triceps
 }
 
 

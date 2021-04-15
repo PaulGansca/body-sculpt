@@ -58,7 +58,6 @@ const MusclesSore = ({recentWorkouts, fitnessLevel}) => {
                     <p style={{marginTop: 15}}>
                         {Object.keys(muscles).length ? <>Muscle fatigue levels <br/><br/></> : <>All muscles are fully recovered.</>}
                         {Object.keys(muscles).map((m, idx) => {
-                            console.log(m)
                             let workloadPercentage = Math.round(muscles[m].sets/MAX_WORKLOAD[fitnessLevel] * 100);
                             workloadPercentage = workloadPercentage > 100 ? 100 : workloadPercentage;
                             return <CustomTag style={{...smallScreen}} key={idx} 
