@@ -8,10 +8,11 @@ import { selectIsLoading, selectCurrentUserId } from '../../redux/user/user.sele
 import { selectWorkoutsArray, selectIsLoading as workoutsLoading } from '../../redux/workouts/workouts.selectors';
 
 import ExerciseChart from './exercise-performance-chart';
-import CustomSpin from '../../components/antd/custom-spin/custom-spin';
+import WithSpinner from '../../components/with-spinner/with-spinner';
+import WithEmpty from '../with-empty/with-empty';
 
-const exerciseEffects = (WrappedComponent) => ({fetchWorkouts, currentUserId, userLoading,
-    workoutsLoading, exerciseId, workouts, ...otherProps}) => {
+const exerciseEffects = (WrappedComponent) => ({fetchWorkouts, ...otherProps}) => {
+    const { currentUserId, userLoading, workoutsLoading, exerciseId, workouts } = otherProps;
     const [uniqueExercises, setUniqueExercises] = useState({});
     useEffect(() => {
             fetchWorkouts(currentUserId)
@@ -40,9 +41,9 @@ const exerciseEffects = (WrappedComponent) => ({fetchWorkouts, currentUserId, us
     }, [workouts]);
 
     return (
-        workoutsLoading || userLoading || !uniqueExercises[exerciseId] ? 
-            <CustomSpin size={"large"} />  :
-            <WrappedComponent {...uniqueExercises[exerciseId]} userId={currentUserId} {...otherProps} />
+        <WrappedComponent loading={workoutsLoading || userLoading} isEmpty={!uniqueExercises[exerciseId]}
+            emptyText={"No past achievements for this exercise yet."} emptyProps={{image: "https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"}}
+            {...uniqueExercises[exerciseId]} userId={currentUserId} {...otherProps} />
     )
 }
 
@@ -59,7 +60,9 @@ const mapDispatchToProps = (dispatch) => ({
 
 const ExerciseChartContainer = compose(
     connect(mapStateToProps, mapDispatchToProps),
-    exerciseEffects
+    exerciseEffects,
+    WithSpinner,
+    WithEmpty
 )(ExerciseChart);
 
 export default ExerciseChartContainer;
