@@ -1,7 +1,7 @@
 export const DAYS_OF_WEEK = [
     {
-    props: {value: 1, key: 1},
-    text: "Monday"
+        props: {value: 1, key: 1},
+        text: "Monday"
     },
     {
         props: {value: 2, key: 2},
