@@ -56,13 +56,13 @@ const MusclesSore = ({recentWorkouts, fitnessLevel}) => {
                 </Col>
                 <Col xs={{ span: 24 }} lg={{ span: 12 }}>
                     <p style={{marginTop: 15}}>
-                        {Object.keys(muscles).length ? <>Fatigue overview where 100% is completely fatigued <br/><br/></> : <>All muscles are fully recovered.</>}
+                        {Object.keys(muscles).length ? <>Muscle fatigue levels <br/><br/></> : <>All muscles are fully recovered.</>}
                         {Object.keys(muscles).map((m, idx) => {
                             console.log(m)
                             let workloadPercentage = Math.round(muscles[m].sets/MAX_WORKLOAD[fitnessLevel] * 100);
                             workloadPercentage = workloadPercentage > 100 ? 100 : workloadPercentage;
                             return <CustomTag style={{...smallScreen}} key={idx} 
-                            color={workloadPercentage > 30 ?  (workloadPercentage > 60 ? "#87d068" : "#fa8c16"): "#cc0000"}>{muscleNamesTaxonomy[m]} {' '}
+                            color={workloadPercentage > 30 ?  (workloadPercentage > 60 ? "#cc0000" : "#fa8c16"): "#87d068"}>{muscleNamesTaxonomy[m]} {' '}
                              {workloadPercentage}% </CustomTag>})}
                     </p>
                 </Col>
