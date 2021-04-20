@@ -49,10 +49,10 @@ export const generateWorkout = async (userId, currentUser, updateCurrentWorkout,
             while (previousPosition === -1 && index < enchancedRecentWorkouts.length - 1) {
                 index++;
                 const w = enchancedRecentWorkouts[index]
-                previousPosition = w.exercises.findIndex(e => e.muscles.findIndex(m => m.id === id) > -1);
+                if(w.exercises) 
+                    previousPosition = w.exercises.findIndex(e => e.muscles.findIndex(m => m.id === id) > -1);
             }
-            console.log(previousPosition)
-            const newPostion = (previousPosition >= Math.floor(enchancedRecentWorkouts[index].exercises.length / 2)
+            const newPostion = ((previousPosition > -1 && previousPosition >= Math.floor(enchancedRecentWorkouts[index].exercises.length / 2))
                                 || (isMusclePrioritized === "true" && musclePriority.includes(id))) ? "mid" : "end";
             // get a random best exercises for musclesIds in lowestFatigueDay
             let randomBest = getRandVal(bestExercises[id]);

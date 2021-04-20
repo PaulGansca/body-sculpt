@@ -2,7 +2,7 @@ import React from 'react';
 
 const WorkoutSummary = ({timeElapsed, exercises, weight}) => {
     const volume = exercises.reduce((acc, e) => {
-        e.sets.forEach(s => acc += s.weight * s.reps);
+        e.sets.forEach(s => {if(s.isLogged) acc += s.weight * s.reps});
         return acc;
     }, 0);
     const exercisesComplete = exercises.filter(e =>
