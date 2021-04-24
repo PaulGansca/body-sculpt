@@ -9,12 +9,13 @@ import CustomTooltip from '../antd/custom-tooltip/custom-tooltip';
 
 import { logSet, logSetWithSwapExercise } from '../../redux/workout/workout.actions';
 import { selectWorkoutExercises } from '../../redux/workout/workout.selectors';
-import { selectCurrentUserId, selectDisplayName, selectUserWeight, selectGender, selectPrivacy } from '../../redux/user/user.selectors';
+import { selectCurrentUserId, selectDisplayName, selectUserWeight,
+     selectGender, selectPrivacy, selectFitnessLevel } from '../../redux/user/user.selectors';
 
 import { createLeaderboardEntry } from '../../firebase/crud-leaderboard';
 
 const LogSet = ({logSet, exercise, currentSet, exercises, exerciseIdx,
-    logSetWithSwapExercise, userId, displayName, weight, gender, privacy }) => {
+    logSetWithSwapExercise, userId, displayName, weight, gender, privacy, fitnessLevel }) => {
     const handleLog = (setsLogged) => {
         const swapIdx = exercises.findIndex(e => e.sets.findIndex(s => !s.isLogged) > -1);
         if(swapIdx < exerciseIdx) {
@@ -23,7 +24,8 @@ const LogSet = ({logSet, exercise, currentSet, exercises, exerciseIdx,
         }
         else logSet(exercise)
         //calculateleaderboard entry for setsLogged
-        const data = {displayName: privacy === "public" ? displayName : "Anonymous", exerciseId: exercise.id, weight, gender}
+        const data = {displayName: privacy === "public" ? displayName : "Anonymous", exerciseId: exercise.id,
+             weight, gender, fitnessLevel }
         setsLogged.forEach(s => {
             const performance = {date: new Date(), name: exercise.name,
                 max: Math.round(s.weight * (1 + s.reps / 30)), set: {reps: s.reps, weight: s.weight}};
@@ -59,7 +61,8 @@ const mapStateToProps = createStructuredSelector({
     displayName: selectDisplayName,
     weight: selectUserWeight,
     gender: selectGender,
-    privacy: selectPrivacy
+    privacy: selectPrivacy,
+    fitnessLevel: selectFitnessLevel
 })
 
 const mapDispatchToProps = dispatch => ({

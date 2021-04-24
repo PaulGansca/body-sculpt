@@ -10,10 +10,10 @@ export const createLeaderboardEntry = async(userId, data) => {
     const user = await userRef.get();
     // user doesn't exist, create first entry in leaderboards db
     if(!user.exists) {
-        const {displayName, performance, exerciseId } = data;        
+        const {displayName, performance, exerciseId, weight, gender, fitnessLevel } = data;        
         try {
             userRef.set({
-                displayName,
+                displayName, weight, gender, fitnessLevel,
                 records: {[exerciseId]: performance}
             });
         } catch (err) {
