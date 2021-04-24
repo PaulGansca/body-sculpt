@@ -12,7 +12,7 @@ import { getUserRecentWorkouts } from '../firebase/crud-user';
 import { LIFTING_STANDARDS } from './lifting-standars';
 
 export const generateWorkout = async (userId, currentUser, updateCurrentWorkout, dispatch) => {
-    const {splitType, fitnessLevel, goal, trainingFrequency, musclePriority, isMusclePrioritized, gender} = currentUser;
+    const {splitType, fitnessLevel, goal, trainingFrequency, musclePriority, isMusclePrioritized, gender, trainingDuration} = currentUser;
     const workoutExercises = [];
     const pastWorkouts = getUserRecentWorkouts(userId, 12, "w");
     //fetch exercises
@@ -36,6 +36,16 @@ export const generateWorkout = async (userId, currentUser, updateCurrentWorkout,
         console.log(lowestFatigueDay)
         console.log(fatigueGrouped)
         console.log(musclesFatigue)
+        //adjust workoload for duration
+        const timePerSet = goal === "endurance" ? 1.5 : (goal === "muscleGain" ? 2 : 2.5)
+        const estimatedWorkoutLength = (((lowestFatigueDay.muscleIds.length * MAX_WORKLOAD[fitnessLevel]) /
+         (trainingFrequency / WORKOUT_SPLITS_DAYS[splitType].length) -
+         lowestFatigueDay.muscleIds.reduce((totalSets, muscleId) => totalSets += musclesFatigue[muscleId], 0))
+         * timePerSet)
+        if(estimatedWorkoutLength > trainingDuration + 5) {
+            const surplusTime = estimatedWorkoutLength - trainingDuration;
+            lowestFatigueDay.muscleIds.forEach(muscleId => musclesFatigue[muscleId] += Math.floor(surplusTime / lowestFatigueDay.muscleIds.length / timePerSet) + 1)
+        }
         //filter exercises to only contain relevant ones based on day
         const subsetExercises = exercises.filter(e => lowestFatigueDay.category.includes(e.category.id));
         //reduce all past performances by exercise
@@ -69,7 +79,7 @@ export const generateWorkout = async (userId, currentUser, updateCurrentWorkout,
             exercise.keep = true;
             // calculate sets to do this session
             let targetSets = Math.round((MAX_WORKLOAD[fitnessLevel] - musclesFatigue[id]) / (trainingFrequency / WORKOUT_SPLITS_DAYS[splitType].length));
-            targetSets = targetSets > MAX_WORKLOAD[fitnessLevel] ? 20 : targetSets;
+            targetSets = targetSets > MAX_WORKLOAD[fitnessLevel] ? MAX_WORKLOAD[fitnessLevel] : targetSets;
             // find exercise count for using goals muscleId
             let exerciseCount = 0;
             if(goal === "strengthGain") {
