@@ -40,14 +40,14 @@ const WorkoutsLoggedPage = ({workouts, history, trainingFrequency, setWorkout,
     return (
         <div className="workouts-logged-container">
             <Row>
-                <Col xs={{span: 22, offset: 1}} md={{span: 20, offset: 2}} lg={{span: 18, offset: 3}}>
+                <Col xs={{span: 24}} md={{span: 20, offset: 2}} lg={{span: 18, offset: 3}}>
                     <CustomCalendar dateFullCellRender={cellRender} className="workouts-logged-calendar" fullscreen={false} />
                     <h3 style={{margin: "20px 0", color: "white"}}>Sessions this week {workoutsInWeek}/{trainingFrequency} - 
                         {7 - (moment().day() === 0 ? 6 : moment().day()) >= trainingFrequency - workoutsInWeek ?
                         " You are on track to hit your weekly session goal." :
                         " You won't be able to hit your weekly session goal."}</h3>
                     <Row justify={window.innerWidth < 800 ? 'center' : 'space-between'} gutter={[16, 16]}>
-                    {workouts.slice().reverse().map(w => 
+                    {workouts.sort((a,b) => new Date(b.date) - new Date(a.date)).map(w => 
                     <CustomCard key={w.id} size="small" title={moment(w.date).format("ddd, MMM Do YYYY")} style={{ width: 330 }} hoverable={true}
                     actions={[
                         <CustomButton onClick={() => deleteWorkout(userId, w.id)}
