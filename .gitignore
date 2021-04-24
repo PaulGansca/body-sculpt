@@ -24,4 +24,4 @@ yarn-error.log*
 
 #secrets
 properties.json
-/src/firebase/firebase-config.js
+#/src/firebase/firebase-config.js
