@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<WorkoutsLoggedPage /> container renders workout based on id 1`] = `ShallowWrapper {}`;
+
+exports[`<WorkoutsLoggedPage /> expect to render workout page 1`] = `ShallowWrapper {}`;

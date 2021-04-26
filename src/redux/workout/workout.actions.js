@@ -22,16 +22,19 @@ export const setWorkout = (workout) => dispatch => {
                 return {...exercise, ...e, isFetched: true}
             } else return e;
         })
-        Promise.all(workout.exercises).then(r => {
+        return Promise.all(workout.exercises).then(r => {
             workout.exercises = r
-            dispatch({
+            return dispatch({
                 type: WorkoutActionTypes.SET_WORKOUT_SUCCESS,
                 payload: workout
             });
-        })
+        }).catch(err => dispatch({
+            type: WorkoutActionTypes.SET_WORKOUT_FAIL,
+            payload: err
+        }))
     } catch (err) {
         alert("Error updating document: ", err);
-        dispatch({
+        return dispatch({
             type: WorkoutActionTypes.SET_WORKOUT_FAIL,
             payload: err
         });

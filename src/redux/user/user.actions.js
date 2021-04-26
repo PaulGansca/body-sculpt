@@ -11,18 +11,18 @@ export const setUserGoals = (userId, goalsData, history) => dispatch => {
         type: UserActionTypes.SET_USER_GOALS_START,
     });
 
-    userOperations.setUserGoals(userId, goalsData).then(() => {
+    return userOperations.setUserGoals(userId, goalsData).then(() => {
         console.log("Document successfully updated!");
-        dispatch({
+        history.push('/user/workout/new');
+        return dispatch({
             type: UserActionTypes.SET_USER_GOALS_SUCCESS,
             payload: goalsData
         });
-        history.push('/user/workout/new');
     })
     .catch((err) => {
         // The document probably doesn't exist.
         alert("Error updating document: ", err);
-        dispatch({
+        return dispatch({
             type: UserActionTypes.SET_USER_GOALS_FAIL,
             payload: err
         });
@@ -33,9 +33,9 @@ export const setProfileSettings = (userId, profileSettings) => dispatch => {
     dispatch({
         type: UserActionTypes.SET_PROFILE_SETTINGS_START,
     });
-    userOperations.setUserGoals(userId, profileSettings).then(() => {
+    return userOperations.setUserGoals(userId, profileSettings).then(() => {
         console.log("Document successfully updated!");
-        dispatch({
+        return dispatch({
             type: UserActionTypes.SET_PROFILE_SETTINGS_SUCCESS,
             payload: profileSettings
         });
@@ -43,7 +43,7 @@ export const setProfileSettings = (userId, profileSettings) => dispatch => {
     .catch((err) => {
         // The document probably doesn't exist.
         alert("Error updating document: ", err);
-        dispatch({
+        return dispatch({
             type: UserActionTypes.SET_PROFILE_SETTINGS_FAIL,
             payload: err
         });

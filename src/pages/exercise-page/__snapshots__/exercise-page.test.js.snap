@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ExercisePage /> container renders exercise based on id 1`] = `ShallowWrapper {}`;
+
+exports[`<ExercisePage /> expect to render exercise page with props 1`] = `ShallowWrapper {}`;

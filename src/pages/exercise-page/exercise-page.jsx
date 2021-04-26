@@ -24,6 +24,7 @@ const ExercisePage = (props) => {
         <div className="exercise-page">
             <SaveWorkout />
             <Timer display={{display: 'none'}} workoutState={workoutState} />
+            {/* {workoutState !== "not started" ? <Timer style={{display: 'block', textAlign: 'center'}} workoutState={workoutState} /> : <></>} */}
             <h1 className="exercise-title">{activeKey === "info" ? <LeftOutlined onClick={() => setActiveKey("workload")} /> 
                 : <LeftOutlined onClick={() => history.push(`/user/workout/${match.params.workoutId}`)} />} 
                 <span style={{margin: '0 20px'}}>{exercise.name}</span>

@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ProfilePage /> expect to render profile page with props 1`] = `ShallowWrapper {}`;
+
+exports[`<ProfilePage /> expect to render without crashing with no props 1`] = `ShallowWrapper {}`;

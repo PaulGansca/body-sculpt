@@ -1,8 +1,13 @@
-import { render, screen } from '@testing-library/react';
+import { mount } from 'enzyme';
+import React from 'react'
 import App from './App';
+import { BrowserRouter } from 'react-router-dom';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+describe('<App />', () => {
+  it("expect to render homepage on root path without user", () => {
+    const wrapper = (<BrowserRouter path={"/"}>
+                      <App />
+                    </BrowserRouter>)
+    expect(mount(wrapper).find('.homepage-container')).toHaveLength(1);
+  })
 });

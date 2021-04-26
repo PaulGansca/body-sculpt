@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<LeaderboardPage /> expect to render container with no props 1`] = `ShallowWrapper {}`;
+
+exports[`<LeaderboardPage /> expect to render leaderboard page with props 1`] = `ShallowWrapper {}`;

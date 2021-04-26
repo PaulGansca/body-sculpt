@@ -13,7 +13,7 @@ export const fetchWorkouts = (userId) => async dispatch => {
         (await getUserWorkouts(userId)).forEach(doc => {
             results.push({...doc.data(), id: doc.id})
         })
-        dispatch({
+        return dispatch({
             type: WorkoutsActionTypes.FETCH_WORKOUTS_SUCCESS,
             payload: results
         });
