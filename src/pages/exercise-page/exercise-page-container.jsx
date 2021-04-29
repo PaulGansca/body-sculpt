@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -13,10 +13,10 @@ const exerciseEffects = (WrappedComponent) => (props) => {
     const { match, exercises } = props;
     //use later for making sure correct workout is set in redux state and exercise
     const { exerciseId } = match.params;
-    const exercise = exercises.find(e => e.db_id === exerciseId)
-    
+    const exercise = exercises.find(e => e.db_id === exerciseId);
+    const [run, setRun] = useState(!window.localStorage.getItem("exerciseTutorial") ? true : false);
     return (
-        <WrappedComponent exercise={exercise} {...props} />    
+        <WrappedComponent run={run} setRun={setRun} exercise={exercise} {...props} />    
     )
 
 }

@@ -19,6 +19,7 @@ const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUser
     const { exercises } = otherProps;
     const [primaryMuscles, setPrimaryMuscles] = useState({});
     const [musclesImages, setMusclesImages] = useState([]);
+    const [run, setRun] = useState(!window.localStorage.getItem("workoutTutorial") ? true : false);
 
     useEffect(() => {
         if(currentUserId) {
@@ -28,6 +29,7 @@ const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUser
             } else {
                 fetchWorkout(currentUserId, match.params.workoutId)
             }
+            window.localStorage.setItem("workoutTutorial", "complete");
         }
         return () => {
             resetState()
@@ -67,7 +69,7 @@ const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUser
             <CustomSpin className="main-spinner" size={"large"} />  :
             <Switch>
                 <Route exact={true} path={`${match.path}`} render={() => 
-                <WrappedComponent primaryMuscles={primaryMuscles} musclesImages={musclesImages} muscles={MUSCLES_DATA} {...otherProps} />} />
+                <WrappedComponent run={run} setRun={setRun} primaryMuscles={primaryMuscles} musclesImages={musclesImages} muscles={MUSCLES_DATA} {...otherProps} />} />
                 <Route exact={true} path={`${match.path}/exercise/:exerciseId`} component={ExercisePageContainer} />
             </Switch>
     )

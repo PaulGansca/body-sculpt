@@ -15,7 +15,7 @@ const SwapDeleteIcons = ({exercise, exerciseIdx, workout, isLoading, userId, del
     return (
         <div style={{display: 'flex', flexDirection:'column'}}>
                 <SwapExercise userId={userId} workout={workout} isLoading={isLoading} exercise={exercise} exerciseIdx={exerciseIdx} />
-                <CustomButton onClick={() => deleteExercise(exerciseIdx, workout, userId)}
+                <CustomButton className="delete-exercise-btn" onClick={() => deleteExercise(exerciseIdx, workout, userId)}
                     loading={isLoading} size={"small"} danger shape={"round"} icon={<DeleteOutlined />} />
         </div>
     )

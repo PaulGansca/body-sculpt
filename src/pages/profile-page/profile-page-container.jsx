@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -13,7 +13,7 @@ import CustomSpin from '../../components/antd/custom-spin/custom-spin';
 
 const profileEffects = (WrappedComponent) => ({fetchWorkoutsWithExercises, currentUserId, userLoading,
     workoutsLoading, ...otherProps}) => {
-
+    const [run, setRun] = useState(!window.localStorage.getItem("profileTutorial") ? true : false);
     useEffect(() => {
         if(currentUserId) {
             fetchWorkoutsWithExercises(currentUserId)
@@ -23,7 +23,7 @@ const profileEffects = (WrappedComponent) => ({fetchWorkoutsWithExercises, curre
     return (
         workoutsLoading || userLoading ? 
             <CustomSpin className="main-spinner" size={"large"} />  :
-            <WrappedComponent userId={currentUserId} {...otherProps} />
+            <WrappedComponent run={run} setRun={setRun} userId={currentUserId} {...otherProps} />
     )
 }
 

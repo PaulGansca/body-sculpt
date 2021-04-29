@@ -45,7 +45,7 @@ const SwapExercise = ({swapExercise, isLoading, exerciseIdx, exercise, btnText,
     return (
         <>
             <CustomTooltip title={"Replace with another exercise in the same category"}>
-                    <CustomButton onClick={() => setIsModalVisible(true)}
+                    <CustomButton className="swap-exercise-btn" onClick={() => setIsModalVisible(true)}
                      style={{marginBottom: 5}} size={"small"} shape={"round"} icon={<SwapOutlined />}>
                     {btnText}</CustomButton>
             </CustomTooltip>

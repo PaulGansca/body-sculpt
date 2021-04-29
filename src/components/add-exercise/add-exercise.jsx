@@ -20,7 +20,7 @@ const AddExercise = ({addExercise, isLoading, workoutState, goal, fitnessLevel, 
     const userStats = {goal, fitnessLevel, gender, userWeight: weight, userId};
     return (
         <>
-            <CustomButton style={{...marginRight}} shape={"round"} icon={<PlusOutlined />}
+            <CustomButton className="add-exercise-btn" style={{...marginRight}} shape={"round"} icon={<PlusOutlined />}
                 onClick={() => setIsModalVisible(true)}>Add Exercise</CustomButton>
             <CustomModal visible={isModalVisible} onOk={() => {addExercise(selectedExerciseId, userStats); setIsModalVisible(false)}}
                 onCancel={() => setIsModalVisible(false)} confirmLoading={isLoading}>

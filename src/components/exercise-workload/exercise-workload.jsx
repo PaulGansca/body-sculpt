@@ -39,7 +39,7 @@ const ExerciseWorkload = ({updateExerciseWorkload, exercise, exercises, isLoadin
         <Row className={`exercise-workload ${workoutInProgress ? "workout-in-progress" : ""}`}>
             <Col xs={{span: 22, offset: 1}} md={{span: 20, offset: 2}} lg={{span: 18, offset: 3}}>
                 <Divider style={{marginTop: 0}}>{sets.length} WORKING SETS</Divider>
-                {sets.map((s, index) => 
+                <div className="exercise-sets-list">{sets.map((s, index) => 
                     <div className={`set ${index < currentSet ? "completed-set" : index === currentSet ? "current-set" : ""}`} key={s.id}>
                         <span style={{marginRight: 5}}>{index < currentSet ? <CheckCircleOutlined style={{position: 'absolute', bottom: 7, left: -15}} /> : <></>}
                             <CustomInputNumber onChange={(v) => handleChange(v, s.id, 'reps')}
@@ -49,7 +49,7 @@ const ExerciseWorkload = ({updateExerciseWorkload, exercise, exercises, isLoadin
                             min={1} defaultValue={s.weight} bordered={false} /> KGs </span>
                         <CustomButton style={{marginLeft: 10}} onClick={() => deleteSet(s.id)}
                             size={"small"} danger shape={"round"} icon={<DeleteOutlined />} />
-                    </div>)}
+                    </div>)}</div>
                 <CustomButton style={{margin: 15}} shape={"round"} icon={<PlusOutlined />}
                     onClick={() => addSet()}>Add Working Set</CustomButton>
                 {workoutInProgress ? <LogSet exerciseIdx={getExerciseIdx} currentSet={currentSet} exercise={exercise} /> : <></>}

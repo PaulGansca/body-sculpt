@@ -28,7 +28,7 @@ const ExercisesList = (props) => {
                     {workoutState === "not started" ? 
                     <CustomPopconfirm okText={"Yes"} cancelText={"No"} title={"Are you sure you want to generate a new workout?"}
                         onConfirm={() => createCurrentWorkout(currentUserId, currentUser)}>
-                        <CustomButton danger style={{marginRight: 20}} shape={"round"} icon={<PlusOutlined />}>
+                        <CustomButton className="new-workout-btn" danger style={{marginRight: 20}} shape={"round"} icon={<PlusOutlined />}>
                         New Workout</CustomButton></CustomPopconfirm> : <></> }
                     <AddExercise />
                     {workoutState !== "not started" ? <Timer workoutState={workoutState} /> : <></>}
