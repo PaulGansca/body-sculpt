@@ -1,7 +1,7 @@
-.login-page {
+.login-page, .password-reset-page {
     text-align: center;
 }
-.login-page .logo {
+.login-page .logo, .password-reset-page .logo{
     height: 45px;
     width: 45px;
 }

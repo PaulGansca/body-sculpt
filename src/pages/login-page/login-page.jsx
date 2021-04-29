@@ -35,7 +35,7 @@ const formInputItems = [{
 ]
 const formTailItems = [{
     elem: <><CustomButton htmlType="submit" shape="round">Sign in</CustomButton>
-    <CustomButton type="link">Forgot password?</CustomButton></>,
+    <CustomButton type="link">{<Link to='/passwordreset'>Forgot password?</Link>}</CustomButton></>,
 
 }
 ]
