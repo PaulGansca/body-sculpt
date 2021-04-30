@@ -1,6 +1,8 @@
 import { UserActionTypes } from './user.types';
 import * as userOperations from '../../firebase/crud-user';
 
+import customNotification from '../../components/antd/custom-notification/custom-notification';
+
 export const setCurrentUser = user => ({
     type: UserActionTypes.SET_CURRENT_USER,
     payload: user
@@ -14,6 +16,7 @@ export const setUserGoals = (userId, goalsData, history) => dispatch => {
     return userOperations.setUserGoals(userId, goalsData).then(() => {
         console.log("Document successfully updated!");
         history.push('/user/workout/new');
+        customNotification('success', {message: 'Profile Configured Succesfully'})
         return dispatch({
             type: UserActionTypes.SET_USER_GOALS_SUCCESS,
             payload: goalsData
@@ -35,6 +38,7 @@ export const setProfileSettings = (userId, profileSettings) => dispatch => {
     });
     return userOperations.setUserGoals(userId, profileSettings).then(() => {
         console.log("Document successfully updated!");
+        customNotification('success', {message: 'Profile Configured Succesfully'})
         return dispatch({
             type: UserActionTypes.SET_PROFILE_SETTINGS_SUCCESS,
             payload: profileSettings

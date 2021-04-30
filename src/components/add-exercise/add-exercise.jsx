@@ -11,6 +11,7 @@ import SearchExercises from '../search-exercises.jsx/search-exercises';
 import { addExercise } from '../../redux/workout/workout.actions';
 import { selectIsExerciseLoading, selectWorkoutState } from '../../redux/workout/workout.selectors';
 import { selectGoal, selectFitnessLevel, selectUserWeight, selectGender, selectCurrentUserId } from '../../redux/user/user.selectors';
+import customNotification from '../antd/custom-notification/custom-notification';
 
 
 const AddExercise = ({addExercise, isLoading, workoutState, goal, fitnessLevel, gender, weight, userId}) => {
@@ -22,7 +23,11 @@ const AddExercise = ({addExercise, isLoading, workoutState, goal, fitnessLevel, 
         <>
             <CustomButton className="add-exercise-btn" style={{...marginRight}} shape={"round"} icon={<PlusOutlined />}
                 onClick={() => setIsModalVisible(true)}>Add Exercise</CustomButton>
-            <CustomModal visible={isModalVisible} onOk={() => {addExercise(selectedExerciseId, userStats); setIsModalVisible(false)}}
+            <CustomModal visible={isModalVisible} onOk={() => {
+                if(selectedExerciseId > 0) {
+                    addExercise(selectedExerciseId, userStats); setIsModalVisible(false)
+                }
+                else customNotification('error', {message: 'No Exercise Selected'})}}
                 onCancel={() => setIsModalVisible(false)} confirmLoading={isLoading}>
                 <p>Add an exercise to your workout.</p>
                 <p>BodySculpt will automatically determine workload.</p>

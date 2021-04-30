@@ -3,6 +3,8 @@ import { WorkoutsActionTypes } from './workouts.types';
 import { getUserWorkouts, deleteWorkout as firebaseDeleteWorkout} from '../../firebase/crud-user';
 import { getExerciseInfo } from '../../api/wger';
 
+import customNotification from '../../components/antd/custom-notification/custom-notification';
+
 export const fetchWorkouts = (userId) => async dispatch => {
     dispatch({
         type: WorkoutsActionTypes.FETCH_WORKOUTS_START,
@@ -33,11 +35,13 @@ export const deleteWorkout = (userId, workoutId) => async dispatch => {
     try {
         const res = await firebaseDeleteWorkout(userId, workoutId);
         if(res !== "Permission Denied") {
+            customNotification('success', {message: 'Workout Deleted'})
             dispatch({
                 type: WorkoutsActionTypes.DELETE_WORKOUT_SUCCESS,
                 payload: workoutId
             });
         } else {
+            customNotification('error', {message: 'Permission Denied'})
             dispatch({
                 type: WorkoutsActionTypes.PERMISSION_DENIED,
                 payload: "Permission Denied"

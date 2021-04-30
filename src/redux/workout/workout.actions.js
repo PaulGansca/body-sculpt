@@ -11,6 +11,8 @@ import { REP_RANGE_BY_GOAL } from '../../static/workout-splits-days';
 import { calculateWeight, getRandVal } from '../../workout-creation/create-workout';
 import newId from '../../utils/id-generator';
 
+import customNotification from '../../components/antd/custom-notification/custom-notification';
+
 export const setWorkout = (workout) => dispatch => {
     dispatch({
         type: WorkoutActionTypes.SET_WORKOUT_START,
@@ -92,6 +94,7 @@ export const addExercise = (id, userStats) => async dispatch => {
             type: WorkoutActionTypes.ADD_EXERCISE_SUCCESS,
             payload: exercise
         });
+        customNotification('success', {message: 'Exercise Added Succesfully'})
     } catch (err) {
         alert("Error updating document: ", err);
         dispatch({
@@ -102,6 +105,7 @@ export const addExercise = (id, userStats) => async dispatch => {
 };
 
 export const deleteExercise = (idx) => dispatch => {
+    customNotification('success', {message: 'Exercise Deleted'})
     dispatch({
         type: WorkoutActionTypes.DELETE_EXERCISE,
         payload: idx
@@ -129,6 +133,7 @@ export const swapExercise = (exerciseIdx, exerciseId, exerciseDbId, userStats) =
             type: WorkoutActionTypes.SWAP_EXERCISE_SUCCESS,
             payload: {exercise, exerciseIdx},
         });
+        customNotification('success', {message: 'Exercise Replaced Succesfully'})
     } catch (err) {
         alert("Error updating document: ", err);
         dispatch({
@@ -153,6 +158,7 @@ export const updateExerciseWorkload = (exercise) => dispatch => {
 };
 
 export const toggleWorkoutState = (state) => dispatch => {
+    customNotification('info', {message: `Workout ${state}`, duration: 3})
     dispatch({
         type: WorkoutActionTypes.TOGGLE_WORKOUT_STATE,
         payload: state
@@ -167,6 +173,7 @@ export const updateTimeElapsed = (timeElapsed) => dispatch => {
 };
 
 export const logSet = (exercise) => dispatch => {
+    customNotification('info', {message: 'Set completed', duration: 3})
     dispatch({
         type: WorkoutActionTypes.LOG_SET,
         payload: exercise
@@ -174,6 +181,7 @@ export const logSet = (exercise) => dispatch => {
 };
 
 export const logSetWithSwapExercise = (exercises, exerciseIdx, swapIdx) => dispatch => {
+    customNotification('info', {message: 'Set completed', duration: 3})
     dispatch({
         type: WorkoutActionTypes.LOG_SET_WITH_SWAP,
         payload: arrayMove(exercises, exerciseIdx, swapIdx)
@@ -222,6 +230,7 @@ export const fetchWorkout = (userId, workoutId) => async dispatch => {
                 });
             })
         } else {
+            customNotification('error', {message: 'Permission Denied'})
             dispatch({
                 type: WorkoutActionTypes.PERMISSION_DENIED,
                 payload: "Permission Denied"

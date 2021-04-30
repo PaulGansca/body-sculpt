@@ -12,6 +12,7 @@ import CustomTable from '../antd/custom-table/custom-table';
 import { swapExercise } from '../../redux/workout/workout.actions';
 import { selectGoal, selectFitnessLevel, selectUserWeight, selectGender, selectCurrentUserId } from '../../redux/user/user.selectors';
 import { getExercisesInCategory } from '../../api/wger';
+import customNotification from '../antd/custom-notification/custom-notification';
 
 const columns = [
     {
@@ -50,8 +51,10 @@ const SwapExercise = ({swapExercise, isLoading, exerciseIdx, exercise, btnText,
                     {btnText}</CustomButton>
             </CustomTooltip>
             <CustomModal visible={isModalVisible} onOk={() => {
-                    swapExercise(exerciseIdx, selectedExerciseId, exercise.db_id, userStats); setIsModalVisible(false)
-                }} onCancel={() => setIsModalVisible(false)} confirmLoading={isLoading}>
+                    if(selectedExerciseId > 0) {
+                        swapExercise(exerciseIdx, selectedExerciseId, exercise.db_id, userStats); setIsModalVisible(false)
+                    } else customNotification('error', {message: 'No Exercise Selected'})}}
+                onCancel={() => setIsModalVisible(false)} confirmLoading={isLoading}>
                 <p>Swap <em style={{fontWeight: 'bold'}}>{exercise.name}</em> with one of {allExercises.length} alternatives.</p>
                 <p>BodySculpt will automatically determine workload.</p>
                 <Input.Search placeholder="Filter Exercises" onChange={e => setFilteredExercises(allExercises.filter(
