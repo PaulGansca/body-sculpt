@@ -19,7 +19,7 @@ const ProfileSetupPage = ({currentUser, setUserGoals, history}) => {
     const formRef = useRef(null);
     const initialValues = currentUser.goalSet ?
         {...currentUser, birthday: moment(new Date(currentUser.birthday.seconds * 1000))} 
-        : {weight: 70, height: 180};
+        : {weight: 70, height: 180, birthday: moment('01/01/1990', 'DD/MM/YYYY')};
     const [formQuestionsList, setFormQuestionsList] = useState(questionsList.filter(q => q.name !== "musclePriority"));
     const [formProgress, setFormProgress] = useState((Object.keys(initialValues).length/fieldNames.length)*100);
 

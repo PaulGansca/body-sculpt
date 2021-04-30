@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { Form } from 'antd';
 
 import CustomRadio from '../antd/custom-inputs/custom-radio';
@@ -111,14 +110,14 @@ export const questionsList = [
             message: 'Please set height'}]} key={"height"}><CustomInputNumber className="question-input"
                 min={100} max={250} placeholder="height" name={"height"}
                 formatter={value => `${value}cm`}
-                parser={value => value.replace('cm', '')} /></Form.Item>
+                parser={value => parseInt(value.match(/[0-9]/g).join(''))} /></Form.Item>
                 <Form.Item name={"weight"} rules={[{required: true,
             message: 'Please set weight'}]} key={"weight"}><CustomInputNumber className="question-input"
                 min={30} max={200} placeholder="weight" name={"weight"}
                 formatter={value => `${value}kg`}
-                parser={value => value.replace('kg', '')} /></Form.Item>
+                parser={value => parseInt(value.match(/[0-9]/g).join(''))} /></Form.Item>
                 <Form.Item rules={[{required: true, message: 'Please set birthday!'}]} 
-                    name={"birthday"} key={"birthday"}><CustomDatePicker placeholder="Birthday" name="birthday" /></Form.Item>
+                    name={"birthday"} key={"birthday"}><CustomDatePicker format={'DD/MM/YYYY'} placeholder="Birthday DD/MM/YYYY" name="birthday" /></Form.Item>
                 <Form.Item rules={[{required: true, message: 'Please set gender!'}]}
                     name={"gender"} key={"gender"}><CustomRadio className="multi-choice-input" name={"gender"}
                 options={questionsData["gender"]} /></Form.Item><Form.Item rules={[{required: true, message: 'Please configure profile privacy!'}]}
