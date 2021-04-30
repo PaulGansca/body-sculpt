@@ -18,7 +18,7 @@ export const selectIsExerciseLoading = createSelector(
 
 export const selectError = createSelector(
     [selectWorkout],
-    (workout) => workout.error
+    (workout) => workout.err
 );
 
 export const selectDate = createSelector(

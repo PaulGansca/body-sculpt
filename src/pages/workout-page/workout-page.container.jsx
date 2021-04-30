@@ -13,6 +13,7 @@ import ExercisePageContainer from '../exercise-page/exercise-page-container';
 import CustomSpin from '../../components/antd/custom-spin/custom-spin';
 import { MUSCLES_DATA } from '../../static/muscle-images';
 import { exerciseCategory, muscleNamesTaxonomy }  from '../../static/exercise-category';
+import WithEmpty from '../../components/with-empty/with-empty';
 
 const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUserId, fetchWorkout, error,
     setWorkout, currentWorkout, match, resetState, ...otherProps}) => {
@@ -63,13 +64,15 @@ const workoutEffects = (WrappedComponent) => ({createCurrentWorkout, currentUser
         })
         setMusclesImages(musclesImages)
     }, [primaryMuscles]);
-
+    console.log(error);
     return (
         otherProps.isUserLoading || otherProps.isWorkoutLoading  ? 
             <CustomSpin className="main-spinner" size={"large"} />  :
             <Switch>
                 <Route exact={true} path={`${match.path}`} render={() => 
-                <WrappedComponent run={run} setRun={setRun} primaryMuscles={primaryMuscles} musclesImages={musclesImages} muscles={MUSCLES_DATA} {...otherProps} />} />
+                <WrappedComponent isEmpty={error} emptyText={<span style={{color: 'white'}}>Workout not found</span>}
+         emptyProps={{image: "https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg", style: {margin: '10vh'}}}
+                 run={run} setRun={setRun} primaryMuscles={primaryMuscles} musclesImages={musclesImages} muscles={MUSCLES_DATA} {...otherProps} />} />
                 <Route exact={true} path={`${match.path}/exercise/:exerciseId`} component={ExercisePageContainer} />
             </Switch>
     )
@@ -95,7 +98,8 @@ const mapDispatchToProps = dispatch => ({
 
 const WorkoutPageContainer = compose(
     connect(mapStateToProps, mapDispatchToProps),
-    workoutEffects
+    workoutEffects,
+    WithEmpty
 )(WorkoutPage);
 
 export default WorkoutPageContainer;

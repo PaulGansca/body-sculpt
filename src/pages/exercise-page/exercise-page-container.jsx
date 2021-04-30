@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 
 import { updateExerciseWorkload } from '../../redux/workout/workout.actions';
 import { selectWorkoutExercises, selectIsLoading, selectWorkoutState } from '../../redux/workout/workout.selectors';
-
+import WithEmpty from '../../components/with-empty/with-empty';
 import ExercisePage from './exercise-page';
 
 const exerciseEffects = (WrappedComponent) => (props) => {
@@ -16,7 +16,9 @@ const exerciseEffects = (WrappedComponent) => (props) => {
     const exercise = exercises.find(e => e.db_id === exerciseId);
     const [run, setRun] = useState(!window.localStorage.getItem("exerciseTutorial") ? true : false);
     return (
-        <WrappedComponent run={run} setRun={setRun} exercise={exercise} {...props} />    
+        <WrappedComponent isEmpty={!exercise} emptyText={<span style={{color: 'white'}}>Exercise not found</span>}
+         emptyProps={{image: "https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg", style: {margin: '10vh'}}}
+         run={run} setRun={setRun} exercise={exercise} {...props} />    
     )
 
 }
@@ -34,7 +36,8 @@ const mapDispatchToProps = dispatch => ({
 const ExercisePageContainer = compose(
     connect(mapStateToProps, mapDispatchToProps),
     withRouter,
-    exerciseEffects
+    exerciseEffects,
+    WithEmpty
 )(ExercisePage);
 
 export default ExercisePageContainer;

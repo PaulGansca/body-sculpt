@@ -237,7 +237,7 @@ export const fetchWorkout = (userId, workoutId) => async dispatch => {
             });
         }
     } catch (err) {
-        alert("Error updating document: ", err);
+        //alert("Error updating document: ", err);
         dispatch({
             type: WorkoutActionTypes.FETCH_WORKOUT_FAIL,
             payload: err
