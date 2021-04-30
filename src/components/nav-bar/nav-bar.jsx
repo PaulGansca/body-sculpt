@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { HistoryOutlined, UserOutlined } from '@ant-design/icons';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
@@ -14,7 +14,7 @@ import NavBarMobile from './nav-bar-mobile';
 import {auth} from '../../firebase/firebase.utils';
 import './nav-bar.css';
 
-const NavBar = ({currentUserId, fetchWorkoutsWithExercises, history, setCurrentUser}) => {
+const NavBar = ({currentUserId, fetchWorkoutsWithExercises, location, setCurrentUser}) => {
     const handleMountProfile = () => fetchWorkoutsWithExercises(currentUserId);
     return (
         window.innerWidth > 900 ? 
@@ -25,7 +25,7 @@ const NavBar = ({currentUserId, fetchWorkoutsWithExercises, history, setCurrentU
             <li className="desktop-nav-link"><Link to="/" onClick={() => {setCurrentUser(""); auth.signOut()}}>Sign out</Link></li>
             <li className="desktop-nav-link"><Logo style={{position: "relative", top: 2}} /></li>
         </ul> : 
-        <NavBarMobile setCurrentUser={setCurrentUser} handleMountProfile={handleMountProfile} />
+        <NavBarMobile location={location} setCurrentUser={setCurrentUser} handleMountProfile={handleMountProfile} />
     );
 };
 
@@ -40,6 +40,7 @@ const mapDispatchToProps = dispatch => ({
 
 const NavBarContainer = compose(
     connect(mapStateToProps, mapDispatchToProps),
+    withRouter
 )(NavBar);
 
 export default NavBarContainer;

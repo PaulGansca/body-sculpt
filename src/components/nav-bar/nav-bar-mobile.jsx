@@ -7,7 +7,7 @@ import { ReactComponent as Dumbbell } from '../../assets/dumbbell.svg';
 import CustomDrawer from '../antd/custom-drawer/custom-drawer';
 import {auth} from '../../firebase/firebase.utils';
 
-const NavBarMobile = ({handleMountProfile, setCurrentUser}) => {
+const NavBarMobile = ({handleMountProfile, setCurrentUser, location}) => {
     const [visible, setVisible] = useState(false);
 
     const showDrawer = () => {
@@ -16,10 +16,17 @@ const NavBarMobile = ({handleMountProfile, setCurrentUser}) => {
       const onClose = () => {
         setVisible(false);
       };
+    let currentPage = "";
+    if(location.pathname === "/user/workout/new") currentPage = "Workout";
+    if(location.pathname === "/user/workouts-logged") currentPage = "Log";
+    if(location.pathname === "/user/profile") currentPage = "Profile";
+    if(location.pathname === "/user/leaderboard") currentPage = "Leaderboard";
+
     return (
         <>
             <div style={{width: "100%", backgroundColor: "rgb(16, 61, 187)"}}>
                 <MenuUnfoldOutlined style={{fontSize: 35, color: 'white', marginLeft: "4.5%", marginTop: 25}} onClick={showDrawer} />
+                <span className="current-page">{currentPage}</span>
             </div>
             <CustomDrawer
                 title=""
