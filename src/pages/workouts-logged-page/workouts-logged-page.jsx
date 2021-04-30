@@ -7,22 +7,24 @@ import CustomCalendar from '../../components/antd/custom-calendar/custom-calenda
 import WorkoutSummary from '../../components/workout-summary/workout-summary';
 import CustomCard from '../../components/antd/custom-card/custom-card';
 import CustomButton from '../../components/antd/custom-button/custom-button';
+import WeekHighlights from './week-highlights';
 
 import './workouts-logged.css';
 
 const WorkoutsLoggedPage = ({workouts, history, trainingFrequency, setWorkout,
      weight, deleteWorkout, userId}) => {
+    const sortedWorkouts = workouts.sort((a,b) => new Date(b.date) - new Date(a.date));
     const getWorkoutData = (value) => {
-        return workouts.filter(w => value.isSame(moment(w.date).format('YYYY-MM-DD')));
+        return workouts.find(w => value.isSame(moment(w.date).format('YYYY-MM-DD')));
       }
     const cellRender = (date) => {
-        const workouts = getWorkoutData(moment(date.format('YYYY-MM-DD')))
+        const workout = getWorkoutData(moment(date.format('YYYY-MM-DD')))
         return (
-            workouts.length ? 
-                <div onClick={() => {setWorkout(workouts[0]); history.push(`/user/workout/${workouts[0].id}`)}} className="ant-picker-cell-inner ant-picker-calendar-date">
+            workout ? 
+                <div onClick={() => {setWorkout(workout); history.push(`/user/workout/${workout.id}`)}} className="ant-picker-cell-inner ant-picker-calendar-date">
                     <div className="ant-picker-calendar-date-value workout-logged">{date.date()}</div>
                     <div className="ant-picker-calendar-date-content">
-                        {workouts.map(w => <span className="cal-time-elapsed" key={w.id}>{w.timeElapsed}</span>)}
+                        <span className="cal-time-elapsed" key={workout.id}>{workout.timeElapsed}</span>
                     </div>
                 </div>
                 :
@@ -36,18 +38,35 @@ const WorkoutsLoggedPage = ({workouts, history, trainingFrequency, setWorkout,
      : moment().startOf('week').add(1, 'd').format("YYYY-MM-DD");
     const to_date = today.day() === 0 ? moment().subtract(1, 'd').endOf('week').add(1, 'd').format("YYYY-MM-DD")
     : moment().endOf('week').add(1, 'd').format("YYYY-MM-DD");
-    const workoutsInWeek = workouts.filter(w => moment(moment(w.date).format('YYYY-MM-DD')).isBetween(moment(from_date), moment(to_date))).length
+    const workoutsInWeek = workouts.filter(w => moment(moment(w.date).format('YYYY-MM-DD')).isBetween(moment(from_date), moment(to_date)));
+    const countWorkoutsInWeek = workouts.filter(w => moment(moment(w.date).format('YYYY-MM-DD')).isBetween(moment(from_date), moment(to_date))).length;
+    const canReachWeeklyTarget = 7 - (moment().day() === 0 ? 6 : moment().day()) >= trainingFrequency - countWorkoutsInWeek;
+
+    let streak = 0;
+    if(canReachWeeklyTarget) {
+        const currentWeek = moment().startOf('week').format("YYYY/MM/DD")
+        .concat("-").concat(moment().endOf('week').format("YYYY/MM/DD"));
+        let weeklyWorkouts  = sortedWorkouts.reduce((acc, w) => {
+            const weekKey = moment(w.date).startOf('week').format("YYYY/MM/DD")
+                        .concat("-").concat(moment(w.date).endOf('week').format("YYYY/MM/DD"))
+            if(!acc[weekKey]) {
+                acc[weekKey] = 1
+            } else acc[weekKey] += 1
+            return acc;
+        }, {});
+        delete weeklyWorkouts[currentWeek];
+        streak = Object.keys(weeklyWorkouts).findIndex(weekKey => weeklyWorkouts[weekKey] < trainingFrequency);
+    }
+    
     return (
         <div className="workouts-logged-container">
             <Row>
                 <Col xs={{span: 24}} md={{span: 20, offset: 2}} lg={{span: 18, offset: 3}}>
                     <CustomCalendar dateFullCellRender={cellRender} className="workouts-logged-calendar" fullscreen={false} />
-                    <h3 style={{margin: "20px 0", color: "white"}}>Sessions this week {workoutsInWeek}/{trainingFrequency} - 
-                        {7 - (moment().day() === 0 ? 6 : moment().day()) >= trainingFrequency - workoutsInWeek ?
-                        " You are on track to hit your weekly session goal." :
-                        " You won't be able to hit your weekly session goal."}</h3>
+                    <WeekHighlights streak={streak} countWorkoutsInWeek={countWorkoutsInWeek} workoutsInWeek={workoutsInWeek}
+                        canReachWeeklyTarget={canReachWeeklyTarget} trainingFrequency={trainingFrequency} weight={weight} />
                     <Row justify={window.innerWidth < 800 ? 'center' : 'space-between'} gutter={[16, 16]}>
-                    {workouts.sort((a,b) => new Date(b.date) - new Date(a.date)).map(w => 
+                    {sortedWorkouts.map(w => 
                     <CustomCard key={w.id} size="small" title={moment(w.date).format("ddd, MMM Do YYYY")} style={{ width: 330 }} hoverable={true}
                     actions={[
                         <CustomButton onClick={() => deleteWorkout(userId, w.id)}
