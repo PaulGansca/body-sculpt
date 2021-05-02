@@ -15,11 +15,16 @@
 
 const Firestore = require('@google-cloud/firestore');
 const PROJECTID = "body-sculpt-5ab47";
-const COLLECTION_NAME = "leaderboard";
-const firestore = new Firestore({
-  projectId: PROJECTID,
-  timestampsInSnapshots: true,
+const admin = require('firebase-admin');
+const serviceAccount = require("./admin");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount.admin)
 });
+const COLLECTION_NAME = "leaderboard";
+// const firestore = new Firestore({
+//   projectId: PROJECTID,
+//   timestampsInSnapshots: true,
+// });
 
 async function deleteQueryBatch(db, query, resolve) {
   const snapshot = await query.get();
