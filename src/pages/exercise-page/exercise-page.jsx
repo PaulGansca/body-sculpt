@@ -45,12 +45,12 @@ const ExercisePage = (props) => {
                 }}
                 />
             <SaveWorkout />
-            {workoutState !== "not started" ? <Timer style={{display: 'block', textAlign: 'center'}} workoutState={workoutState} /> : <></>}
             <h1 className="exercise-title">{activeKey === "info" ? <LeftOutlined onClick={() => setActiveKey("workload")} /> 
                 : <LeftOutlined onClick={() => history.push(`/user/workout/${match.params.workoutId}`)} />} 
                 <span style={{margin: '0 20px'}}>{exercise.name}</span>
                 {activeKey === "workload" ? <InfoCircleOutlined className="exercise-info-icon" onClick={() => setActiveKey("info")} /> : <></>}
             </h1>
+            {workoutState !== "not started" ? <Timer display={{display: 'block', textAlign: 'center'}} workoutState={workoutState} /> : <></>}
             <CustomTabs tabBarStyle={{display: 'none'}} tabPanes={[tabOne, tabTwo]} activeKey={activeKey} />
         </div>
     )

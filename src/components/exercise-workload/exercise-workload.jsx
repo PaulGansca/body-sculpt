@@ -41,7 +41,7 @@ const ExerciseWorkload = ({updateExerciseWorkload, exercise, exercises, isLoadin
                 <Divider style={{marginTop: 0}}>{sets.length} WORKING SETS</Divider>
                 <div className="exercise-sets-list">{sets.map((s, index) => 
                     <div className={`set ${index < currentSet ? "completed-set" : index === currentSet ? "current-set" : ""}`} key={s.id}>
-                        <span style={{marginRight: 5}}>{index < currentSet ? <CheckCircleOutlined style={{position: 'absolute', bottom: 7, left: -15}} /> : <></>}
+                        <span style={{marginRight: 5}}>{index < currentSet ? <CheckCircleOutlined className="completed-set-check" /> : <></>}
                             <CustomInputNumber onChange={(v) => handleChange(v, s.id, 'reps')}
                             min={1} defaultValue={s.reps} bordered={false} /> REPS </span>
                         <span>X</span>

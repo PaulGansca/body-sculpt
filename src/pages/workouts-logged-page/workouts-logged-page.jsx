@@ -15,10 +15,10 @@ const WorkoutsLoggedPage = ({workouts, history, trainingFrequency, setWorkout,
      weight, deleteWorkout, userId}) => {
     const sortedWorkouts = workouts.sort((a,b) => new Date(b.date) - new Date(a.date));
     const getWorkoutData = (value) => {
-        return workouts.find(w => value.isSame(moment(w.date).format('YYYY-MM-DD')));
+        return workouts.find(w => value.isSame(moment(w.date).format('YYYY/MM/DD')));
       }
     const cellRender = (date) => {
-        const workout = getWorkoutData(moment(date.format('YYYY-MM-DD')))
+        const workout = getWorkoutData(moment(date.format('YYYY/MM/DD')))
         return (
             workout ? 
                 <div onClick={() => {setWorkout(workout); history.push(`/user/workout/${workout.id}`)}} className="ant-picker-cell-inner ant-picker-calendar-date">
@@ -34,12 +34,13 @@ const WorkoutsLoggedPage = ({workouts, history, trainingFrequency, setWorkout,
         )
     }
     const today = moment();
-    const from_date = today.day() === 0 ? moment().subtract(1, 'd').startOf('week').add(1, 'd').format("YYYY-MM-DD")
-     : moment().startOf('week').add(1, 'd').format("YYYY-MM-DD");
-    const to_date = today.day() === 0 ? moment().subtract(1, 'd').endOf('week').add(1, 'd').format("YYYY-MM-DD")
-    : moment().endOf('week').add(1, 'd').format("YYYY-MM-DD");
-    const workoutsInWeek = workouts.filter(w => moment(moment(w.date).format('YYYY-MM-DD')).isBetween(moment(from_date), moment(to_date)));
-    const countWorkoutsInWeek = workouts.filter(w => moment(moment(w.date).format('YYYY-MM-DD')).isBetween(moment(from_date), moment(to_date))).length;
+    const from_date = today.day() === 0 ? moment().subtract(1, 'd').startOf('week').add(1, 'd').format("YYYY/MM/DD")
+     : moment().startOf('week').add(1, 'd').format("YYYY/MM/DD");
+    const to_date = today.day() === 0 ? moment().subtract(1, 'd').endOf('week').add(1, 'd').format("YYYY/MM/DD")
+    : moment().endOf('week').add(1, 'd').format("YYYY/MM/DD");
+    const workoutsInWeek = workouts.filter(w => (moment(moment(w.date).format('YYYY/MM/DD')).isBetween(moment(from_date), moment(to_date)) ||
+                            moment(w.date).format('YYYY/MM/DD') === from_date || moment(w.date).format('YYYY/MM/DD') === to_date));
+    const countWorkoutsInWeek = workoutsInWeek.length;
     const canReachWeeklyTarget = 7 - (moment().day() === 0 ? 6 : moment().day()) >= trainingFrequency - countWorkoutsInWeek;
 
     let streak = 0;
