@@ -11,7 +11,7 @@ import "antd/dist/antd.css";
 import './App.css';
 
 const App = ({ currentUser }) => {
-  const redirectLink = currentUser && currentUser.goalSet ? '/user/profile' : '/user/profile-setup'
+  const redirectLink = currentUser && currentUser.goalSet ? '/user/profile' : '/user/profile-setup';
   return (
     <div className="App">
       <Switch>
@@ -19,7 +19,7 @@ const App = ({ currentUser }) => {
         <Route exact={true} path="/login" render={() => currentUser ? <Redirect to={`${redirectLink}`} /> : <LoginPage />} />
         <Route exact={true} path="/signup" render={() => currentUser ? <Redirect to={`${redirectLink}`} /> : <SignUpPage />} />
         <Route exact={true} path="/passwordreset" render={() => currentUser ? <Redirect to={`${redirectLink}`} /> : <PasswordReset />} />
-        <Route path="/user" component={UserPage} />
+        <Route path="/user" render={(routerProps) => <UserPage {...routerProps} currentUser={currentUser} />} />
       </Switch>
     </div>
   );

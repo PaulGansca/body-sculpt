@@ -19,15 +19,20 @@
     max-width: 250px;
 }
 
-@media only screen and (max-width: 600px) {
-    .exercise-info .images-container img {
-        max-width: 100%;
-    }
-}
-
 .exercise-info .muscle-background {
     width: 150px;
     height: 276px;
     background-size: 150px;
     background-repeat: no-repeat;
+}
+
+@media only screen and (max-width: 600px) {
+    .exercise-info .images-container img {
+        max-width: 100%;
+    }
+
+    .exercise-info .muscle-background {
+        width: 135px;
+        background-size: 135px;
+    }
 }

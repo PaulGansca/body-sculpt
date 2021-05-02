@@ -193,8 +193,9 @@ export const completeWorkout = (workout, currentUserId, history) => async dispat
         type: WorkoutActionTypes.COMPLETE_WORKOUT_START,
     });
     try {
-        firebaseCompleteWorkout(currentUserId, createDbWorkout(workout))
-        history.push('/user/workouts-logged')
+        firebaseCompleteWorkout(currentUserId, createDbWorkout(workout));
+        history.push('/user/workouts-logged');
+        customNotification('success', {message: 'Workout Saved Succesfully'});
         dispatch({
             type: WorkoutActionTypes.COMPLETE_WORKOUT_SUCCESS,
         });
