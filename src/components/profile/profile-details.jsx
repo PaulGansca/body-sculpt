@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import CustomButton from '../antd/custom-button/custom-button'
 
 const ProfileDetails = ({displayName, email, fitnessLevel, birthday, goal,
-    isMusclesPrioritized, musclePriority, weight, height, gender,
+    isMusclePrioritized, musclePriority, weight, height, gender,
     trainingDuration, trainingFrequency}) => {
     return (
         <div className="profile-details">
@@ -17,8 +17,8 @@ const ProfileDetails = ({displayName, email, fitnessLevel, birthday, goal,
                 <Descriptions.Item label="Birthday">{moment(new Date(birthday.seconds * 1000)).format("Do of MMM YYYY")}</Descriptions.Item>
                 <Descriptions.Item label="Fitness Level">{fitnessLevel}</Descriptions.Item>
                 <Descriptions.Item label="Goal">{goal}</Descriptions.Item>
-                <Descriptions.Item className="muscles-prioritized-label" label="Prioritize Muscles?">{isMusclesPrioritized ? "Yes" : "No"}</Descriptions.Item>
-                {isMusclesPrioritized ? <Descriptions.Item label="Muscles Prioritized">{musclePriority}</Descriptions.Item> : <></>}
+                <Descriptions.Item className="muscles-prioritized-label" label="Prioritize Muscles?">{isMusclePrioritized ? "Yes" : "No"}</Descriptions.Item>
+                {isMusclePrioritized ? <Descriptions.Item label="Muscles Prioritized">{musclePriority}</Descriptions.Item> : <></>}
                 <Descriptions.Item label="Weight">{weight}</Descriptions.Item>
                 <Descriptions.Item label="Height">{height}</Descriptions.Item>
                 <Descriptions.Item label="Gender">{gender}</Descriptions.Item>

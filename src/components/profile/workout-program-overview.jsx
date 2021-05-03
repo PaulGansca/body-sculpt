@@ -15,7 +15,7 @@ import { muscleNamesTaxonomy } from '../../static/exercise-category';
 
 import './profile.css';
 
-const WorkoutProgramOverview = ({goal, fitnessLevel, isMusclePrioritized, musclesPrioritized,
+const WorkoutProgramOverview = ({goal, fitnessLevel, isMusclePrioritized, musclePriority,
         splitType, trainingFrequency, isSplitLoading, setProfileSettings, id}) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedOption, setSelectedOption] = useState(splitType);
@@ -41,7 +41,7 @@ const WorkoutProgramOverview = ({goal, fitnessLevel, isMusclePrioritized, muscle
             <p>Goal: <CustomTag color={'#2db7f5'}>{USER_DATA_TAXONOMY.goal[goal]}</CustomTag></p>
             <p>Experience Level: <CustomTag color={'#2db7f5'}>{_.capitalize(fitnessLevel)}</CustomTag></p>
             {isMusclePrioritized === "true" ? <p>Emphasising training: {' '}
-                {musclesPrioritized.map(m => <CustomTag color={'#2db7f5'}>{muscleNamesTaxonomy[m]}</CustomTag>)}
+                {musclePriority.map(m => <CustomTag key={m} color={'#2db7f5'}>{muscleNamesTaxonomy[m]}</CustomTag>)}
             </p> : <></>}
             <p>Training Frequncy: <CustomTag color={'#2db7f5'}>{trainingFrequency} x Week</CustomTag></p>
             <WorkoutReminders setProfileSettings={setProfileSettings} userId={id} />

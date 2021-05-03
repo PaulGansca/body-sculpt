@@ -57,6 +57,7 @@ const WorkoutsLoggedPage = ({workouts, history, trainingFrequency, setWorkout,
         }, {});
         delete weeklyWorkouts[currentWeek];
         streak = Object.keys(weeklyWorkouts).findIndex(weekKey => weeklyWorkouts[weekKey] < trainingFrequency);
+        streak = -1 ? 0 : streak;
     }
     
     return (
