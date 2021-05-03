@@ -12,6 +12,8 @@ import App from './App';
 
 const userSubscription = (WrappedComponent) => ({setCurrentUser, ...otherProps}) => {
     useEffect(() => {
+      //code reference
+      //https://github.com/ZhangMYihua/lesson-13/blob/master/src/App.js
         const unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
             if(userAuth) {
               const userRef = createUserProfileDocument(userAuth);

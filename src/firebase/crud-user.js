@@ -14,6 +14,7 @@ export const checkEmailExists = async(email) => {
 
 // search for user in DB
 // if user doesn't exist create new record
+//reference https://github.com/ZhangMYihua/lesson-13/blob/master/src/firebase/firebase.utils.js
 export const createUserProfileDocument = async(userAuth, additionalData) => {
     if (!userAuth) return;
 
