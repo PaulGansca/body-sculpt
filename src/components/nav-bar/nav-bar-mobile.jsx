@@ -37,9 +37,9 @@ const NavBarMobile = ({handleMountProfile, setCurrentUser, location}) => {
                 visible={visible}
             >
             <ul className="mobile-nav">
-                <li className="mobile-nav-link"><NavLink activeClassName="selected" to="/user/workout/new">Workout <Dumbbell className="dumbbell" /></NavLink></li>
-                <li className="mobile-nav-link"><NavLink activeClassName="selected" to="/user/workouts-logged">Log <HistoryOutlined /></NavLink></li>
-                <li className="mobile-nav-link"><NavLink activeClassName="selected" onClick={() => handleMountProfile()} to="/user/profile">Profile <UserOutlined /></NavLink></li>
+                <li className="mobile-nav-link"><NavLink activeClassName="selected" onClick={() => onClose()} to="/user/workout/new">Workout <Dumbbell className="dumbbell" /></NavLink></li>
+                <li className="mobile-nav-link"><NavLink activeClassName="selected" onClick={() => onClose()} to="/user/workouts-logged">Log <HistoryOutlined /></NavLink></li>
+                <li className="mobile-nav-link"><NavLink activeClassName="selected" onClick={() => {handleMountProfile(); onClose()}} to="/user/profile">Profile <UserOutlined /></NavLink></li>
                 <li className="mobile-nav-link"><Link to="/" onClick={() => {setCurrentUser(""); auth.signOut()}}>Sign out</Link></li>
                 <li className="mobile-nav-link"><Logo /></li>
             </ul>
