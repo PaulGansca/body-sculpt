@@ -41,6 +41,7 @@ const LeaderboardPage = ({users, location}) => {
                         options={options} onSelect={async (id) => {setExerciseCategory((await getExerciseInfo(id)).category.name); setSelectedOption(id)}} /></Title>
                     </Typography>
                     <CustomTable
+                        scroll={{ x: true }}
                         columns={selectedOption ? columns(selectedOption, searchText, searchedColumn,
                             setSearchText, setSearchedColumn, exerciseCategory) : []}
                         rowKey={user => user.userId}

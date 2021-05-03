@@ -103,6 +103,7 @@ const columns = (exerciseId, searchText, searchedColumn, setSearchText, setSearc
         title: <CustomTooltip title={`Calculates how strong the user is for his weight and gender.`}>
             Strength Rating <InfoCircleOutlined style={{marginLeft: 3, color: 'red'}} /></CustomTooltip>,
         key: 'rating',
+        className: "min-width-cols",
         render: (text, record, index) => <em style={{fontWeight: 'bold'}}>
             <CustomRate allowHalf={true} disabled defaultValue={(Math.round(((record.records[exerciseId].max / record.weight / 
             LIFTING_STANDARDS[record.gender][exerciseCategory].advanced) * 10 / 2) * 2 / 2)).toFixed(1)} />
@@ -111,6 +112,7 @@ const columns = (exerciseId, searchText, searchedColumn, setSearchText, setSearc
     {
         title: 'Set Performed',
         key: 'set',
+        className: "min-width-cols",
         render: (text, record, index) => {
             const { reps, weight } = record.records[exerciseId].set
             return <em style={{fontWeight: 'bold'}}>{reps} Reps x {weight} KGs</em>
